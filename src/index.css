@@ -8,30 +8,30 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Ultra-Modern Futuristic Color Scheme */
-    --background: 225 30% 8%;
-    --foreground: 210 20% 98%;
+    /* Premium Elite Color Scheme - Midnight Navy + Electric Cyan + Royal Magenta */
+    --background: 222 60% 4%;
+    --foreground: 210 30% 96%;
 
-    --card: 225 25% 12%;
-    --card-foreground: 210 20% 98%;
+    --card: 222 50% 6%;
+    --card-foreground: 210 30% 96%;
 
-    --popover: 225 25% 12%;
-    --popover-foreground: 210 20% 98%;
+    --popover: 222 50% 6%;
+    --popover-foreground: 210 30% 96%;
 
-    --primary: 261 90% 65%;
-    --primary-foreground: 0 0% 100%;
-    --primary-light: 261 85% 75%;
-    --primary-glow: 261 100% 70%;
+    --primary: 180 100% 50%;
+    --primary-foreground: 222 60% 4%;
+    --primary-light: 180 95% 60%;
+    --primary-glow: 180 100% 60%;
 
-    --secondary: 188 100% 50%;
-    --secondary-foreground: 225 30% 8%;
+    --secondary: 324 70% 58%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 225 20% 20%;
-    --muted-foreground: 210 15% 65%;
+    --muted: 222 40% 12%;
+    --muted-foreground: 210 20% 60%;
 
-    --accent: 188 100% 50%;
-    --accent-foreground: 225 30% 8%;
-    --accent-light: 188 90% 60%;
+    --accent: 262 85% 62%;
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 262 80% 70%;
     
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
@@ -39,34 +39,38 @@ All colors MUST be HSL.
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 225 20% 20%;
-    --input: 225 20% 20%;
-    --ring: 261 90% 65%;
+    --border: 222 40% 15%;
+    --input: 222 40% 15%;
+    --ring: 180 100% 50%;
 
-    --radius: 1rem;
+    --radius: 1.25rem;
 
-    /* Ultra-Futuristic 3D Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(261 90% 65%), hsl(261 100% 75%));
-    --gradient-secondary: linear-gradient(135deg, hsl(188 100% 50%), hsl(188 90% 60%));
-    --gradient-hero: linear-gradient(135deg, hsl(225 40% 8%) 0%, hsl(240 50% 15%) 25%, hsl(261 70% 35%) 60%, hsl(261 90% 55%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(225 30% 10%) 0%, hsl(225 25% 14%) 100%);
-    --gradient-3d: linear-gradient(145deg, hsl(261 90% 65%), hsl(188 100% 50%));
-    --gradient-glass: linear-gradient(135deg, hsl(225 25% 15% / 0.7), hsl(225 30% 20% / 0.5));
-    --gradient-neon: linear-gradient(90deg, hsl(261 100% 70%), hsl(188 100% 60%), hsl(261 100% 70%));
+    /* Premium Metallic Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(180 100% 50%), hsl(262 85% 62%));
+    --gradient-secondary: linear-gradient(135deg, hsl(324 70% 58%), hsl(262 85% 62%));
+    --gradient-hero: linear-gradient(135deg, hsl(222 70% 3%) 0%, hsl(222 60% 6%) 30%, hsl(262 60% 20%) 70%, hsl(180 80% 30%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(222 55% 5%) 0%, hsl(222 50% 8%) 100%);
+    --gradient-3d: linear-gradient(145deg, hsl(180 100% 50%), hsl(262 85% 62%));
+    --gradient-glass: linear-gradient(135deg, hsl(222 50% 10% / 0.6), hsl(222 45% 12% / 0.4));
+    --gradient-neon: linear-gradient(90deg, hsl(180 100% 50%), hsl(262 85% 62%), hsl(324 70% 58%), hsl(180 100% 50%));
+    --gradient-metallic: linear-gradient(135deg, hsl(210 30% 96%), hsl(180 100% 85%), hsl(262 85% 75%), hsl(210 30% 96%));
     
-    /* Ultra 3D Shadows & Glows */
-    --shadow-sm: 0 2px 8px hsl(225 30% 5% / 0.3);
-    --shadow-md: 0 4px 16px hsl(225 30% 5% / 0.4);
-    --shadow-lg: 0 8px 32px hsl(225 30% 5% / 0.5);
-    --shadow-glow: 0 0 40px hsl(261 100% 70% / 0.8), 0 0 80px hsl(261 100% 70% / 0.4);
-    --shadow-glow-cyan: 0 0 40px hsl(188 100% 60% / 0.8), 0 0 80px hsl(188 100% 60% / 0.4);
-    --shadow-accent: 0 10px 40px hsl(188 100% 50% / 0.6);
-    --shadow-3d: 0 4px 8px hsl(261 90% 50% / 0.3), 0 8px 16px hsl(188 100% 50% / 0.2), 0 16px 32px hsl(261 100% 70% / 0.15);
-    --shadow-neon: 0 0 20px hsl(261 100% 70% / 1), 0 0 40px hsl(261 100% 70% / 0.7), 0 0 60px hsl(261 100% 70% / 0.4);
+    /* Elite 3D Shadows & Glows */
+    --shadow-sm: 0 2px 8px hsl(222 60% 2% / 0.5);
+    --shadow-md: 0 4px 16px hsl(222 60% 2% / 0.6);
+    --shadow-lg: 0 8px 32px hsl(222 60% 2% / 0.7);
+    --shadow-glow: 0 0 60px hsl(180 100% 60% / 0.9), 0 0 120px hsl(180 100% 60% / 0.5);
+    --shadow-glow-magenta: 0 0 60px hsl(324 70% 58% / 0.9), 0 0 120px hsl(324 70% 58% / 0.5);
+    --shadow-glow-purple: 0 0 60px hsl(262 85% 62% / 0.9), 0 0 120px hsl(262 85% 62% / 0.5);
+    --shadow-accent: 0 10px 60px hsl(262 85% 62% / 0.7);
+    --shadow-3d: 0 8px 16px hsl(180 100% 50% / 0.4), 0 16px 32px hsl(262 85% 62% / 0.3), 0 32px 64px hsl(324 70% 58% / 0.2);
+    --shadow-neon: 0 0 30px hsl(180 100% 50% / 1), 0 0 60px hsl(180 100% 50% / 0.8), 0 0 90px hsl(180 100% 50% / 0.5);
+    --shadow-metallic: 0 8px 32px hsl(180 100% 50% / 0.3), 0 0 60px hsl(262 85% 62% / 0.4);
 
-    /* Animations */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    /* Premium Animations */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-elastic: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 240 20% 98%;
     --sidebar-foreground: 240 60% 10%;
@@ -79,29 +83,29 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 225 30% 8%;
-    --foreground: 210 20% 98%;
+    --background: 222 60% 4%;
+    --foreground: 210 30% 96%;
 
-    --card: 225 25% 12%;
-    --card-foreground: 210 20% 98%;
+    --card: 222 50% 6%;
+    --card-foreground: 210 30% 96%;
 
-    --popover: 225 25% 12%;
-    --popover-foreground: 210 20% 98%;
+    --popover: 222 50% 6%;
+    --popover-foreground: 210 30% 96%;
 
-    --primary: 261 90% 65%;
-    --primary-foreground: 0 0% 100%;
-    --primary-light: 261 85% 75%;
-    --primary-glow: 261 100% 70%;
+    --primary: 180 100% 50%;
+    --primary-foreground: 222 60% 4%;
+    --primary-light: 180 95% 60%;
+    --primary-glow: 180 100% 60%;
 
-    --secondary: 188 100% 50%;
-    --secondary-foreground: 225 30% 8%;
+    --secondary: 324 70% 58%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 225 20% 20%;
-    --muted-foreground: 210 15% 65%;
+    --muted: 222 40% 12%;
+    --muted-foreground: 210 20% 60%;
 
-    --accent: 188 100% 50%;
-    --accent-foreground: 225 30% 8%;
-    --accent-light: 188 90% 60%;
+    --accent: 262 85% 62%;
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 262 80% 70%;
     
     --success: 142 70% 45%;
     --success-foreground: 0 0% 100%;
@@ -109,26 +113,29 @@ All colors MUST be HSL.
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 225 20% 20%;
-    --input: 225 20% 20%;
-    --ring: 261 90% 65%;
+    --border: 222 40% 15%;
+    --input: 222 40% 15%;
+    --ring: 180 100% 50%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(261 90% 65%), hsl(261 100% 75%));
-    --gradient-secondary: linear-gradient(135deg, hsl(188 100% 50%), hsl(188 90% 60%));
-    --gradient-hero: linear-gradient(135deg, hsl(225 40% 8%) 0%, hsl(240 50% 15%) 25%, hsl(261 70% 35%) 60%, hsl(261 90% 55%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(225 30% 10%) 0%, hsl(225 25% 14%) 100%);
-    --gradient-3d: linear-gradient(145deg, hsl(261 90% 65%), hsl(188 100% 50%));
-    --gradient-glass: linear-gradient(135deg, hsl(225 25% 15% / 0.7), hsl(225 30% 20% / 0.5));
-    --gradient-neon: linear-gradient(90deg, hsl(261 100% 70%), hsl(188 100% 60%), hsl(261 100% 70%));
+    --gradient-primary: linear-gradient(135deg, hsl(180 100% 50%), hsl(262 85% 62%));
+    --gradient-secondary: linear-gradient(135deg, hsl(324 70% 58%), hsl(262 85% 62%));
+    --gradient-hero: linear-gradient(135deg, hsl(222 70% 3%) 0%, hsl(222 60% 6%) 30%, hsl(262 60% 20%) 70%, hsl(180 80% 30%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(222 55% 5%) 0%, hsl(222 50% 8%) 100%);
+    --gradient-3d: linear-gradient(145deg, hsl(180 100% 50%), hsl(262 85% 62%));
+    --gradient-glass: linear-gradient(135deg, hsl(222 50% 10% / 0.6), hsl(222 45% 12% / 0.4));
+    --gradient-neon: linear-gradient(90deg, hsl(180 100% 50%), hsl(262 85% 62%), hsl(324 70% 58%), hsl(180 100% 50%));
+    --gradient-metallic: linear-gradient(135deg, hsl(210 30% 96%), hsl(180 100% 85%), hsl(262 85% 75%), hsl(210 30% 96%));
     
-    --shadow-sm: 0 2px 8px hsl(225 30% 5% / 0.3);
-    --shadow-md: 0 4px 16px hsl(225 30% 5% / 0.4);
-    --shadow-lg: 0 8px 32px hsl(225 30% 5% / 0.5);
-    --shadow-glow: 0 0 40px hsl(261 100% 70% / 0.8), 0 0 80px hsl(261 100% 70% / 0.4);
-    --shadow-glow-cyan: 0 0 40px hsl(188 100% 60% / 0.8), 0 0 80px hsl(188 100% 60% / 0.4);
-    --shadow-accent: 0 10px 40px hsl(188 100% 50% / 0.6);
-    --shadow-3d: 0 4px 8px hsl(261 90% 50% / 0.3), 0 8px 16px hsl(188 100% 50% / 0.2), 0 16px 32px hsl(261 100% 70% / 0.15);
-    --shadow-neon: 0 0 20px hsl(261 100% 70% / 1), 0 0 40px hsl(261 100% 70% / 0.7), 0 0 60px hsl(261 100% 70% / 0.4);
+    --shadow-sm: 0 2px 8px hsl(222 60% 2% / 0.5);
+    --shadow-md: 0 4px 16px hsl(222 60% 2% / 0.6);
+    --shadow-lg: 0 8px 32px hsl(222 60% 2% / 0.7);
+    --shadow-glow: 0 0 60px hsl(180 100% 60% / 0.9), 0 0 120px hsl(180 100% 60% / 0.5);
+    --shadow-glow-magenta: 0 0 60px hsl(324 70% 58% / 0.9), 0 0 120px hsl(324 70% 58% / 0.5);
+    --shadow-glow-purple: 0 0 60px hsl(262 85% 62% / 0.9), 0 0 120px hsl(262 85% 62% / 0.5);
+    --shadow-accent: 0 10px 60px hsl(262 85% 62% / 0.7);
+    --shadow-3d: 0 8px 16px hsl(180 100% 50% / 0.4), 0 16px 32px hsl(262 85% 62% / 0.3), 0 32px 64px hsl(324 70% 58% / 0.2);
+    --shadow-neon: 0 0 30px hsl(180 100% 50% / 1), 0 0 60px hsl(180 100% 50% / 0.8), 0 0 90px hsl(180 100% 50% / 0.5);
+    --shadow-metallic: 0 8px 32px hsl(180 100% 50% / 0.3), 0 0 60px hsl(262 85% 62% / 0.4);
 
     --sidebar-background: 240 40% 12%;
     --sidebar-foreground: 240 20% 98%;
@@ -164,10 +171,6 @@ All colors MUST be HSL.
     background: var(--gradient-secondary);
   }
   
-  .gradient-accent {
-    background: var(--gradient-accent);
-  }
-  
   .gradient-hero {
     background: var(--gradient-hero);
   }
@@ -188,12 +191,20 @@ All colors MUST be HSL.
     background: var(--gradient-neon);
   }
   
+  .gradient-metallic {
+    background: var(--gradient-metallic);
+  }
+  
   .shadow-glow {
     box-shadow: var(--shadow-glow);
   }
   
-  .shadow-glow-cyan {
-    box-shadow: var(--shadow-glow-cyan);
+  .shadow-glow-magenta {
+    box-shadow: var(--shadow-glow-magenta);
+  }
+  
+  .shadow-glow-purple {
+    box-shadow: var(--shadow-glow-purple);
   }
   
   .shadow-accent {
@@ -208,23 +219,42 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-neon);
   }
   
+  .shadow-metallic {
+    box-shadow: var(--shadow-metallic);
+  }
+  
   .shadow-elegant {
-    box-shadow: 0 20px 60px -15px hsl(261 90% 65% / 0.6);
+    box-shadow: 0 20px 60px -15px hsl(180 100% 50% / 0.6);
   }
   
   .text-3d {
-    text-shadow: 2px 2px 8px hsl(261 90% 50% / 0.5), 4px 4px 16px hsl(188 100% 50% / 0.3);
+    text-shadow: 2px 2px 8px hsl(180 100% 50% / 0.5), 4px 4px 16px hsl(262 85% 62% / 0.3);
   }
   
   .text-neon {
-    text-shadow: 0 0 10px hsl(261 100% 70%), 0 0 20px hsl(261 100% 70%), 0 0 30px hsl(261 100% 70%);
+    text-shadow: 0 0 10px hsl(180 100% 50%), 0 0 20px hsl(180 100% 50%), 0 0 30px hsl(180 100% 50%);
+  }
+  
+  .text-metallic {
+    background: var(--gradient-metallic);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px hsl(180 100% 50% / 0.5);
   }
   
   .glass-effect {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  .glass-premium {
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.05) 0%, rgba(194, 80, 192, 0.05) 100%);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(0, 255, 255, 0.2);
   }
   
   /* 3D Futuristic Animations */
