@@ -1,114 +1,207 @@
-import { Code, Cpu, Database, Brain, Rocket, Briefcase } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
+import { Code, Cpu, Zap, Wrench, Building, Lightbulb, Brain, Factory } from "lucide-react";
+
+const courses = [
+  {
+    title: "Computer Science & Engineering",
+    short: "CSE",
+    icon: Code,
+    color: "hsl(261 90% 65%)",
+    description: "Master software development, AI, and cutting-edge computing technologies"
+  },
+  {
+    title: "Electronics & Communication",
+    short: "ECE",
+    icon: Cpu,
+    color: "hsl(188 100% 50%)",
+    description: "Explore embedded systems, IoT, and wireless communication"
+  },
+  {
+    title: "Electrical Engineering",
+    short: "EE",
+    icon: Zap,
+    color: "hsl(261 90% 65%)",
+    description: "Power systems, renewable energy, and electrical automation"
+  },
+  {
+    title: "Mechanical Engineering",
+    short: "ME",
+    icon: Wrench,
+    color: "hsl(188 100% 50%)",
+    description: "Design, manufacturing, and thermal engineering solutions"
+  },
+  {
+    title: "Civil Engineering",
+    short: "CE",
+    icon: Building,
+    color: "hsl(261 90% 65%)",
+    description: "Infrastructure, construction management, and urban planning"
+  },
+  {
+    title: "AI & Data Science",
+    short: "AI&DS",
+    icon: Brain,
+    color: "hsl(188 100% 50%)",
+    description: "Machine learning, deep learning, and big data analytics"
+  },
+  {
+    title: "Information Technology",
+    short: "IT",
+    icon: Lightbulb,
+    color: "hsl(261 90% 65%)",
+    description: "Web development, cloud computing, and cybersecurity"
+  },
+  {
+    title: "Industrial Engineering",
+    short: "IE",
+    icon: Factory,
+    color: "hsl(188 100% 50%)",
+    description: "Process optimization, supply chain, and operations management"
+  }
+];
 
 const CoursesSection = () => {
-  const courses = [
-    {
-      icon: Code,
-      title: "Computer Science",
-      description: "Master programming, algorithms, and software development with industry-standard tools.",
-      duration: "4 Years",
-      students: "1200+",
-      color: "from-blue-500 to-cyan-500",
-    },
-    {
-      icon: Brain,
-      title: "Artificial Intelligence",
-      description: "Explore machine learning, deep learning, and neural networks with hands-on projects.",
-      duration: "4 Years",
-      students: "800+",
-      color: "from-purple-500 to-pink-500",
-    },
-    {
-      icon: Database,
-      title: "Data Science",
-      description: "Analyze data, build models, and extract insights using advanced analytics techniques.",
-      duration: "4 Years",
-      students: "950+",
-      color: "from-green-500 to-emerald-500",
-    },
-    {
-      icon: Cpu,
-      title: "Electronics & Comm.",
-      description: "Design circuits, IoT systems, and embedded solutions for modern technology.",
-      duration: "4 Years",
-      students: "700+",
-      color: "from-orange-500 to-red-500",
-    },
-    {
-      icon: Rocket,
-      title: "Mechanical Engineering",
-      description: "Innovation in design, manufacturing, and automation with cutting-edge technology.",
-      duration: "4 Years",
-      students: "850+",
-      color: "from-indigo-500 to-blue-500",
-    },
-    {
-      icon: Briefcase,
-      title: "Business Management",
-      description: "Develop leadership, strategy, and entrepreneurial skills for the business world.",
-      duration: "2-3 Years",
-      students: "600+",
-      color: "from-yellow-500 to-orange-500",
-    },
-  ];
-
   return (
-    <section id="courses" className="py-20">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-16">
-            <span className="text-accent font-semibold text-sm uppercase tracking-wider">Our Programs</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mt-3 mb-4">
-              Explore Our Courses
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Choose from a wide range of undergraduate and postgraduate programs designed for the future.
-            </p>
-          </div>
+    <section className="py-24 relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-background"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,_hsl(261_90%_65%_/_0.15),transparent_50%)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,_hsl(188_100%_50%_/_0.15),transparent_50%)]"></div>
 
-          {/* 3D Courses Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {courses.map((course, index) => (
-              <Card 
-                key={index}
-                className="relative gradient-card border-2 border-primary/20 hover:border-primary/50 shadow-elegant hover:shadow-3d transition-all duration-500 hover:scale-105 hover:-translate-y-4 group cursor-pointer overflow-hidden"
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-block px-6 py-2 rounded-full glass-effect border border-primary/30 mb-6"
+          >
+            <span className="text-sm font-semibold text-primary">B.Tech Programs</span>
+          </motion.div>
+          
+          <h2 className="text-5xl md:text-6xl font-black mb-6">
+            <span className="gradient-neon bg-clip-text text-transparent">Explore Courses</span>
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Choose from our cutting-edge engineering programs designed for the future
+          </p>
+        </motion.div>
+
+        {/* 3D Floating Course Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          {courses.map((course, index) => {
+            const Icon = course.icon;
+            
+            return (
+              <motion.div
+                key={course.short}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                {/* 3D Glow Effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <CardHeader className="relative z-10">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${course.color} flex items-center justify-center mb-4 shadow-3d group-hover:scale-125 group-hover:rotate-6 transition-all duration-500`}>
-                    <course.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <CardTitle className="text-2xl mb-3 font-bold group-hover:text-primary transition-colors">{course.title}</CardTitle>
-                  <div className="flex gap-2">
-                    <Badge variant="secondary" className="text-xs font-semibold bg-primary/10 hover:bg-primary/20">{course.duration}</Badge>
-                    <Badge variant="outline" className="text-xs font-semibold border-primary/30">{course.students} Students</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="relative z-10">
-                  <p className="text-muted-foreground mb-6 leading-relaxed">
-                    {course.description}
-                  </p>
-                  <Button variant="ghost" className="w-full group-hover:bg-gradient-3d group-hover:text-white transition-all duration-300 font-semibold">
-                    Learn More →
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                <motion.div
+                  whileHover={{ 
+                    y: -15,
+                    rotateY: 5,
+                    rotateX: 5,
+                    scale: 1.05
+                  }}
+                  transition={{ duration: 0.3 }}
+                  className="relative group cursor-pointer h-full"
+                  style={{ perspective: "1000px" }}
+                >
+                  <div className="glass-effect rounded-3xl p-8 border border-primary/20 hover:border-primary/50 transition-all duration-300 h-full flex flex-col relative overflow-hidden">
+                    {/* Glow Effect on Hover */}
+                    <motion.div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                      style={{
+                        background: `radial-gradient(circle at center, ${course.color}15, transparent 70%)`
+                      }}
+                    />
+                    
+                    {/* Icon Container */}
+                    <motion.div
+                      className="w-16 h-16 rounded-2xl glass-effect border border-primary/30 flex items-center justify-center mb-6 relative z-10"
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6 }}
+                      style={{
+                        boxShadow: `0 0 20px ${course.color}40`
+                      }}
+                    >
+                      <Icon 
+                        className="w-8 h-8" 
+                        style={{ color: course.color }}
+                      />
+                    </motion.div>
 
-          {/* View All CTA */}
-          <div className="text-center mt-16">
-            <Button size="lg" className="bg-gradient-3d text-white hover:scale-110 shadow-3d transition-all duration-300 px-10 py-6 text-lg font-bold">
-              View All Programs
-            </Button>
-          </div>
+                    {/* Short Name Badge */}
+                    <div 
+                      className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold mb-4 w-fit"
+                      style={{ 
+                        background: `linear-gradient(135deg, ${course.color}20, ${course.color}10)`,
+                        color: course.color,
+                        border: `1px solid ${course.color}30`
+                      }}
+                    >
+                      {course.short}
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
+                      {course.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-sm text-muted-foreground leading-relaxed flex-grow">
+                      {course.description}
+                    </p>
+
+                    {/* Hover Arrow */}
+                    <motion.div
+                      initial={{ opacity: 0, x: -10 }}
+                      whileHover={{ opacity: 1, x: 0 }}
+                      className="mt-6 flex items-center gap-2 text-sm font-semibold"
+                      style={{ color: course.color }}
+                    >
+                      Explore Program
+                      <motion.span
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ duration: 1, repeat: Infinity }}
+                      >
+                        →
+                      </motion.span>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            );
+          })}
         </div>
+
+        {/* View All Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-center mt-16"
+        >
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="gradient-3d text-white px-10 py-4 rounded-2xl font-semibold shadow-neon hover:shadow-glow transition-all duration-300"
+          >
+            View All Programs & Branches
+          </motion.button>
+        </motion.div>
       </div>
     </section>
   );
