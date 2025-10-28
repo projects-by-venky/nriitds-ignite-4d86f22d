@@ -26,10 +26,11 @@ function ParticleField() {
     <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
       <PointMaterial
         transparent
-        color="#7A3FF2"
-        size={0.02}
+        color="#2563EB"
+        size={0.025}
         sizeAttenuation={true}
         depthWrite={false}
+        opacity={0.6}
       />
     </Points>
   );

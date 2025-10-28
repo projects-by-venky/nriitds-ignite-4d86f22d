@@ -8,58 +8,63 @@
 
 @layer base {
   :root {
-    /* Professional Corporate Palette - Accenture Inspired */
-    --background: 0 0% 98%; /* Silver White #F9FAFB */
-    --foreground: 220 40% 10%; /* Deep Blue #0B0F28 */
+    /* Futuristic Deep Space Palette */
+    --background: 222 47% 7%; /* Deep Space Black #0A0E1F */
+    --foreground: 210 40% 98%; /* Silver White #F9FAFB */
     
-    --card: 0 0% 100%;
-    --card-foreground: 220 40% 10%;
+    --card: 222 47% 9%;
+    --card-foreground: 210 40% 98%;
     
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 40% 10%;
+    --popover: 222 47% 9%;
+    --popover-foreground: 210 40% 98%;
     
-    --primary: 243 75% 59%; /* Royal Indigo #4338CA */
-    --primary-foreground: 0 0% 100%;
+    --primary: 217 91% 60%; /* Electric Blue #2563EB */
+    --primary-foreground: 210 40% 98%;
     
-    --secondary: 220 20% 95%;
-    --secondary-foreground: 220 40% 10%;
+    --secondary: 189 94% 43%; /* Neon Cyan Glow #22D3EE */
+    --secondary-foreground: 222 47% 7%;
     
-    --muted: 220 15% 96%;
-    --muted-foreground: 220 10% 45%; /* Graphite Gray #6B7280 */
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20.2% 65.1%;
     
-    --accent: 258 90% 66%; /* Violet Glow #8B5CF6 */
-    --accent-foreground: 0 0% 100%;
+    --accent: 250 95% 64%; /* Gradient Purple Accent #A371F7 */
+    --accent-foreground: 210 40% 98%;
     
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
     
-    --border: 220 15% 88%;
-    --input: 220 15% 88%;
-    --ring: 243 75% 59%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 217 91% 60%;
     
     --radius: 0.75rem;
     
-    /* Professional Gradients */
-    --gradient-corporate: linear-gradient(135deg, hsl(243 75% 59%), hsl(258 90% 66%));
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(220 15% 96%));
-    --gradient-hero: linear-gradient(135deg, hsl(220 40% 10% / 0.97), hsl(243 75% 59% / 0.92));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(220 15% 98%));
+    /* Futuristic Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(217 91% 20%), hsl(250 95% 25%));
+    --gradient-purple: linear-gradient(90deg, hsl(250 95% 64%), hsl(271 91% 65%));
+    --gradient-cyber: linear-gradient(135deg, hsl(217 91% 60%), hsl(189 94% 43%));
+    --gradient-card: linear-gradient(145deg, hsl(222 47% 9%), hsl(217 33% 12%));
     
-    /* Professional Shadows */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.05);
-    --shadow-lift: 0 20px 40px -15px hsl(243 75% 59% / 0.25);
+    /* Neon Glow Effects */
+    --glow-blue: 0 0 40px hsla(217 91% 60% / 0.4);
+    --glow-cyan: 0 0 40px hsla(189 94% 43% / 0.4);
+    --glow-purple: 0 0 40px hsla(250 95% 64% / 0.4);
+    
+    /* Shadow Utilities */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+    --shadow-lift: 0 20px 40px -15px hsl(217 91% 60% / 0.5);
 
-    --sidebar-background: 240 20% 98%;
-    --sidebar-foreground: 240 60% 10%;
-    --sidebar-primary: 243 75% 59%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 20% 94%;
-    --sidebar-accent-foreground: 240 60% 10%;
-    --sidebar-border: 240 20% 88%;
-    --sidebar-ring: 243 75% 59%;
+    --sidebar-background: 222 47% 7%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 217 91% 60%;
   }
 
   .dark {
@@ -119,75 +124,92 @@
 }
 
 @layer components {
-  /* Professional Card Styles */
-  .card-professional {
-    @apply bg-card rounded-xl border border-border shadow-md hover:shadow-lg transition-all duration-300;
+  /* Neon Card Styles */
+  .card-neon {
+    @apply bg-card/50 backdrop-blur-sm border border-primary/30 rounded-xl shadow-lg 
+           hover:border-primary/60 hover:shadow-[0_0_30px_rgba(37,99,235,0.3)] 
+           transition-all duration-300;
   }
   
-  .card-hover-lift {
-    @apply hover:-translate-y-1 hover:shadow-xl transition-all duration-300;
+  .card-glow-lift {
+    @apply hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(34,211,238,0.4)] 
+           transition-all duration-300;
   }
   
-  /* Corporate Gradient Backgrounds */
-  .gradient-corporate {
-    background: var(--gradient-corporate);
-  }
-  
-  .gradient-subtle {
-    background: var(--gradient-subtle);
-  }
-  
+  /* Futuristic Gradient Backgrounds */
   .gradient-hero {
     background: var(--gradient-hero);
+  }
+  
+  .gradient-cyber {
+    background: var(--gradient-cyber);
+  }
+  
+  .gradient-purple {
+    background: var(--gradient-purple);
   }
   
   .gradient-card {
     background: var(--gradient-card);
   }
   
-  /* Professional Button Styles */
-  .btn-corporate {
-    @apply bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lift hover:-translate-y-0.5;
+  /* Neon Button Styles */
+  .btn-neon {
+    @apply bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold
+           hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] hover:scale-105
+           transition-all duration-300;
   }
   
-  .btn-outline-corporate {
-    @apply border-2 border-primary text-primary px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-primary hover:text-primary-foreground;
+  .btn-glow-outline {
+    @apply border-2 border-secondary text-secondary px-8 py-4 rounded-xl font-bold
+           hover:bg-secondary/20 hover:shadow-[0_0_30px_rgba(34,211,238,0.4)]
+           hover:scale-105 transition-all duration-300;
   }
   
   /* Section Utilities */
   .section-padding {
-    @apply py-20 lg:py-28;
+    @apply py-20 md:py-32 px-4;
   }
   
   .section-header {
-    @apply text-center mb-16;
+    @apply text-center mb-16 md:mb-24;
   }
   
   .section-title {
-    @apply text-4xl lg:text-5xl font-bold text-foreground mb-4 font-heading;
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold mb-6 
+           bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent;
   }
   
   .section-subtitle {
-    @apply text-lg text-muted-foreground max-w-2xl mx-auto;
+    @apply text-xl md:text-2xl text-foreground/80 max-w-3xl mx-auto;
   }
   
-  /* Professional Typography */
-  .text-corporate {
-    @apply text-foreground font-medium;
+  /* Futuristic Typography */
+  .text-glow {
+    @apply text-foreground leading-relaxed;
+    text-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
   }
   
-  /* Hover States */
-  .hover-scale {
-    @apply transition-transform duration-300 hover:scale-105;
+  /* Neon Hover Effects */
+  .hover-scale-glow {
+    @apply transition-all duration-300 hover:scale-105;
   }
   
-  .hover-glow {
-    @apply transition-shadow duration-300 hover:shadow-lift;
+  .hover-scale-glow:hover {
+    filter: drop-shadow(0 0 20px rgba(34, 211, 238, 0.6));
   }
   
-  /* Grid Layouts */
-  .grid-professional {
-    @apply grid gap-8 md:grid-cols-2 lg:grid-cols-3;
+  .hover-neon-glow {
+    @apply transition-all duration-300;
+  }
+  
+  .hover-neon-glow:hover {
+    box-shadow: 0 0 30px rgba(37, 99, 235, 0.4), 0 0 60px rgba(34, 211, 238, 0.2);
+  }
+  
+  /* Cyber Grid Layouts */
+  .grid-cyber {
+    @apply grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
   }
 }
 
@@ -258,9 +280,9 @@
   }
 }
 
-/* Professional Selection */
+/* Futuristic Selection */
 ::selection {
-  background-color: hsl(var(--accent) / 0.3);
+  background-color: hsl(var(--secondary) / 0.3);
   color: hsl(var(--foreground));
 }
 
