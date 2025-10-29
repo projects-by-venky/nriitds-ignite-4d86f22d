@@ -50,6 +50,73 @@ const AboutSection = () => {
             </p>
           </motion.div>
 
+          {/* Video Showcase Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="grid lg:grid-cols-2 gap-12 items-center mb-20"
+          >
+            {/* Left: Introduction */}
+            <div className="space-y-6">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <h3 className="text-3xl font-bold mb-4 bg-gradient-corporate bg-clip-text text-transparent">
+                  Experience NRI Institutions
+                </h3>
+                <p className="text-muted-foreground text-lg leading-relaxed mb-6">
+                  Discover our state-of-the-art campus, cutting-edge facilities, and vibrant academic community. Watch how we're shaping the future of education through innovation and excellence.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                    <span className="text-sm text-muted-foreground">World-Class Infrastructure</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                    <span className="text-sm text-muted-foreground">Industry Partnerships</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                    <span className="text-sm text-muted-foreground">Innovation Hub</span>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Right: Video */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-corporate opacity-20 blur-2xl group-hover:opacity-30 transition-opacity duration-500 rounded-2xl" />
+              <div className="relative rounded-2xl overflow-hidden border-2 border-accent/30 shadow-elegant group-hover:border-accent/60 transition-all duration-500">
+                <video
+                  className="w-full h-auto"
+                  controls
+                  poster="/placeholder.svg"
+                  preload="metadata"
+                >
+                  <source src="/videos/about-nri.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              {/* Decorative corner accents */}
+              <div className="absolute -top-2 -left-2 w-8 h-8 border-t-2 border-l-2 border-accent opacity-60" />
+              <div className="absolute -top-2 -right-2 w-8 h-8 border-t-2 border-r-2 border-accent opacity-60" />
+              <div className="absolute -bottom-2 -left-2 w-8 h-8 border-b-2 border-l-2 border-accent opacity-60" />
+              <div className="absolute -bottom-2 -right-2 w-8 h-8 border-b-2 border-r-2 border-accent opacity-60" />
+            </motion.div>
+          </motion.div>
+
           {/* Main Content Grid */}
           <div className="grid lg:grid-cols-2 gap-12 mb-16">
             {/* Left: Story Cards */}
