@@ -1,133 +1,152 @@
-import { GraduationCap, Facebook, Twitter, Linkedin, Instagram, Youtube } from "lucide-react";
-import { Link } from "react-router-dom";
+import { GraduationCap, MapPin, Mail, Phone, Facebook, Twitter, Linkedin, Youtube } from "lucide-react";
 
 const Footer = () => {
-  const quickLinks = [
-    { name: "About Us", path: "#about" },
-    { name: "Courses", path: "#courses" },
-    { name: "Admissions", path: "#" },
-    { name: "Faculty", path: "#" },
-    { name: "Research", path: "#" },
-    { name: "Placements", path: "#" },
+  const eResources = [
+    "NPTEL Videos",
+    "National Digital Library",
+    "Taylor & Francis Online",
+    "Swayam",
+    "N-List",
+    "J-GATE",
+    "ASME",
+    "DELNET",
+    "IEEE Journals",
+    "DOAJ",
+    "Indian Academy of Science",
+    "NISCAIR Journals",
+    "DLINE Journal Portal",
+    "SAGE Journals"
   ];
 
-  const resources = [
-    { name: "Student Portal", path: "#" },
-    { name: "Teacher Portal", path: "#" },
-    { name: "Library", path: "#" },
-    { name: "E-Learning", path: "#" },
-    { name: "Downloads", path: "#" },
-    { name: "FAQs", path: "#" },
+  const quickLinks = [
+    "Webmail",
+    "Exams Portal",
+    "Faculty Login",
+    "Student Login",
+    "Alumni Login",
+    "Contact Us"
   ];
 
   const socialLinks = [
     { icon: Facebook, href: "#", label: "Facebook" },
     { icon: Twitter, href: "#", label: "Twitter" },
     { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Instagram, href: "#", label: "Instagram" },
     { icon: Youtube, href: "#", label: "YouTube" },
   ];
 
   return (
-    <footer className="bg-primary text-primary-foreground pt-16 pb-8">
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          {/* Brand Section */}
+    <footer className="relative bg-gradient-to-b from-card to-background text-foreground pt-20 pb-8 overflow-hidden">
+      {/* Background blur effect */}
+      <div className="absolute inset-0 bg-[url('/placeholder.svg')] bg-cover bg-center opacity-5 blur-sm" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background" />
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid md:grid-cols-3 gap-12 mb-16">
+          {/* Contact Details */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center">
-                <GraduationCap className="w-6 h-6 text-white" />
+            <h4 className="font-bold text-xl mb-6 text-primary flex items-center gap-2">
+              <div className="w-1 h-6 bg-gradient-to-b from-primary to-secondary rounded-full" />
+              CONTACT DETAILS
+            </h4>
+            <div className="space-y-4 text-sm text-muted-foreground">
+              <div className="flex items-start gap-3 group hover:text-foreground transition-colors">
+                <MapPin className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium text-foreground">Address</p>
+                  <p>Visadala, Guntur</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-bold text-xl">NRIITDS</h3>
-                <p className="text-xs text-primary-foreground/80">Excellence in Education</p>
+              <div className="flex items-start gap-3 group hover:text-foreground transition-colors">
+                <Mail className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium text-foreground">Email</p>
+                  <a href="mailto:nriit.guntur@gmail.com" className="hover:text-primary transition-colors">
+                    nriit.guntur@gmail.com
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 group hover:text-foreground transition-colors">
+                <Phone className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium text-foreground">Phone</p>
+                  <a href="tel:08632344300" className="hover:text-primary transition-colors">
+                    0863 234 4300
+                  </a>
+                </div>
               </div>
             </div>
-            <p className="text-primary-foreground/80 text-sm leading-relaxed mb-4">
-              Empowering students with world-class education, cutting-edge technology, and AI-driven learning experiences.
-            </p>
-            <div className="flex gap-3">
-              {socialLinks.map((social, index) => (
-                <a
-                  key={index}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="w-9 h-9 rounded-full bg-primary-foreground/10 hover:bg-accent flex items-center justify-center transition-all hover:scale-110"
-                >
-                  <social.icon className="w-4 h-4" />
-                </a>
+          </div>
+
+          {/* E-Resources */}
+          <div>
+            <h4 className="font-bold text-xl mb-6 text-primary flex items-center gap-2">
+              <div className="w-1 h-6 bg-gradient-to-b from-primary to-secondary rounded-full" />
+              E-RESOURCES
+            </h4>
+            <ul className="space-y-2.5 text-sm text-muted-foreground max-h-80 overflow-y-auto custom-scrollbar">
+              {eResources.map((resource, index) => (
+                <li key={index}>
+                  <a
+                    href="#"
+                    className="hover:text-primary transition-colors inline-flex items-center group"
+                  >
+                    <span className="w-0 group-hover:w-2 h-px bg-secondary transition-all mr-0 group-hover:mr-2"></span>
+                    {resource}
+                  </a>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-bold text-lg mb-4">Quick Links</h4>
-            <ul className="space-y-3">
+            <h4 className="font-bold text-xl mb-6 text-primary flex items-center gap-2">
+              <div className="w-1 h-6 bg-gradient-to-b from-primary to-secondary rounded-full" />
+              QUICK LINKS
+            </h4>
+            <ul className="space-y-3 text-sm text-muted-foreground mb-8">
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <a
-                    href={link.path}
-                    className="text-primary-foreground/80 hover:text-accent text-sm transition-colors inline-flex items-center group"
+                    href="#"
+                    className="hover:text-primary transition-colors inline-flex items-center group"
                   >
-                    <span className="w-0 group-hover:w-2 h-px bg-accent transition-all mr-0 group-hover:mr-2"></span>
-                    {link.name}
+                    <span className="w-0 group-hover:w-2 h-px bg-secondary transition-all mr-0 group-hover:mr-2"></span>
+                    {link}
                   </a>
                 </li>
               ))}
             </ul>
-          </div>
 
-          {/* Resources */}
-          <div>
-            <h4 className="font-bold text-lg mb-4">Resources</h4>
-            <ul className="space-y-3">
-              {resources.map((link, index) => (
-                <li key={index}>
+            {/* Social Media */}
+            <div>
+              <h5 className="font-semibold text-sm mb-4 text-foreground uppercase tracking-wider">Social Media</h5>
+              <div className="flex gap-3">
+                {socialLinks.map((social, index) => (
                   <a
-                    href={link.path}
-                    className="text-primary-foreground/80 hover:text-accent text-sm transition-colors inline-flex items-center group"
+                    key={index}
+                    href={social.href}
+                    aria-label={social.label}
+                    className="w-10 h-10 rounded-full bg-muted/50 hover:bg-primary flex items-center justify-center transition-all hover:scale-110 hover:shadow-[0_0_20px_hsl(217_91%_60%_/_0.5)] group"
                   >
-                    <span className="w-0 group-hover:w-2 h-px bg-accent transition-all mr-0 group-hover:mr-2"></span>
-                    {link.name}
+                    <social.icon className="w-5 h-5 text-muted-foreground group-hover:text-white transition-colors" />
                   </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h4 className="font-bold text-lg mb-4">Contact Info</h4>
-            <div className="space-y-3 text-sm text-primary-foreground/80">
-              <p className="leading-relaxed">
-                NRIITDS Campus<br />
-                Education City, Tech Park<br />
-                Your City, State - 123456
-              </p>
-              <p>
-                <a href="tel:+911234567890" className="hover:text-accent transition-colors">
-                  +91 1234567890
-                </a>
-              </p>
-              <p>
-                <a href="mailto:info@nriitds.edu.in" className="hover:text-accent transition-colors">
-                  info@nriitds.edu.in
-                </a>
-              </p>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-primary-foreground/10">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-primary-foreground/70">
-            <p>© 2025 NRIITDS. All rights reserved.</p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-accent transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-accent transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-accent transition-colors">Cookie Policy</a>
+        <div className="pt-8 border-t border-border/50">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <GraduationCap className="w-5 h-5 text-primary" />
+              <p>© 2025 NRI Institute of Technology | All Rights Reserved</p>
             </div>
+            <p className="flex items-center gap-1">
+              Designed with <span className="text-red-500">❤️</span> by College Dev Team
+            </p>
           </div>
         </div>
       </div>

@@ -10,8 +10,11 @@ const Header = () => {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
-    { name: "Courses", href: "/courses" },
-    { name: "Events", href: "/events" },
+    { name: "Departments", href: "/courses" },
+    { name: "Admissions", href: "#admissions" },
+    { name: "Research", href: "#research" },
+    { name: "Placements", href: "#placements" },
+    { name: "Campus Life", href: "#campus" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -58,11 +61,11 @@ const Header = () => {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: navLinks.length * 0.1 }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, boxShadow: "0 0 20px hsl(217 91% 60% / 0.6)" }}
               whileTap={{ scale: 0.98 }}
-              className="ml-4 btn-corporate text-sm"
+              className="ml-4 px-6 py-2 rounded-lg bg-primary text-white font-semibold shadow-[0_0_20px_hsl(217_91%_60%_/_0.4)] hover:shadow-[0_0_30px_hsl(217_91%_60%_/_0.6)] transition-all text-sm"
             >
-              Student Login
+              Apply Now
             </motion.button>
           </nav>
 
@@ -103,8 +106,8 @@ const Header = () => {
                   </Link>
                 );
               })}
-              <button className="mt-2 btn-corporate text-sm w-full">
-                Student Login
+              <button className="mt-2 px-6 py-3 rounded-lg bg-primary text-white font-semibold shadow-[0_0_20px_hsl(217_91%_60%_/_0.4)] text-sm w-full">
+                Apply Now
               </button>
             </nav>
           </motion.div>

@@ -23,44 +23,44 @@ const HeroSection = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto text-center">
-          {/* Glowing Badge */}
+          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary/10 backdrop-blur-md border-2 border-primary/30 mb-12 shadow-[0_0_30px_rgba(37,99,235,0.3)]"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary/10 backdrop-blur-md border-2 border-primary/30 mb-12 shadow-[0_0_30px_hsl(217_91%_60%_/_0.5)]"
           >
-            <Zap className="w-5 h-5 text-secondary animate-pulse" />
-            <span className="text-base font-bold tracking-wide">Innovating Education. Empowering Minds.</span>
+            <Sparkles className="w-5 h-5 text-secondary animate-pulse" />
+            <span className="text-base font-bold tracking-wide text-white">Shaping Minds. Building Futures.</span>
           </motion.div>
 
-          {/* Cinematic Headline */}
+          {/* Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 50, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 1, delay: 0.4, type: "spring" }}
-            className="text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-tight"
+            className="text-5xl md:text-6xl lg:text-7xl font-black mb-8 leading-tight"
           >
-            <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-pulse">
-              Welcome to
+            <span className="block text-white">
+              Empowering Innovation.
             </span>
-            <span className="block text-white mt-2">
-              NRI Institutions
+            <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mt-2">
+              Inspiring Excellence.
             </span>
           </motion.h1>
 
-          {/* Subtitle with Glow */}
+          {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.6 }}
-            className="text-2xl md:text-3xl text-white/90 mb-16 max-w-4xl mx-auto leading-relaxed font-light"
-            style={{ textShadow: '0 0 20px rgba(34, 211, 238, 0.3)' }}
+            className="text-xl md:text-2xl text-white/80 mb-16 max-w-4xl mx-auto leading-relaxed font-light"
+            style={{ textShadow: '0 0 20px hsl(182 59% 56% / 0.3)' }}
           >
-            Building the Future of Learning — A Digital Ecosystem Uniting All Branches, Courses, and People
+            Shaping the future through technology, creativity, and purpose.
           </motion.p>
 
-          {/* Neon CTA Buttons */}
+          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -68,41 +68,34 @@ const HeroSection = () => {
             className="flex flex-col sm:flex-row gap-6 justify-center items-center"
           >
             <motion.button
-              whileHover={{ scale: 1.08, y: -4 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-primary text-white px-10 py-5 rounded-xl font-bold text-xl shadow-[0_0_30px_rgba(37,99,235,0.5)] hover:shadow-[0_0_50px_rgba(37,99,235,0.8)] transition-all duration-300 flex items-center gap-3 border-2 border-primary/50"
+              whileHover={{ scale: 1.05, boxShadow: "0 0 40px hsl(217 91% 60% / 0.8)" }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-primary text-white px-10 py-5 rounded-xl font-bold text-lg shadow-[0_0_30px_hsl(217_91%_60%_/_0.5)] transition-all duration-300 flex items-center gap-3"
             >
-              Explore Courses
+              Explore Programs
               <ArrowRight className="w-6 h-6" />
             </motion.button>
             <motion.button
-              whileHover={{ scale: 1.08, y: -4 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-transparent border-2 border-secondary text-secondary px-10 py-5 rounded-xl font-bold text-xl hover:bg-secondary/10 hover:shadow-[0_0_40px_rgba(34,211,238,0.6)] transition-all duration-300"
+              whileHover={{ scale: 1.05, boxShadow: "0 0 40px hsl(182 59% 56% / 0.6)" }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-transparent border-2 border-secondary text-secondary px-10 py-5 rounded-xl font-bold text-lg hover:bg-secondary/10 transition-all duration-300"
             >
-              Join Community
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.08, y: -4 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-transparent border-2 border-accent text-accent px-10 py-5 rounded-xl font-bold text-xl hover:bg-accent/10 hover:shadow-[0_0_40px_rgba(163,113,247,0.6)] transition-all duration-300"
-            >
-              Student Login
+              Join Our Community
             </motion.button>
           </motion.div>
 
-          {/* Neon Stats Section */}
+          {/* Stats Section */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-12 mt-32 pt-16 border-t-2 border-primary/30"
+            className="grid grid-cols-2 md:grid-cols-4 gap-12 mt-32 pt-16 border-t border-white/20"
           >
             {[
-              { value: "1L+", label: "Active Users", color: "primary" },
+              { value: "10,000+", label: "Students", color: "primary" },
               { value: "50+", label: "Programs", color: "secondary" },
-              { value: "200+", label: "Expert Faculty", color: "accent" },
-              { value: "100%", label: "Placement Focus", color: "primary" }
+              { value: "200+", label: "Expert Faculty", color: "primary" },
+              { value: "95%", label: "Placements", color: "secondary" }
             ].map((stat, index) => (
               <motion.div
                 key={index}
@@ -113,14 +106,14 @@ const HeroSection = () => {
                 className="text-center group"
               >
                 <div 
-                  className={`text-5xl md:text-6xl font-black mb-3 bg-gradient-to-r from-${stat.color} to-${stat.color === 'primary' ? 'secondary' : 'accent'} bg-clip-text text-transparent group-hover:animate-pulse`}
+                  className="text-4xl md:text-5xl font-black mb-3 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:animate-pulse"
                   style={{ 
-                    filter: `drop-shadow(0 0 20px ${stat.color === 'primary' ? 'rgba(37,99,235,0.5)' : stat.color === 'secondary' ? 'rgba(34,211,238,0.5)' : 'rgba(163,113,247,0.5)'})` 
+                    filter: `drop-shadow(0 0 20px hsl(217 91% 60% / 0.5))` 
                   }}
                 >
                   {stat.value}
                 </div>
-                <div className="text-white/80 text-base font-semibold tracking-wide">{stat.label}</div>
+                <div className="text-white/70 text-sm font-semibold tracking-wide uppercase">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
