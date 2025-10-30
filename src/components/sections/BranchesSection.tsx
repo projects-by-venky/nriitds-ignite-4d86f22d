@@ -103,22 +103,21 @@ const BranchesSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05, y: -8 }}
+                whileHover={{ scale: 1.02 }}
                 className="relative group cursor-pointer h-full"
               >
                 {/* Glow effect */}
                 <div 
-                  className="absolute inset-0 rounded-2xl blur-xl opacity-0 group-hover:opacity-60 transition-opacity duration-300"
-                  style={{ background: branch.gradient }}
+                  className="absolute inset-0 rounded-2xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-500 bg-primary"
                 />
                 
                 {/* Card */}
-                <div className="relative bg-card/50 backdrop-blur-sm border-2 border-border/50 group-hover:border-primary/50 rounded-2xl p-6 transition-all duration-300 h-full flex flex-col">
-                  {/* Icon */}
-                  <div className="text-5xl mb-4">{branch.icon}</div>
+                <div className="relative bg-card/50 backdrop-blur-sm border-2 border-border/50 group-hover:border-primary rounded-2xl p-6 transition-all duration-300 h-full flex flex-col overflow-hidden">
+                  {/* Sliding border accent */}
+                  <div className="absolute left-0 top-0 h-full w-1 bg-primary transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
                   
                   {/* Department name */}
-                  <h3 className="text-2xl font-bold mb-2 text-foreground">
+                  <h3 className="text-2xl font-bold mb-2 text-foreground group-hover:text-primary transition-colors duration-300">
                     {branch.short}
                   </h3>
                   <p className="text-sm text-foreground/60 mb-4 flex-grow">
@@ -126,10 +125,7 @@ const BranchesSection = () => {
                   </p>
                   
                   {/* Hover indicator */}
-                  <div 
-                    className="inline-flex items-center gap-2 text-sm font-semibold mt-auto bg-clip-text text-transparent"
-                    style={{ backgroundImage: branch.gradient }}
-                  >
+                  <div className="inline-flex items-center gap-2 text-sm font-semibold mt-auto text-primary">
                     Explore →
                   </div>
                 </div>
