@@ -72,7 +72,7 @@ const HeroSection = () => {
               whileTap={{ scale: 0.98 }}
               className="bg-primary text-white px-10 py-5 rounded-xl font-bold text-lg shadow-[0_0_30px_hsl(217_91%_60%_/_0.5)] transition-all duration-300 flex items-center gap-3"
             >
-              Explore Programs
+              lets see
               <ArrowRight className="w-6 h-6" />
             </motion.button>
             <motion.button
