@@ -67,16 +67,16 @@ const HeroSection = () => {
             transition={{ duration: 1, delay: 0.8 }}
             className="flex justify-center items-center"
           >
-            <a href="#branches">
-              <motion.button
-                whileHover={{ scale: 1.05, boxShadow: "0 0 40px hsl(217 91% 60% / 0.8)" }}
-                whileTap={{ scale: 0.98 }}
-                className="bg-primary text-white px-10 py-5 rounded-xl font-bold text-lg shadow-[0_0_30px_hsl(217_91%_60%_/_0.5)] transition-all duration-300 flex items-center gap-3"
-              >
-                Let's See
-                <ArrowRight className="w-6 h-6" />
-              </motion.button>
-            </a>
+              <a href="/branches">
+                <motion.button
+                  whileHover={{ scale: 1.05, boxShadow: "0 0 40px hsl(217 91% 60% / 0.8)" }}
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-primary text-white px-10 py-5 rounded-xl font-bold text-lg shadow-[0_0_30px_hsl(217_91%_60%_/_0.5)] transition-all duration-300 flex items-center gap-3"
+                >
+                  Let's See
+                  <ArrowRight className="w-6 h-6" />
+                </motion.button>
+              </a>
           </motion.div>
 
           {/* Stats Section */}

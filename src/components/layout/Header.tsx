@@ -10,10 +10,10 @@ const Header = () => {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
-    { name: "Branches", href: "/#branches" },
-    { name: "Research", href: "/#research" },
-    { name: "Placements", href: "/#placements" },
-    { name: "Campus Life", href: "/#campus" },
+    { name: "Branches", href: "/branches" },
+    { name: "Research", href: "/research" },
+    { name: "Placements", href: "/placements" },
+    { name: "Campus Life", href: "/campus-life" },
     { name: "Events", href: "/events" },
     { name: "Contact", href: "/contact" },
   ];
@@ -64,10 +64,7 @@ const Header = () => {
               whileHover={{ scale: 1.05, boxShadow: "0 0 20px hsl(217 91% 60% / 0.6)" }}
               whileTap={{ scale: 0.98 }}
               onClick={() => {
-                const element = document.getElementById('branches');
-                if (element) {
-                  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                window.location.href = '/branches';
               }}
               className="ml-4 px-6 py-2 rounded-lg bg-primary text-white font-semibold shadow-[0_0_20px_hsl(217_91%_60%_/_0.4)] hover:shadow-[0_0_30px_hsl(217_91%_60%_/_0.6)] transition-all text-sm cursor-pointer"
             >
@@ -116,12 +113,7 @@ const Header = () => {
                 className="mt-2 px-6 py-3 rounded-lg bg-primary text-white font-semibold shadow-[0_0_20px_hsl(217_91%_60%_/_0.4)] text-sm w-full"
                 onClick={() => {
                   setIsOpen(false);
-                  setTimeout(() => {
-                    const element = document.getElementById('branches');
-                    if (element) {
-                      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                  }, 300);
+                  window.location.href = '/branches';
                 }}
               >
                 Lets See

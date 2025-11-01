@@ -4,8 +4,13 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import Home from "./pages/Home";
 import About from "./pages/About";
+import Branches from "./pages/Branches";
 import Courses from "./pages/Courses";
+import Research from "./pages/Research";
+import Placements from "./pages/Placements";
+import CampusLife from "./pages/CampusLife";
 import Events from "./pages/Events";
 import Contact from "./pages/Contact";
 import Department from "./pages/Department";
@@ -23,8 +28,13 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/branches" element={<Branches />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/research" element={<Research />} />
+          <Route path="/placements" element={<Placements />} />
+          <Route path="/campus-life" element={<CampusLife />} />
           <Route path="/events" element={<Events />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/department/:deptId" element={<Department />} />
