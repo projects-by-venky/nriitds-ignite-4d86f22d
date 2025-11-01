@@ -65,7 +65,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8 }}
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+            className="flex justify-center items-center"
           >
             <a href="#branches">
               <motion.button
@@ -77,13 +77,6 @@ const HeroSection = () => {
                 <ArrowRight className="w-6 h-6" />
               </motion.button>
             </a>
-            <motion.button
-              whileHover={{ scale: 1.05, boxShadow: "0 0 40px hsl(182 59% 56% / 0.6)" }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-transparent border-2 border-secondary text-secondary px-10 py-5 rounded-xl font-bold text-lg hover:bg-secondary/10 transition-all duration-300"
-            >
-              Login
-            </motion.button>
           </motion.div>
 
           {/* Stats Section */}
