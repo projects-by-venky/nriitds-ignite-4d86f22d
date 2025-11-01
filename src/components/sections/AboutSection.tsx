@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Award, Target, Eye, Heart, Users, TrendingUp } from "lucide-react";
+import videoThumbnail from "@/assets/video-thumbnail.png";
 
 const AboutSection = () => {
   const values = [
@@ -102,7 +103,7 @@ const AboutSection = () => {
                 <video
                   className="w-full h-auto"
                   controls
-                  poster="/placeholder.svg"
+                  poster={videoThumbnail}
                   preload="metadata"
                 >
                   <source src="/videos/about-nri.mp4" type="video/mp4" />

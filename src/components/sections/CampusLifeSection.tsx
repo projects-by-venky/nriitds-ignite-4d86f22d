@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Music, Trophy, Users, Palette, BookOpen, Heart } from "lucide-react";
+import videoThumbnail from "@/assets/video-thumbnail.png";
 
 const CampusLifeSection = () => {
   const activities = [
@@ -22,7 +23,7 @@ const CampusLifeSection = () => {
           loop
           muted
           playsInline
-          poster="/placeholder.svg"
+          poster={videoThumbnail}
         >
           <source src="/videos/about-nri.mp4" type="video/mp4" />
         </video>
