@@ -6,7 +6,6 @@ const branches = [
     id: "cse",
     name: "Computer Science & Engineering",
     short: "CSE",
-    gradient: "linear-gradient(135deg, #0EA5E9, #6366F1)",
     icon: "💻",
     description: "Software & Technology"
   },
@@ -14,7 +13,6 @@ const branches = [
     id: "ece",
     name: "Electronics & Communication",
     short: "ECE",
-    gradient: "linear-gradient(135deg, #F97316, #F59E0B)",
     icon: "📡",
     description: "Communication Tech"
   },
@@ -22,7 +20,6 @@ const branches = [
     id: "eee",
     name: "Electrical & Electronics",
     short: "EEE",
-    gradient: "linear-gradient(135deg, #22C55E, #10B981)",
     icon: "⚡",
     description: "Power & Energy"
   },
@@ -30,7 +27,6 @@ const branches = [
     id: "mech",
     name: "Mechanical Engineering",
     short: "MECH",
-    gradient: "linear-gradient(135deg, #475569, #94A3B8)",
     icon: "⚙️",
     description: "Design & Manufacturing"
   },
@@ -38,7 +34,6 @@ const branches = [
     id: "civil",
     name: "Civil Engineering",
     short: "CIVIL",
-    gradient: "linear-gradient(135deg, #0D9488, #14B8A6)",
     icon: "🏗️",
     description: "Infrastructure & Construction"
   },
@@ -46,7 +41,6 @@ const branches = [
     id: "aids",
     name: "AI & Data Science",
     short: "AI & DS",
-    gradient: "linear-gradient(135deg, #8B5CF6, #EC4899)",
     icon: "🤖",
     description: "Intelligent Systems"
   },
@@ -54,7 +48,6 @@ const branches = [
     id: "mba",
     name: "Business Administration",
     short: "MBA",
-    gradient: "linear-gradient(135deg, #2563EB, #3B82F6)",
     icon: "💼",
     description: "Management & Leadership"
   },
@@ -62,7 +55,6 @@ const branches = [
     id: "mca",
     name: "Computer Applications",
     short: "MCA",
-    gradient: "linear-gradient(135deg, #9333EA, #DB2777)",
     icon: "🖥️",
     description: "Advanced Computing"
   }
