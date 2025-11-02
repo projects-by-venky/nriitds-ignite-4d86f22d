@@ -95,7 +95,6 @@ const Department = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <div className="text-6xl mb-6">{dept.icon}</div>
             <h1 className="text-5xl md:text-6xl font-black mb-6 bg-clip-text text-transparent"
                 style={{ backgroundImage: dept.gradient }}>
               Welcome to the Department of
