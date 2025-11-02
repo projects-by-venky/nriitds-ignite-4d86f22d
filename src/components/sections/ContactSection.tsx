@@ -3,8 +3,44 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { toast } from "sonner";
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
+  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  phone: z.string().trim().regex(/^\+?[0-9]{10,15}$/, "Invalid phone number format"),
+  subject: z.string().trim().min(1, "Subject is required").max(200, "Subject must be less than 200 characters"),
+  message: z.string().trim().min(1, "Message is required").max(1000, "Message must be less than 1000 characters"),
+});
+
+type ContactFormValues = z.infer<typeof contactSchema>;
 
 const ContactSection = () => {
+  const form = useForm<ContactFormValues>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      subject: "",
+      message: "",
+    },
+  });
+
+  const onSubmit = async (data: ContactFormValues) => {
+    try {
+      // TODO: When backend is implemented, send data to server here
+      console.log("Validated form data:", data);
+      toast.success("Message sent successfully! We'll get back to you soon.");
+      form.reset();
+    } catch (error) {
+      toast.error("Failed to send message. Please try again.");
+    }
+  };
   const contactInfo = [
     {
       icon: Phone,
@@ -70,70 +106,113 @@ const ContactSection = () => {
                 <p className="text-muted-foreground">Fill out the form and we'll get back to you shortly.</p>
               </CardHeader>
               <CardContent>
-                <form className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="text-sm font-medium text-foreground mb-2 block">
-                        Full Name
-                      </label>
-                      <Input 
-                        placeholder="John Doe" 
-                        className="bg-background/50"
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Full Name</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="John Doe" 
+                                className="bg-background/50"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email Address</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="email" 
+                                placeholder="john@example.com" 
+                                className="bg-background/50"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
                     </div>
-                    <div>
-                      <label className="text-sm font-medium text-foreground mb-2 block">
-                        Email Address
-                      </label>
-                      <Input 
-                        type="email" 
-                        placeholder="john@example.com" 
-                        className="bg-background/50"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block">
-                      Phone Number
-                    </label>
-                    <Input 
-                      type="tel" 
-                      placeholder="+91 1234567890" 
-                      className="bg-background/50"
+                    
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone Number</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="tel" 
+                              placeholder="+91 1234567890" 
+                              className="bg-background/50"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
 
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block">
-                      Subject
-                    </label>
-                    <Input 
-                      placeholder="What is this regarding?" 
-                      className="bg-background/50"
+                    <FormField
+                      control={form.control}
+                      name="subject"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Subject</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="What is this regarding?" 
+                              className="bg-background/50"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
 
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block">
-                      Message
-                    </label>
-                    <Textarea 
-                      placeholder="Tell us more about your inquiry..." 
-                      rows={6}
-                      className="bg-background/50"
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Message</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder="Tell us more about your inquiry..." 
+                              rows={6}
+                              className="bg-background/50"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
 
-                  <Button 
-                    type="submit" 
-                    size="lg" 
-                    className="w-full gradient-primary text-primary-foreground shadow-accent group"
-                  >
-                    Send Message
-                    <Send className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </form>
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      className="w-full gradient-primary text-primary-foreground shadow-accent group"
+                      disabled={form.formState.isSubmitting}
+                    >
+                      {form.formState.isSubmitting ? "Sending..." : "Send Message"}
+                      <Send className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </form>
+                </Form>
               </CardContent>
             </Card>
           </div>
