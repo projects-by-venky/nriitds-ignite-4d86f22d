@@ -184,12 +184,14 @@ interface AttendanceTableProps {
   statusFilter?: AttendanceFilter;
   startDate?: Date;
   endDate?: Date;
+  searchQuery?: string;
 }
 
 export const AttendanceTable = ({ 
   statusFilter = "all",
   startDate,
-  endDate 
+  endDate,
+  searchQuery = ""
 }: AttendanceTableProps) => {
   // Filter dates based on date range
   const filteredDates = mockAttendanceData.dates.filter((dateObj) => {
@@ -208,8 +210,19 @@ export const AttendanceTable = ({
     return true;
   });
 
-  // Filter students based on attendance status
+  // Filter students based on search query and attendance status
   const filteredStudents = mockAttendanceData.students.map((student) => {
+    // Apply search filter first
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      const matchesRollNo = student.rollNo.toLowerCase().includes(query);
+      // Note: In real implementation, you'd have student names in the data
+      // For now, we'll just search by roll number
+      if (!matchesRollNo) {
+        return null;
+      }
+    }
+
     // Get all attendance values for this student across filtered dates
     const allAttendance = filteredDates.flatMap((dateObj) => 
       student.attendance[dateObj.date] || []
@@ -241,11 +254,15 @@ export const AttendanceTable = ({
   }
 
   if (filteredStudents.length === 0) {
+    const message = searchQuery 
+      ? `No students found matching "${searchQuery}"`
+      : statusFilter !== "all"
+        ? `No students found with ${statusFilter === "present" ? "present" : "absent"} records in the selected period`
+        : "No students found";
+    
     return (
       <div className="bg-card rounded-lg border border-border shadow-sm p-8 text-center">
-        <p className="text-muted-foreground">
-          No students found with {statusFilter === "present" ? "present" : "absent"} records in the selected period.
-        </p>
+        <p className="text-muted-foreground">{message}</p>
       </div>
     );
   }

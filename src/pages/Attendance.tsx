@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Calendar, Download, Filter, X } from "lucide-react";
+import { Calendar, Download, Filter, X, Search } from "lucide-react";
 import { AttendanceTable } from "@/components/attendance/AttendanceTable";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import {
   Select,
@@ -25,14 +26,16 @@ const Attendance = () => {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [showFilters, setShowFilters] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const clearFilters = () => {
     setStatusFilter("all");
     setStartDate(undefined);
     setEndDate(undefined);
+    setSearchQuery("");
   };
 
-  const hasActiveFilters = statusFilter !== "all" || startDate || endDate;
+  const hasActiveFilters = statusFilter !== "all" || startDate || endDate || searchQuery;
 
   return (
     <div className="min-h-screen bg-background">
@@ -44,7 +47,7 @@ const Attendance = () => {
       >
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
+            <div className="flex-1">
               <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
                 <Calendar className="w-8 h-8 text-primary" />
                 Hourly Attendance
@@ -52,6 +55,28 @@ const Attendance = () => {
               <p className="text-muted-foreground mt-1">
                 View and track your attendance records
               </p>
+            </div>
+
+            {/* Search Bar */}
+            <div className="flex-1 max-w-md">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search by roll number or name..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9 pr-10"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
             </div>
             
             <div className="flex gap-2">
@@ -177,6 +202,11 @@ const Attendance = () => {
             {hasActiveFilters && (
               <div className="mt-4 flex flex-wrap gap-2">
                 <span className="text-sm text-muted-foreground">Active filters:</span>
+                {searchQuery && (
+                  <span className="inline-flex items-center px-2 py-1 bg-primary/10 text-primary text-xs rounded-md">
+                    Search: "{searchQuery}"
+                  </span>
+                )}
                 {statusFilter !== "all" && (
                   <span className="inline-flex items-center px-2 py-1 bg-primary/10 text-primary text-xs rounded-md">
                     Status: {statusFilter === "present" ? "Present" : "Absent"}
@@ -206,6 +236,7 @@ const Attendance = () => {
             statusFilter={statusFilter}
             startDate={startDate}
             endDate={endDate}
+            searchQuery={searchQuery}
           />
         </motion.div>
       </div>
