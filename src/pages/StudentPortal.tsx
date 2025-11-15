@@ -1,6 +1,6 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, FileText, TestTube, UserPlus, Users, Calendar, ClipboardList, BookOpen, GraduationCap, MessageSquare, ActivitySquare } from "lucide-react";
+import { ArrowLeft, FileText, TestTube, UserPlus, Users, Calendar, ClipboardList, BookOpen, GraduationCap, MessageSquare, ActivitySquare, Clock } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { StudentSidebar } from "@/components/student/StudentSidebar";
@@ -20,6 +20,7 @@ const departments = {
 
 const StudentPortal = () => {
   const { deptId } = useParams<{ deptId: string }>();
+  const navigate = useNavigate();
   const dept = deptId ? departments[deptId as keyof typeof departments] : null;
 
   if (!dept) {
@@ -124,6 +125,13 @@ const StudentPortal = () => {
 
             {/* Hourly Attendance */}
             <ContentSection title="Hourly Attendance & Fine Details" icon={<ActivitySquare className="w-6 h-6" />}>
+              <ActionButton 
+                label="View Hourly Attendance Table" 
+                icon={Clock}
+                onClick={() => navigate('/attendance')}
+                variant="primary"
+                fullWidth
+              />
               <ActionButton label="3-1 DS-A" />
               <ActionButton label="3-1 DS-B" />
               <ActionButton label="3-1 DS-C" />
