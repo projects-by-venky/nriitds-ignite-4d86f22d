@@ -1,9 +1,39 @@
 import { motion } from "framer-motion";
-import { Calendar, Download, Filter } from "lucide-react";
+import { Calendar, Download, Filter, X } from "lucide-react";
 import { AttendanceTable } from "@/components/attendance/AttendanceTable";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { format } from "date-fns";
+
+export type AttendanceFilter = "all" | "present" | "absent";
 
 const Attendance = () => {
+  const [statusFilter, setStatusFilter] = useState<AttendanceFilter>("all");
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+  const [showFilters, setShowFilters] = useState(false);
+
+  const clearFilters = () => {
+    setStatusFilter("all");
+    setStartDate(undefined);
+    setEndDate(undefined);
+  };
+
+  const hasActiveFilters = statusFilter !== "all" || startDate || endDate;
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -25,9 +55,18 @@ const Attendance = () => {
             </div>
             
             <div className="flex gap-2">
-              <Button variant="outline" size="sm">
+              <Button 
+                variant={showFilters ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setShowFilters(!showFilters)}
+              >
                 <Filter className="w-4 h-4 mr-2" />
                 Filter
+                {hasActiveFilters && (
+                  <span className="ml-2 px-1.5 py-0.5 bg-primary-foreground text-primary text-xs rounded-full">
+                    {[statusFilter !== "all", startDate, endDate].filter(Boolean).length}
+                  </span>
+                )}
               </Button>
               <Button variant="outline" size="sm">
                 <Download className="w-4 h-4 mr-2" />
@@ -40,12 +79,134 @@ const Attendance = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6">
+        {/* Filter Panel */}
+        {showFilters && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mb-6 bg-card border border-border rounded-lg p-4"
+          >
+            <div className="flex flex-col md:flex-row gap-4">
+              {/* Status Filter */}
+              <div className="flex-1">
+                <label className="text-sm font-medium text-foreground mb-2 block">
+                  Attendance Status
+                </label>
+                <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as AttendanceFilter)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Records</SelectItem>
+                    <SelectItem value="present">Present Only</SelectItem>
+                    <SelectItem value="absent">Absent Only</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Start Date Filter */}
+              <div className="flex-1">
+                <label className="text-sm font-medium text-foreground mb-2 block">
+                  Start Date
+                </label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start text-left font-normal"
+                    >
+                      <Calendar className="mr-2 h-4 w-4" />
+                      {startDate ? format(startDate, "PPP") : "Pick a date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <CalendarComponent
+                      mode="single"
+                      selected={startDate}
+                      onSelect={setStartDate}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              {/* End Date Filter */}
+              <div className="flex-1">
+                <label className="text-sm font-medium text-foreground mb-2 block">
+                  End Date
+                </label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start text-left font-normal"
+                    >
+                      <Calendar className="mr-2 h-4 w-4" />
+                      {endDate ? format(endDate, "PPP") : "Pick a date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <CalendarComponent
+                      mode="single"
+                      selected={endDate}
+                      onSelect={setEndDate}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              {/* Clear Filters Button */}
+              {hasActiveFilters && (
+                <div className="flex items-end">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearFilters}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="w-4 h-4 mr-1" />
+                    Clear
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            {/* Active Filters Summary */}
+            {hasActiveFilters && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="text-sm text-muted-foreground">Active filters:</span>
+                {statusFilter !== "all" && (
+                  <span className="inline-flex items-center px-2 py-1 bg-primary/10 text-primary text-xs rounded-md">
+                    Status: {statusFilter === "present" ? "Present" : "Absent"}
+                  </span>
+                )}
+                {startDate && (
+                  <span className="inline-flex items-center px-2 py-1 bg-primary/10 text-primary text-xs rounded-md">
+                    From: {format(startDate, "dd/MM/yyyy")}
+                  </span>
+                )}
+                {endDate && (
+                  <span className="inline-flex items-center px-2 py-1 bg-primary/10 text-primary text-xs rounded-md">
+                    To: {format(endDate, "dd/MM/yyyy")}
+                  </span>
+                )}
+              </div>
+            )}
+          </motion.div>
+        )}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <AttendanceTable />
+          <AttendanceTable 
+            statusFilter={statusFilter}
+            startDate={startDate}
+            endDate={endDate}
+          />
         </motion.div>
       </div>
     </div>
