@@ -1,5 +1,7 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { AttendanceFilter } from "@/pages/Attendance";
+import { parse, isWithinInterval } from "date-fns";
 
 // Mock data structure matching the Google Sheets format
 const mockAttendanceData = {
@@ -178,11 +180,75 @@ const mockAttendanceData = {
   ],
 };
 
-export const AttendanceTable = () => {
-  const { dates, students } = mockAttendanceData;
+interface AttendanceTableProps {
+  statusFilter?: AttendanceFilter;
+  startDate?: Date;
+  endDate?: Date;
+}
 
-  // Calculate total columns for proper width
-  const totalHours = dates.reduce((sum, date) => sum + date.hours.length, 0);
+export const AttendanceTable = ({ 
+  statusFilter = "all",
+  startDate,
+  endDate 
+}: AttendanceTableProps) => {
+  // Filter dates based on date range
+  const filteredDates = mockAttendanceData.dates.filter((dateObj) => {
+    if (!startDate && !endDate) return true;
+    
+    const currentDate = parse(dateObj.date, "dd/MM/yyyy", new Date());
+    
+    if (startDate && endDate) {
+      return isWithinInterval(currentDate, { start: startDate, end: endDate });
+    } else if (startDate) {
+      return currentDate >= startDate;
+    } else if (endDate) {
+      return currentDate <= endDate;
+    }
+    
+    return true;
+  });
+
+  // Filter students based on attendance status
+  const filteredStudents = mockAttendanceData.students.map((student) => {
+    // Get all attendance values for this student across filtered dates
+    const allAttendance = filteredDates.flatMap((dateObj) => 
+      student.attendance[dateObj.date] || []
+    );
+    
+    // Determine if student should be shown based on status filter
+    if (statusFilter === "present") {
+      // Show only if student has at least one present record
+      if (!allAttendance.some(status => status === "P")) {
+        return null;
+      }
+    } else if (statusFilter === "absent") {
+      // Show only if student has at least one absent record
+      if (!allAttendance.some(status => status === "A")) {
+        return null;
+      }
+    }
+    
+    return student;
+  }).filter(Boolean) as typeof mockAttendanceData.students;
+
+  // Show message if no data after filtering
+  if (filteredDates.length === 0) {
+    return (
+      <div className="bg-card rounded-lg border border-border shadow-sm p-8 text-center">
+        <p className="text-muted-foreground">No attendance records found for the selected date range.</p>
+      </div>
+    );
+  }
+
+  if (filteredStudents.length === 0) {
+    return (
+      <div className="bg-card rounded-lg border border-border shadow-sm p-8 text-center">
+        <p className="text-muted-foreground">
+          No students found with {statusFilter === "present" ? "present" : "absent"} records in the selected period.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-card rounded-lg border border-border shadow-sm overflow-hidden">
@@ -196,7 +262,7 @@ export const AttendanceTable = () => {
                 <th className="sticky left-0 z-30 bg-card border-r border-border px-4 py-3 text-left font-semibold text-foreground min-w-[120px]">
                   Date
                 </th>
-                {dates.map((dateObj, dateIdx) => (
+                {filteredDates.map((dateObj, dateIdx) => (
                   <th
                     key={dateIdx}
                     colSpan={dateObj.hours.length}
@@ -212,7 +278,7 @@ export const AttendanceTable = () => {
                 <th className="sticky left-0 z-30 bg-card border-r border-border px-4 py-3 text-left font-semibold text-foreground">
                   Hour
                 </th>
-                {dates.map((dateObj, dateIdx) =>
+                {filteredDates.map((dateObj, dateIdx) =>
                   dateObj.hours.map((hourObj, hourIdx) => (
                     <th
                       key={`${dateIdx}-${hourIdx}`}
@@ -229,7 +295,7 @@ export const AttendanceTable = () => {
                 <th className="sticky left-0 z-30 bg-card border-r border-border px-4 py-3 text-left font-semibold text-foreground">
                   Subject/Lab
                 </th>
-                {dates.map((dateObj, dateIdx) =>
+                {filteredDates.map((dateObj, dateIdx) =>
                   dateObj.hours.map((hourObj, hourIdx) => (
                     <th
                       key={`${dateIdx}-${hourIdx}`}
@@ -246,7 +312,7 @@ export const AttendanceTable = () => {
                 <th className="sticky left-0 z-30 bg-card border-r border-border px-4 py-3 text-left font-semibold text-foreground">
                   Faculty
                 </th>
-                {dates.map((dateObj, dateIdx) =>
+                {filteredDates.map((dateObj, dateIdx) =>
                   dateObj.hours.map((hourObj, hourIdx) => (
                     <th
                       key={`${dateIdx}-${hourIdx}`}
@@ -261,7 +327,7 @@ export const AttendanceTable = () => {
 
             {/* Body: Student Rows */}
             <tbody>
-              {students.map((student, studentIdx) => (
+              {filteredStudents.map((student, studentIdx) => (
                 <tr
                   key={student.rollNo}
                   className={cn(
@@ -275,7 +341,7 @@ export const AttendanceTable = () => {
                   </td>
 
                   {/* Attendance Cells */}
-                  {dates.map((dateObj) =>
+                  {filteredDates.map((dateObj) =>
                     student.attendance[dateObj.date]?.map(
                       (status, statusIdx) => (
                         <td
