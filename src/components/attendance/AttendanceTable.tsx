@@ -13,11 +13,17 @@ const generateStudents = () => {
     // Random attendance pattern for demo
     const rand1 = Math.random() > 0.3 ? "P" : "A";
     const rand2 = Math.random() > 0.3 ? "P" : "A";
+    const rand3 = Math.random() > 0.3 ? "P" : "A";
+    const rand4 = Math.random() > 0.3 ? "P" : "A";
+    const rand5 = Math.random() > 0.3 ? "P" : "A";
     students.push({
       rollNo,
       attendance: {
         "30/06/2025": [rand1, rand1, rand2, rand1, rand2, rand1, rand2],
         "03/07/2025": [rand2, rand1, rand2, rand1, rand2],
+        "04/07/2025": [rand3, rand3, rand2, rand3, rand1, rand3, rand2],
+        "05/07/2025": [rand4, rand4, rand4, rand4, rand4, rand4],
+        "06/07/2025": [rand5, rand5, rand5, rand5, rand5],
       },
     });
   }
@@ -47,6 +53,39 @@ const mockAttendanceData = {
         { hour: "3", subject: "SE", faculty: "Praveen" },
         { hour: "4", subject: "ML", faculty: "Anil" },
         { hour: "5", subject: "N LAB", faculty: "Salma Sultana" },
+      ],
+    },
+    {
+      date: "04/07/2025",
+      hours: [
+        { hour: "1", subject: "ML", faculty: "Anil" },
+        { hour: "2", subject: "DOA", faculty: "Jeswanth" },
+        { hour: "3", subject: "CN", faculty: "Salma" },
+        { hour: "4", subject: "TS", faculty: "Praveen" },
+        { hour: "5", subject: "SE", faculty: "Praveen" },
+        { hour: "6", subject: "CTM", faculty: "N Chaithanya" },
+        { hour: "7", subject: "DOA", faculty: "Jeswanth" },
+      ],
+    },
+    {
+      date: "05/07/2025",
+      hours: [
+        { hour: "1", subject: "CN", faculty: "Salma" },
+        { hour: "2", subject: "ML", faculty: "Anil" },
+        { hour: "3", subject: "DOA", faculty: "Jeswanth" },
+        { hour: "4", subject: "SE", faculty: "Praveen" },
+        { hour: "5", subject: "CTM", faculty: "N Chaithanya" },
+        { hour: "6", subject: "TS", faculty: "Praveen" },
+      ],
+    },
+    {
+      date: "06/07/2025",
+      hours: [
+        { hour: "1", subject: "TS", faculty: "Praveen" },
+        { hour: "2", subject: "SE", faculty: "Praveen" },
+        { hour: "3", subject: "ML", faculty: "Anil" },
+        { hour: "4", subject: "CN", faculty: "Salma" },
+        { hour: "5", subject: "DOA", faculty: "Jeswanth" },
       ],
     },
   ],
