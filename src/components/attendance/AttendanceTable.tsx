@@ -205,7 +205,7 @@ export const AttendanceTable = ({
       transition={{ duration: 0.4 }}
       className="bg-white rounded-lg border-2 border-[#1E3A8A] shadow-xl overflow-hidden"
     >
-      <ScrollArea className="w-full max-h-[calc(100vh-250px)]">
+      <ScrollArea className="w-full h-[calc(100vh-250px)]">
         <div className="min-w-max">
           {/* Table Structure */}
           <table className="w-full border-collapse">
@@ -345,6 +345,7 @@ export const AttendanceTable = ({
             </tbody>
           </table>
         </div>
+        <ScrollBar orientation="vertical" />
         <ScrollBar orientation="horizontal" className="h-3" />
       </ScrollArea>
     </motion.div>
