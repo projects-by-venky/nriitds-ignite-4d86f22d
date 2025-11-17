@@ -184,7 +184,7 @@ const Attendance = () => {
                       className="w-full justify-start text-left font-normal"
                     >
                       <Calendar className="mr-2 h-4 w-4" />
-                      {startDate ? format(startDate, "PPP") : "Pick a date"}
+                      {startDate ? format(startDate, "dd/MM/yyyy") : "Pick a date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
@@ -210,7 +210,7 @@ const Attendance = () => {
                       className="w-full justify-start text-left font-normal"
                     >
                       <Calendar className="mr-2 h-4 w-4" />
-                      {endDate ? format(endDate, "PPP") : "Pick a date"}
+                      {endDate ? format(endDate, "dd/MM/yyyy") : "Pick a date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
