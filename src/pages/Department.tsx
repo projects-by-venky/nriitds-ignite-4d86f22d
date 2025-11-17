@@ -122,7 +122,7 @@ const Department = () => {
                   className="absolute inset-0 rounded-3xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity"
                   style={{ background: dept.gradient }}
                 />
-                <div className="relative bg-card/80 backdrop-blur-md border-2 border-border/50 rounded-3xl p-10 hover:border-primary/50 transition-all">
+                <div className="relative bg-card/80 backdrop-blur-md border-2 border-[#1E3A8A] rounded-3xl p-10 hover:border-[#1E3A8A] transition-all shadow-lg">
                   <div className="flex flex-col items-center text-center">
                     <div 
                       className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
@@ -155,7 +155,7 @@ const Department = () => {
                   className="absolute inset-0 rounded-3xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity"
                   style={{ background: dept.gradient }}
                 />
-                <div className="relative bg-card/80 backdrop-blur-md border-2 border-border/50 rounded-3xl p-10 hover:border-primary/50 transition-all">
+                <div className="relative bg-card/80 backdrop-blur-md border-2 border-[#1E3A8A] rounded-3xl p-10 hover:border-[#1E3A8A] transition-all shadow-lg">
                   <div className="flex flex-col items-center text-center">
                     <div 
                       className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg"

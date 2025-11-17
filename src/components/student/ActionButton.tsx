@@ -25,7 +25,7 @@ export const ActionButton = ({
         ${fullWidth ? 'w-full' : 'flex-1 min-w-[200px]'}
         ${variant === 'primary' 
           ? 'bg-gradient-cyber text-white shadow-[0_0_20px_hsl(217_91%_60%_/_0.4)] hover:shadow-[0_0_30px_hsl(217_91%_60%_/_0.6)]' 
-          : 'bg-card border-2 border-border hover:border-primary/50 text-foreground hover:bg-primary/5'
+          : 'bg-card border-2 border-[#1E3A8A] hover:border-[#1E3A8A] text-foreground hover:bg-primary/5'
         }
         px-6 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2
       `}

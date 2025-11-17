@@ -83,7 +83,7 @@ const FacultyPortal = () => {
                   <div 
                     className="absolute inset-0 rounded-2xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity bg-primary"
                   />
-                  <div className="relative bg-card/80 backdrop-blur-md border-2 border-border/50 rounded-2xl p-8 hover:border-primary/50 transition-all h-full">
+                  <div className="relative bg-card/80 backdrop-blur-md border-2 border-[#1E3A8A] rounded-2xl p-8 hover:border-[#1E3A8A] transition-all h-full shadow-lg">
                     <div 
                       className="w-14 h-14 rounded-xl bg-gradient-cyber flex items-center justify-center mb-4"
                     >

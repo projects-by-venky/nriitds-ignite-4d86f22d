@@ -15,7 +15,7 @@ export const ContentSection = ({ title, icon, children, delay = 0 }: ContentSect
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay }}
-      className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:border-primary/30 transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]"
+      className="bg-card/50 backdrop-blur-sm border-2 border-[#1E3A8A] rounded-2xl p-6 hover:border-[#1E3A8A] transition-all duration-300 shadow-lg"
     >
       <div className="flex items-center gap-3 mb-4">
         {icon && <div className="text-primary">{icon}</div>}
