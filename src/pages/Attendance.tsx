@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Calendar, Download, Filter, X, Search } from "lucide-react";
+import { Calendar, Download, Filter, X, Search, ArrowLeft } from "lucide-react";
 import { AttendanceTable } from "@/components/attendance/AttendanceTable";
 import { BulkActionsToolbar } from "@/components/attendance/BulkActionsToolbar";
 import { Button } from "@/components/ui/button";
@@ -20,10 +20,13 @@ import {
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
+import { useParams, useNavigate } from "react-router-dom";
 
 export type AttendanceFilter = "all" | "present" | "absent";
 
 const Attendance = () => {
+  const { section, deptId } = useParams<{ section?: string; deptId?: string }>();
+  const navigate = useNavigate();
   const [statusFilter, setStatusFilter] = useState<AttendanceFilter>("all");
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
@@ -88,14 +91,27 @@ const Attendance = () => {
         className="bg-card border-b border-border sticky top-0 z-50"
       >
         <div className="container mx-auto px-4 py-4">
+          {/* Back Button */}
+          {section && deptId && (
+            <motion.button
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              onClick={() => navigate(`/department/${deptId}/student-portal`)}
+              className="flex items-center gap-2 text-foreground/70 hover:text-primary transition-colors mb-4"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              Back to Student Portal
+            </motion.button>
+          )}
+          
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex-1">
               <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
                 <Calendar className="w-8 h-8 text-primary" />
-                Hourly Attendance
+                Hourly Attendance {section && `- ${section}`}
               </h1>
               <p className="text-muted-foreground mt-1">
-                View and track your attendance records
+                {section ? `View attendance records for section ${section}` : 'View and track your attendance records'}
               </p>
             </div>
 
