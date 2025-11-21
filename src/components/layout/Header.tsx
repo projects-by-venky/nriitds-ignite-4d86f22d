@@ -2,33 +2,46 @@ import { useState } from "react";
 import { Menu, X, GraduationCap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-
-  const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    { name: "Branches", href: "/branches" },
-    { name: "Research", href: "/research" },
-    { name: "Placements", href: "/placements" },
-    { name: "Campus Life", href: "/campus-life" },
-    { name: "Events", href: "/events" },
-    { name: "Contact", href: "/contact" },
-  ];
-
-  return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
+  const navLinks = [{
+    name: "Home",
+    href: "/"
+  }, {
+    name: "About",
+    href: "/about"
+  }, {
+    name: "Branches",
+    href: "/branches"
+  }, {
+    name: "Research",
+    href: "/research"
+  }, {
+    name: "Placements",
+    href: "/placements"
+  }, {
+    name: "Campus Life",
+    href: "/campus-life"
+  }, {
+    name: "Events",
+    href: "/events"
+  }, {
+    name: "Contact",
+    href: "/contact"
+  }];
+  return <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-3 cursor-pointer"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            x: -20
+          }} animate={{
+            opacity: 1,
+            x: 0
+          }} className="flex items-center gap-3 cursor-pointer">
               <div className="w-10 h-10 rounded-lg bg-gradient-cyber flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.4)]">
                 <GraduationCap className="w-6 h-6 text-white" />
               </div>
@@ -39,44 +52,43 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link, index) => {
-              const isActive = location.pathname === link.href;
-              return (
-                <Link key={link.name} to={link.href}>
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-                      isActive 
-                        ? "text-primary bg-primary/10 shadow-[0_0_20px_rgba(37,99,235,0.2)]" 
-                        : "text-foreground hover:text-primary hover:bg-muted"
-                    }`}
-                  >
+            const isActive = location.pathname === link.href;
+            return <Link key={link.name} to={link.href}>
+                  <motion.div initial={{
+                opacity: 0,
+                y: -10
+              }} animate={{
+                opacity: 1,
+                y: 0
+              }} transition={{
+                delay: index * 0.1
+              }} className="shadow-sm">
                     {link.name}
                   </motion.div>
-                </Link>
-              );
-            })}
-            <motion.button
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: navLinks.length * 0.1 }}
-              whileHover={{ scale: 1.05, boxShadow: "0 0 20px hsl(217 91% 60% / 0.6)" }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => {
-                window.location.href = '/branches';
-              }}
-              className="ml-4 px-6 py-2 rounded-lg bg-primary text-white font-semibold shadow-[0_0_20px_hsl(217_91%_60%_/_0.4)] hover:shadow-[0_0_30px_hsl(217_91%_60%_/_0.6)] transition-all text-sm cursor-pointer"
-            >
+                </Link>;
+          })}
+            <motion.button initial={{
+            opacity: 0,
+            y: -10
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            delay: navLinks.length * 0.1
+          }} whileHover={{
+            scale: 1.05,
+            boxShadow: "0 0 20px hsl(217 91% 60% / 0.6)"
+          }} whileTap={{
+            scale: 0.98
+          }} onClick={() => {
+            window.location.href = '/branches';
+          }} className="ml-4 px-6 py-2 rounded-lg bg-primary text-white font-semibold shadow-[0_0_20px_hsl(217_91%_60%_/_0.4)] hover:shadow-[0_0_30px_hsl(217_91%_60%_/_0.6)] transition-all text-sm cursor-pointer">
               Lets See
             </motion.button>
           </nav>
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
-          >
+          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors">
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
@@ -84,46 +96,32 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-border bg-background"
-          >
+        {isOpen && <motion.div initial={{
+        opacity: 0,
+        height: 0
+      }} animate={{
+        opacity: 1,
+        height: "auto"
+      }} exit={{
+        opacity: 0,
+        height: 0
+      }} className="md:hidden border-t border-border bg-background">
             <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
-              {navLinks.map((link) => {
-                const isActive = location.pathname === link.href;
-                return (
-                  <Link
-                    key={link.name}
-                    to={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                      isActive 
-                        ? "text-primary bg-primary/10" 
-                        : "text-foreground hover:bg-muted"
-                    }`}
-                  >
+              {navLinks.map(link => {
+            const isActive = location.pathname === link.href;
+            return <Link key={link.name} to={link.href} onClick={() => setIsOpen(false)} className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors ${isActive ? "text-primary bg-primary/10" : "text-foreground hover:bg-muted"}`}>
                     {link.name}
-                  </Link>
-                );
-              })}
-              <button 
-                className="mt-2 px-6 py-3 rounded-lg bg-primary text-white font-semibold shadow-[0_0_20px_hsl(217_91%_60%_/_0.4)] text-sm w-full"
-                onClick={() => {
-                  setIsOpen(false);
-                  window.location.href = '/branches';
-                }}
-              >
+                  </Link>;
+          })}
+              <button className="mt-2 px-6 py-3 rounded-lg bg-primary text-white font-semibold shadow-[0_0_20px_hsl(217_91%_60%_/_0.4)] text-sm w-full" onClick={() => {
+            setIsOpen(false);
+            window.location.href = '/branches';
+          }}>
                 Lets See
               </button>
             </nav>
-          </motion.div>
-        )}
+          </motion.div>}
       </AnimatePresence>
-    </header>
-  );
+    </header>;
 };
-
 export default Header;
