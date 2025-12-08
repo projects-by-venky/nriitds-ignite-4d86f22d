@@ -160,9 +160,21 @@ const StudentPortal = () => {
 
             {/* Cumulative Attendance */}
             <ContentSection title="Monthly Cumulative Attendance" icon={<Calendar className="w-6 h-6" />}>
-              <ActionButton label="2-2 DS-A Cumulative Attendance" fullWidth />
-              <ActionButton label="2-2 DS-B Cumulative Attendance" fullWidth />
-              <ActionButton label="2-2 DS-C Cumulative Attendance" fullWidth />
+              <ActionButton 
+                label="2-2 DS-A Cumulative Attendance" 
+                fullWidth 
+                onClick={() => navigate(`/department/${deptId}/monthly-attendance/2-2-DS-A`)}
+              />
+              <ActionButton 
+                label="2-2 DS-B Cumulative Attendance" 
+                fullWidth 
+                onClick={() => navigate(`/department/${deptId}/monthly-attendance/2-2-DS-B`)}
+              />
+              <ActionButton 
+                label="2-2 DS-C Cumulative Attendance" 
+                fullWidth 
+                onClick={() => navigate(`/department/${deptId}/monthly-attendance/2-2-DS-C`)}
+              />
             </ContentSection>
 
             {/* Time Tables */}
