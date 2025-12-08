@@ -125,7 +125,7 @@ const StudentPortal = () => {
             </ContentSection>
 
             {/* Hourly Attendance */}
-            <ContentSection title="Hourly Attendance & Fine Details" icon={<ActivitySquare className="w-6 h-6" />}>
+            <ContentSection title="Hourly Attendance" icon={<ActivitySquare className="w-6 h-6" />}>
               <ActionButton 
                 label="View Hourly Attendance Table" 
                 icon={Clock}
