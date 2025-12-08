@@ -5,15 +5,18 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 const departments = {
-  cse: { name: "Computer Science & Engineering", gradient: "linear-gradient(135deg, #0EA5E9, #6366F1)" },
-  ece: { name: "Electronics & Communication", gradient: "linear-gradient(135deg, #F97316, #F59E0B)" },
-  eee: { name: "Electrical & Electronics", gradient: "linear-gradient(135deg, #22C55E, #10B981)" },
-  mech: { name: "Mechanical Engineering", gradient: "linear-gradient(135deg, #475569, #94A3B8)" },
-  civil: { name: "Civil Engineering", gradient: "linear-gradient(135deg, #0D9488, #14B8A6)" },
-  aids: { name: "AI & Data Science", gradient: "linear-gradient(135deg, #8B5CF6, #EC4899)" },
-  mba: { name: "Business Administration", gradient: "linear-gradient(135deg, #2563EB, #3B82F6)" },
-  mca: { name: "Computer Applications", gradient: "linear-gradient(135deg, #9333EA, #DB2777)" }
+  cse: { name: "Computer Science & Engineering" },
+  ece: { name: "Electronics & Communication" },
+  eee: { name: "Electrical & Electronics" },
+  mech: { name: "Mechanical Engineering" },
+  civil: { name: "Civil Engineering" },
+  aids: { name: "AI & Data Science" },
+  mba: { name: "Business Administration" },
+  mca: { name: "Computer Applications" }
 };
+
+// Consistent blue gradient for all departments
+const blueGradient = "linear-gradient(135deg, #0EA5E9, #1E3A8A)";
 
 const sections = [
   { icon: Users, title: "Manage Students", desc: "Attendance & Marks" },
@@ -62,10 +65,10 @@ const FacultyPortal = () => {
             className="text-center mb-16"
           >
             <h1 className="text-5xl font-black mb-4 bg-clip-text text-transparent"
-                style={{ backgroundImage: dept.gradient }}>
+                style={{ backgroundImage: blueGradient }}>
               Faculty Portal
             </h1>
-            <p className="text-xl text-foreground/70">{dept.name}</p>
+            <p className="text-xl text-white/70">{dept.name}</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -89,9 +92,9 @@ const FacultyPortal = () => {
                     >
                       <Icon className="w-7 h-7 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold mb-2 text-foreground">{section.title}</h3>
-                    <p className="text-foreground/60">{section.desc}</p>
-                    <div className="mt-4 text-primary font-semibold text-sm">
+                    <h3 className="text-2xl font-bold mb-2 text-white">{section.title}</h3>
+                    <p className="text-white/60">{section.desc}</p>
+                    <div className="mt-4 text-[#0EA5E9] font-semibold text-sm">
                       Access →
                     </div>
                   </div>

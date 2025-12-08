@@ -7,53 +7,48 @@ import Footer from "@/components/layout/Footer";
 const departments = {
   cse: {
     name: "Computer Science & Engineering",
-    gradient: "linear-gradient(135deg, #0EA5E9, #6366F1)",
     icon: "💻",
     description: "Leading innovation in software and technology"
   },
   ece: {
     name: "Electronics & Communication Engineering",
-    gradient: "linear-gradient(135deg, #F97316, #F59E0B)",
     icon: "📡",
     description: "Pioneering communication technologies"
   },
   eee: {
     name: "Electrical & Electronics Engineering",
-    gradient: "linear-gradient(135deg, #22C55E, #10B981)",
     icon: "⚡",
     description: "Powering the future with energy solutions"
   },
   mech: {
     name: "Mechanical Engineering",
-    gradient: "linear-gradient(135deg, #475569, #94A3B8)",
     icon: "⚙️",
     description: "Engineering precision and innovation"
   },
   civil: {
     name: "Civil Engineering",
-    gradient: "linear-gradient(135deg, #0D9488, #14B8A6)",
     icon: "🏗️",
     description: "Building tomorrow's infrastructure"
   },
   aids: {
     name: "Artificial Intelligence & Data Science",
-    gradient: "linear-gradient(135deg, #8B5CF6, #EC4899)",
     icon: "🤖",
     description: "Shaping intelligent systems"
   },
   mba: {
     name: "Master of Business Administration",
-    gradient: "linear-gradient(135deg, #2563EB, #3B82F6)",
     icon: "💼",
     description: "Cultivating business leaders"
   },
   mca: {
     name: "Master of Computer Applications",
-    gradient: "linear-gradient(135deg, #9333EA, #DB2777)",
     icon: "🖥️",
     description: "Advanced computing excellence"
   }
 };
+
+// Consistent blue gradient for all departments
+const blueGradient = "linear-gradient(135deg, #0EA5E9, #1E3A8A)";
 
 const Department = () => {
   const { deptId } = useParams<{ deptId: string }>();
@@ -96,13 +91,13 @@ const Department = () => {
             className="text-center mb-20"
           >
             <h1 className="text-5xl md:text-6xl font-black mb-6 bg-clip-text text-transparent"
-                style={{ backgroundImage: dept.gradient }}>
+                style={{ backgroundImage: blueGradient }}>
               Welcome to the Department of
             </h1>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
               {dept.name}
             </h2>
-            <p className="text-xl text-foreground/70 max-w-2xl mx-auto">
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">
               {dept.description}
             </p>
           </motion.div>
@@ -130,11 +125,11 @@ const Department = () => {
                     >
                       <GraduationCap className="w-10 h-10 text-white" />
                     </div>
-                    <h3 className="text-3xl font-bold mb-4 text-foreground">Student Portal</h3>
-                    <p className="text-foreground/60 mb-6">
+                    <h3 className="text-3xl font-bold mb-4 text-white">Student Portal</h3>
+                    <p className="text-white/60 mb-6">
                       Access your dashboard, notes, results, and more
                     </p>
-                    <div className="text-sm text-primary font-semibold">
+                    <div className="text-sm text-[#0EA5E9] font-semibold">
                       Click to Enter →
                     </div>
                   </div>
@@ -163,11 +158,11 @@ const Department = () => {
                     >
                       <Users className="w-10 h-10 text-white" />
                     </div>
-                    <h3 className="text-3xl font-bold mb-4 text-foreground">Faculty Portal</h3>
-                    <p className="text-foreground/60 mb-6">
+                    <h3 className="text-3xl font-bold mb-4 text-white">Faculty Portal</h3>
+                    <p className="text-white/60 mb-6">
                       Manage students, upload notes, and post announcements
                     </p>
-                    <div className="text-sm text-primary font-semibold">
+                    <div className="text-sm text-[#0EA5E9] font-semibold">
                       Click to Enter →
                     </div>
                   </div>
