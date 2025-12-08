@@ -129,16 +129,33 @@ const StudentPortal = () => {
               <ActionButton 
                 label="View Hourly Attendance Table" 
                 icon={Clock}
-                onClick={() => navigate('/attendance')}
                 variant="primary"
                 fullWidth
               />
-              <ActionButton label="3-1 DS-A" />
-              <ActionButton label="3-1 DS-B" />
-              <ActionButton label="3-1 DS-C" />
-              <ActionButton label="2-1 DS-A" />
-              <ActionButton label="2-1 DS-B" />
-              <ActionButton label="2-1 DS-C" />
+              <ActionButton 
+                label="3-1 DS-A" 
+                onClick={() => navigate(`/department/${deptId}/attendance/3-1-DS-A`)}
+              />
+              <ActionButton 
+                label="3-1 DS-B" 
+                onClick={() => navigate(`/department/${deptId}/attendance/3-1-DS-B`)}
+              />
+              <ActionButton 
+                label="3-1 DS-C" 
+                onClick={() => navigate(`/department/${deptId}/attendance/3-1-DS-C`)}
+              />
+              <ActionButton 
+                label="2-1 DS-A" 
+                onClick={() => navigate(`/department/${deptId}/attendance/2-1-DS-A`)}
+              />
+              <ActionButton 
+                label="2-1 DS-B" 
+                onClick={() => navigate(`/department/${deptId}/attendance/2-1-DS-B`)}
+              />
+              <ActionButton 
+                label="2-1 DS-C" 
+                onClick={() => navigate(`/department/${deptId}/attendance/2-1-DS-C`)}
+              />
             </ContentSection>
 
             {/* Cumulative Attendance */}
