@@ -130,58 +130,58 @@ const MonthlyAttendance = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-xl shadow-lg overflow-hidden"
+            className="bg-white rounded-lg border-2 border-[#1E3A8A] shadow-xl overflow-hidden"
           >
             <div className="overflow-x-auto max-h-[70vh]">
               <table className="w-full border-collapse text-sm">
                 {/* Institute Header */}
                 <thead className="sticky top-0 z-20">
-                  <tr className="bg-[#1E3A8A] text-white">
-                    <th colSpan={subjects.length * 2 + 4} className="px-4 py-3 text-center font-bold border border-[#1E3A8A] text-base">
+                  <tr className="bg-blue-50 border-b-2 border-[#1E3A8A]">
+                    <th colSpan={subjects.length * 2 + 4} className="px-4 py-3 text-center font-bold border-b border-[#1E3A8A] text-base text-black">
                       NRI INSTITUTE OF TECHNOLOGY::GUNTUR
                       <span className="ml-8">A-ATTENDED</span>
                       <span className="ml-4">C-CONDUCTED</span>
                     </th>
                   </tr>
-                  <tr className="bg-[#1E3A8A] text-white">
-                    <th colSpan={subjects.length * 2 + 4} className="px-4 py-2 text-center font-bold border border-[#1E3A8A]">
+                  <tr className="bg-blue-50 border-b-2 border-[#1E3A8A]">
+                    <th colSpan={subjects.length * 2 + 4} className="px-4 py-2 text-center font-bold border-b border-[#1E3A8A] text-black">
                       CLASS:{year}nd B.TECH &nbsp;&nbsp; SEM:{sem} &nbsp;&nbsp; BRANCH: {branch}-{sectionLetter} &nbsp;&nbsp; CUMULATIVE ATTENDANCE UP TO - {data.attendanceDate}
                     </th>
                   </tr>
                   {/* Subject Headers */}
-                  <tr className="bg-[#1E3A8A] text-white">
-                    <th rowSpan={3} className="sticky left-0 z-30 bg-[#1E3A8A] px-3 py-2 text-center font-bold border border-[#1E3A8A] min-w-[100px]">
+                  <tr className="bg-white border-b border-[#1E3A8A]">
+                    <th rowSpan={3} className="sticky left-0 z-30 bg-white px-3 py-2 text-center font-bold border-r-2 border-b border-[#1E3A8A] min-w-[100px] text-black">
                       Roll No
                     </th>
                     {subjects.map((subject, idx) => (
-                      <th key={idx} colSpan={2} className="px-2 py-2 text-center font-bold border border-[#1E3A8A]">
+                      <th key={idx} colSpan={2} className="px-2 py-2 text-center font-bold border-r border-[#1E3A8A] text-black bg-blue-50">
                         {subject.code}
                       </th>
                     ))}
-                    <th rowSpan={3} className="px-2 py-2 text-center font-bold border border-[#1E3A8A] min-w-[50px]">
+                    <th rowSpan={3} className="px-2 py-2 text-center font-bold border-r border-[#1E3A8A] min-w-[50px] text-black bg-blue-50">
                       TC
                     </th>
-                    <th rowSpan={3} className="px-2 py-2 text-center font-bold border border-[#1E3A8A] min-w-[50px]">
+                    <th rowSpan={3} className="px-2 py-2 text-center font-bold border-r border-[#1E3A8A] min-w-[50px] text-black bg-blue-50">
                       TA
                     </th>
-                    <th rowSpan={3} className="px-2 py-2 text-center font-bold border border-[#1E3A8A] min-w-[50px]">
+                    <th rowSpan={3} className="px-2 py-2 text-center font-bold border-[#1E3A8A] min-w-[50px] text-black bg-blue-50">
                       PER
                     </th>
                   </tr>
                   {/* Faculty Names */}
-                  <tr className="bg-[#1E3A8A] text-white">
+                  <tr className="bg-white border-b border-[#1E3A8A]">
                     {subjects.map((subject, idx) => (
-                      <th key={idx} colSpan={2} className="px-2 py-1 text-center font-normal border border-[#1E3A8A] text-xs">
+                      <th key={idx} colSpan={2} className="px-2 py-1 text-center font-normal border-r border-[#1E3A8A] text-xs text-black">
                         {subject.faculty}
                       </th>
                     ))}
                   </tr>
                   {/* C/A Headers */}
-                  <tr className="bg-[#1E3A8A] text-white">
+                  <tr className="bg-white border-b-2 border-[#1E3A8A]">
                     {subjects.map((_, idx) => (
                       <React.Fragment key={idx}>
-                        <th className="px-1 py-1 text-center font-bold border border-[#1E3A8A] min-w-[35px]">C</th>
-                        <th className="px-1 py-1 text-center font-bold border border-[#1E3A8A] min-w-[35px]">A</th>
+                        <th className="px-1 py-1 text-center font-bold border-r border-[#1E3A8A] min-w-[35px] text-black">C</th>
+                        <th className="px-1 py-1 text-center font-bold border-r border-[#1E3A8A] min-w-[35px] text-black">A</th>
                       </React.Fragment>
                     ))}
                   </tr>
@@ -193,29 +193,29 @@ const MonthlyAttendance = () => {
                     const percentage = Math.round((totalAttended / totalConducted) * 100);
                     
                     return (
-                      <tr key={student.rollNumber} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                        <td className="sticky left-0 z-10 px-3 py-2 border border-[#1E3A8A] font-medium text-black text-center"
-                            style={{ backgroundColor: idx % 2 === 0 ? 'white' : '#f9fafb' }}>
+                      <tr key={student.rollNumber} className={`border-b border-[#1E3A8A] hover:bg-blue-50/50 transition-colors ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
+                        <td className="sticky left-0 z-10 px-3 py-2 border-r-2 border-[#1E3A8A] font-semibold text-black text-center"
+                            style={{ backgroundColor: idx % 2 === 0 ? 'white' : 'rgba(249, 250, 251, 0.3)' }}>
                           {student.rollNumber}
                         </td>
                         {student.subjectAttendance.map((att, attIdx) => (
                           <React.Fragment key={attIdx}>
-                            <td className="px-1 py-2 border border-[#1E3A8A] text-center text-black">
+                            <td className="px-1 py-2 border-r border-[#1E3A8A] text-center text-black">
                               {att.conducted}
                             </td>
-                            <td className="px-1 py-2 border border-[#1E3A8A] text-center text-black">
+                            <td className="px-1 py-2 border-r border-[#1E3A8A] text-center text-black">
                               {att.attended}
                             </td>
                           </React.Fragment>
                         ))}
-                        <td className="px-1 py-2 border border-[#1E3A8A] text-center font-medium text-black">
+                        <td className="px-1 py-2 border-r border-[#1E3A8A] text-center font-medium text-black">
                           {totalConducted}
                         </td>
-                        <td className="px-1 py-2 border border-[#1E3A8A] text-center font-medium text-black">
+                        <td className="px-1 py-2 border-r border-[#1E3A8A] text-center font-medium text-black">
                           {totalAttended}
                         </td>
-                        <td className={`px-1 py-2 border border-[#1E3A8A] text-center font-bold ${
-                          percentage >= 75 ? 'text-black' : 'text-white bg-pink-500'
+                        <td className={`px-1 py-2 border-[#1E3A8A] text-center font-bold ${
+                          percentage >= 75 ? 'text-black' : 'text-pink-600 bg-pink-100'
                         }`}>
                           {percentage}
                         </td>
