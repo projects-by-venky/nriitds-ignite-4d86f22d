@@ -1,3 +1,4 @@
+import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Download } from "lucide-react";
@@ -255,5 +256,4 @@ const MonthlyAttendance = () => {
   );
 };
 
-import React from "react";
 export default MonthlyAttendance;
