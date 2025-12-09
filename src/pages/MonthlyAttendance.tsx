@@ -1,53 +1,64 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, Download } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 
+// Subject data with faculty names
+const subjects = [
+  { code: "OT", name: "Object Technology", faculty: "Mrs DV" },
+  { code: "SMDS", name: "Statistical Methods", faculty: "Mrs DV" },
+  { code: "DE", name: "Digital Electronics", faculty: "Mr RT" },
+  { code: "DBMS", name: "Database Management", faculty: "Ms PPK" },
+  { code: "DLCO", name: "Digital Logic", faculty: "Mrs KP" },
+  { code: "DE L", name: "DE Lab", faculty: "Mr RT" },
+  { code: "DBMS L", name: "DBMS Lab", faculty: "Ms PPK" },
+  { code: "EDA L", name: "EDA Lab", faculty: "Mr MV" },
+  { code: "DT & I", name: "Design Thinking", faculty: "Mrs SM" },
+  { code: "CRT", name: "Campus Training", faculty: "" },
+];
+
 // Generate mock students for the section
 const generateStudents = (section: string) => {
   const students = [];
-  const baseRoll = section.includes("A") ? "23KP1A4401" : section.includes("B") ? "23KP1A4423" : "23KP1A4445";
-  const startNum = parseInt(baseRoll.slice(-2));
+  const baseStart = section.includes("A") ? 1 : section.includes("B") ? 23 : 45;
   
   for (let i = 0; i < 22; i++) {
-    const rollNum = startNum + i;
+    const rollNum = baseStart + i;
     students.push({
       rollNumber: `23KP1A44${rollNum.toString().padStart(2, '0')}`,
-      name: `Student ${rollNum}`,
     });
   }
   return students;
 };
 
-// Mock monthly attendance data
+// Generate mock monthly attendance data per subject
 const generateMonthlyData = (section: string) => {
   const students = generateStudents(section);
-  const months = ["January 2025", "February 2025", "March 2025", "April 2025", "May 2025", "June 2025"];
   
   return {
     section,
-    months,
+    attendanceDate: "31/03/2025",
     students: students.map(student => ({
       ...student,
-      attendance: months.map(() => ({
-        totalClasses: Math.floor(Math.random() * 10) + 20,
-        attended: Math.floor(Math.random() * 8) + 18,
+      subjectAttendance: subjects.map(() => ({
+        conducted: Math.floor(Math.random() * 50) + 40,
+        attended: Math.floor(Math.random() * 40) + 10,
       })),
     })),
   };
 };
 
 const departments = {
-  cse: { name: "Computer Science & Engineering" },
-  ece: { name: "Electronics & Communication" },
-  eee: { name: "Electrical & Electronics" },
-  mech: { name: "Mechanical Engineering" },
-  civil: { name: "Civil Engineering" },
-  aids: { name: "AI & Data Science" },
-  mba: { name: "Business Administration" },
-  mca: { name: "Computer Applications" }
+  cse: { name: "Computer Science & Engineering", shortName: "CSE" },
+  ece: { name: "Electronics & Communication", shortName: "ECE" },
+  eee: { name: "Electrical & Electronics", shortName: "EEE" },
+  mech: { name: "Mechanical Engineering", shortName: "MECH" },
+  civil: { name: "Civil Engineering", shortName: "CIVIL" },
+  aids: { name: "AI & Data Science", shortName: "AI&DS" },
+  mba: { name: "Business Administration", shortName: "MBA" },
+  mca: { name: "Computer Applications", shortName: "MCA" }
 };
 
 const MonthlyAttendance = () => {
@@ -56,6 +67,13 @@ const MonthlyAttendance = () => {
   
   const formattedSection = section?.replace(/-/g, ' ') || '';
   const data = generateMonthlyData(section || '2-2-DS-A');
+
+  // Extract class and semester from section (e.g., "2-2-DS-A" -> "2nd B.TECH", "SEM:2")
+  const sectionParts = section?.split('-') || [];
+  const year = sectionParts[0] || '2';
+  const sem = sectionParts[1] || '2';
+  const branch = sectionParts[2] || 'DS';
+  const sectionLetter = sectionParts[3] || 'A';
 
   if (!dept) {
     return (
@@ -73,16 +91,16 @@ const MonthlyAttendance = () => {
       <Header />
       
       <main className="pt-24 pb-20">
-        <div className="container mx-auto px-8">
+        <div className="container mx-auto px-4">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
+            className="mb-6"
           >
             <Link 
               to={`/department/${deptId}/student-portal`}
-              className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-6 transition-colors"
+              className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-4 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
               Back to Student Portal
@@ -90,11 +108,11 @@ const MonthlyAttendance = () => {
             
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-4xl font-black mb-2 bg-clip-text text-transparent"
+                <h1 className="text-3xl font-black mb-1 bg-clip-text text-transparent"
                     style={{ backgroundImage: "linear-gradient(135deg, #0EA5E9, #1E3A8A)" }}>
                   Monthly Cumulative Attendance
                 </h1>
-                <p className="text-xl text-white/70">{formattedSection} - {dept.name}</p>
+                <p className="text-lg text-white/70">{formattedSection} - {dept.name}</p>
               </div>
               <Button 
                 className="bg-gradient-cyber text-white hover:opacity-90"
@@ -113,71 +131,92 @@ const MonthlyAttendance = () => {
             transition={{ delay: 0.2 }}
             className="bg-white rounded-xl shadow-lg overflow-hidden"
           >
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <thead>
+            <div className="overflow-x-auto max-h-[70vh]">
+              <table className="w-full border-collapse text-sm">
+                {/* Institute Header */}
+                <thead className="sticky top-0 z-20">
                   <tr className="bg-[#1E3A8A] text-white">
-                    <th className="sticky left-0 z-10 bg-[#1E3A8A] px-4 py-3 text-left font-bold border border-[#1E3A8A]">
-                      S.No
+                    <th colSpan={subjects.length * 2 + 4} className="px-4 py-3 text-center font-bold border border-[#1E3A8A] text-base">
+                      NRI INSTITUTE OF TECHNOLOGY::GUNTUR
+                      <span className="ml-8">A-ATTENDED</span>
+                      <span className="ml-4">C-CONDUCTED</span>
                     </th>
-                    <th className="sticky left-16 z-10 bg-[#1E3A8A] px-4 py-3 text-left font-bold border border-[#1E3A8A]">
-                      Roll Number
+                  </tr>
+                  <tr className="bg-[#1E3A8A] text-white">
+                    <th colSpan={subjects.length * 2 + 4} className="px-4 py-2 text-center font-bold border border-[#1E3A8A]">
+                      CLASS:{year}nd B.TECH &nbsp;&nbsp; SEM:{sem} &nbsp;&nbsp; BRANCH: {branch}-{sectionLetter} &nbsp;&nbsp; CUMULATIVE ATTENDANCE UP TO - {data.attendanceDate}
                     </th>
-                    <th className="sticky left-40 z-10 bg-[#1E3A8A] px-4 py-3 text-left font-bold border border-[#1E3A8A]">
-                      Student Name
+                  </tr>
+                  {/* Subject Headers */}
+                  <tr className="bg-[#1E3A8A] text-white">
+                    <th rowSpan={3} className="sticky left-0 z-30 bg-[#1E3A8A] px-3 py-2 text-center font-bold border border-[#1E3A8A] min-w-[100px]">
+                      Roll No
                     </th>
-                    {data.months.map((month, idx) => (
-                      <th key={idx} className="px-4 py-3 text-center font-bold border border-[#1E3A8A] min-w-[140px]">
-                        <div className="flex flex-col">
-                          <span>{month}</span>
-                          <span className="text-xs font-normal opacity-80">Attended / Total</span>
-                        </div>
+                    {subjects.map((subject, idx) => (
+                      <th key={idx} colSpan={2} className="px-2 py-2 text-center font-bold border border-[#1E3A8A]">
+                        {subject.code}
                       </th>
                     ))}
-                    <th className="px-4 py-3 text-center font-bold border border-[#1E3A8A] min-w-[120px]">
-                      Overall %
+                    <th rowSpan={3} className="px-2 py-2 text-center font-bold border border-[#1E3A8A] min-w-[50px]">
+                      TC
                     </th>
+                    <th rowSpan={3} className="px-2 py-2 text-center font-bold border border-[#1E3A8A] min-w-[50px]">
+                      TA
+                    </th>
+                    <th rowSpan={3} className="px-2 py-2 text-center font-bold border border-[#1E3A8A] min-w-[50px]">
+                      PER
+                    </th>
+                  </tr>
+                  {/* Faculty Names */}
+                  <tr className="bg-[#1E3A8A] text-white">
+                    {subjects.map((subject, idx) => (
+                      <th key={idx} colSpan={2} className="px-2 py-1 text-center font-normal border border-[#1E3A8A] text-xs">
+                        {subject.faculty}
+                      </th>
+                    ))}
+                  </tr>
+                  {/* C/A Headers */}
+                  <tr className="bg-[#1E3A8A] text-white">
+                    {subjects.map((_, idx) => (
+                      <React.Fragment key={idx}>
+                        <th className="px-1 py-1 text-center font-bold border border-[#1E3A8A] min-w-[35px]">C</th>
+                        <th className="px-1 py-1 text-center font-bold border border-[#1E3A8A] min-w-[35px]">A</th>
+                      </React.Fragment>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
                   {data.students.map((student, idx) => {
-                    const totalAttended = student.attendance.reduce((sum, a) => sum + a.attended, 0);
-                    const totalClasses = student.attendance.reduce((sum, a) => sum + a.totalClasses, 0);
-                    const overallPercentage = ((totalAttended / totalClasses) * 100).toFixed(1);
+                    const totalConducted = student.subjectAttendance.reduce((sum, a) => sum + a.conducted, 0);
+                    const totalAttended = student.subjectAttendance.reduce((sum, a) => sum + a.attended, 0);
+                    const percentage = Math.round((totalAttended / totalConducted) * 100);
                     
                     return (
                       <tr key={student.rollNumber} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                        <td className="sticky left-0 z-10 px-4 py-3 border border-[#1E3A8A] font-medium text-black"
-                            style={{ backgroundColor: idx % 2 === 0 ? 'white' : '#f9fafb' }}>
-                          {idx + 1}
-                        </td>
-                        <td className="sticky left-16 z-10 px-4 py-3 border border-[#1E3A8A] font-medium text-black"
+                        <td className="sticky left-0 z-10 px-3 py-2 border border-[#1E3A8A] font-medium text-black text-center"
                             style={{ backgroundColor: idx % 2 === 0 ? 'white' : '#f9fafb' }}>
                           {student.rollNumber}
                         </td>
-                        <td className="sticky left-40 z-10 px-4 py-3 border border-[#1E3A8A] text-black"
-                            style={{ backgroundColor: idx % 2 === 0 ? 'white' : '#f9fafb' }}>
-                          {student.name}
-                        </td>
-                        {student.attendance.map((att, attIdx) => {
-                          const percentage = (att.attended / att.totalClasses) * 100;
-                          return (
-                            <td 
-                              key={attIdx} 
-                              className={`px-4 py-3 border border-[#1E3A8A] text-center font-medium ${
-                                percentage >= 75 ? 'text-green-600' : percentage >= 65 ? 'text-yellow-600' : 'text-red-600'
-                              }`}
-                            >
-                              {att.attended} / {att.totalClasses}
-                              <span className="block text-xs opacity-70">({percentage.toFixed(0)}%)</span>
+                        {student.subjectAttendance.map((att, attIdx) => (
+                          <React.Fragment key={attIdx}>
+                            <td className="px-1 py-2 border border-[#1E3A8A] text-center text-black">
+                              {att.conducted}
                             </td>
-                          );
-                        })}
-                        <td className={`px-4 py-3 border border-[#1E3A8A] text-center font-bold ${
-                          parseFloat(overallPercentage) >= 75 ? 'text-green-600 bg-green-50' : 
-                          parseFloat(overallPercentage) >= 65 ? 'text-yellow-600 bg-yellow-50' : 'text-red-600 bg-red-50'
+                            <td className="px-1 py-2 border border-[#1E3A8A] text-center text-black">
+                              {att.attended}
+                            </td>
+                          </React.Fragment>
+                        ))}
+                        <td className="px-1 py-2 border border-[#1E3A8A] text-center font-medium text-black">
+                          {totalConducted}
+                        </td>
+                        <td className="px-1 py-2 border border-[#1E3A8A] text-center font-medium text-black">
+                          {totalAttended}
+                        </td>
+                        <td className={`px-1 py-2 border border-[#1E3A8A] text-center font-bold ${
+                          percentage >= 75 ? 'text-black' : 'text-white bg-pink-500'
                         }`}>
-                          {overallPercentage}%
+                          {percentage}
                         </td>
                       </tr>
                     );
@@ -195,16 +234,17 @@ const MonthlyAttendance = () => {
             className="mt-6 flex items-center gap-6 text-sm"
           >
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-green-100 border border-green-600"></div>
-              <span className="text-white/70">≥ 75% (Good)</span>
+              <span className="text-white/70 font-medium">TC - Total Conducted</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-yellow-100 border border-yellow-600"></div>
-              <span className="text-white/70">65-74% (Warning)</span>
+              <span className="text-white/70 font-medium">TA - Total Attended</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-red-100 border border-red-600"></div>
-              <span className="text-white/70">&lt; 65% (Critical)</span>
+              <span className="text-white/70 font-medium">PER - Percentage</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded bg-pink-500"></div>
+              <span className="text-white/70">&lt; 75% (Low Attendance)</span>
             </div>
           </motion.div>
         </div>
@@ -215,4 +255,5 @@ const MonthlyAttendance = () => {
   );
 };
 
+import React from "react";
 export default MonthlyAttendance;
