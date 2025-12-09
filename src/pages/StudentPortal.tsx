@@ -179,8 +179,30 @@ const StudentPortal = () => {
 
             {/* Time Tables */}
             <ContentSection title="Time Tables" icon={<Calendar className="w-6 h-6" />}>
-              <ActionButton label="2-1 DS-A, B & C Time Tables" fullWidth />
-              <ActionButton label="3-1 DS-A, B & C Time Tables" fullWidth />
+              <ActionButton 
+                label="2-1 DS-A" 
+                onClick={() => navigate(`/department/${deptId}/timetable/2-1-DS-A`)}
+              />
+              <ActionButton 
+                label="2-1 DS-B" 
+                onClick={() => navigate(`/department/${deptId}/timetable/2-1-DS-B`)}
+              />
+              <ActionButton 
+                label="2-1 DS-C" 
+                onClick={() => navigate(`/department/${deptId}/timetable/2-1-DS-C`)}
+              />
+              <ActionButton 
+                label="3-1 DS-A" 
+                onClick={() => navigate(`/department/${deptId}/timetable/3-1-DS-A`)}
+              />
+              <ActionButton 
+                label="3-1 DS-B" 
+                onClick={() => navigate(`/department/${deptId}/timetable/3-1-DS-B`)}
+              />
+              <ActionButton 
+                label="3-1 DS-C" 
+                onClick={() => navigate(`/department/${deptId}/timetable/3-1-DS-C`)}
+              />
             </ContentSection>
 
             {/* Slip Test Questions */}
