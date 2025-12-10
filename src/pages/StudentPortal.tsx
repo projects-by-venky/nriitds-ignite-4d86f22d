@@ -74,40 +74,6 @@ const StudentPortal = () => {
           </motion.div>
 
           <div className="space-y-6">
-            {/* Assignment Questions */}
-            <ContentSection title="2-2 DS : Assignment Questions" icon={<FileText className="w-6 h-6" />}>
-              <ActionButton label="DBMS" />
-              <ActionButton label="DE" />
-              <ActionButton label="DLCO" />
-              <ActionButton label="SMDS" />
-              <ActionButton label="OT" />
-            </ContentSection>
-
-            {/* Weekly Test Questions */}
-            <ContentSection title="2-2 DS : Weekly Test Questions" icon={<TestTube className="w-6 h-6" />}>
-              <ActionButton label="DBMS" />
-              <ActionButton label="DE" />
-              <ActionButton label="DLCO" />
-              <ActionButton label="SMDS" />
-              <ActionButton label="OT" />
-            </ContentSection>
-
-            {/* Additional Attendance */}
-            <ContentSection title="Additional Attendance" icon={<UserPlus className="w-6 h-6" />}>
-              <ActionButton label="23KP_2.2 Additional Attendance" fullWidth />
-              <ActionButton label="23KP_2.2 Additional Marks" fullWidth />
-            </ContentSection>
-
-            {/* Upload Certificates */}
-            <ContentSection title="Upload Certificates" icon={<FileText className="w-6 h-6" />}>
-              <ActionButton label="Click here to upload your certificates" variant="primary" fullWidth />
-            </ContentSection>
-
-            {/* Parent Meeting Report */}
-            <ContentSection title="Parent Meeting Report" icon={<Users className="w-6 h-6" />}>
-              <ActionButton label="Click here to access the status report" variant="primary" fullWidth />
-            </ContentSection>
-
             {/* Student Guidelines */}
             <ContentSection title="Student Guidelines" icon={<BookOpen className="w-6 h-6" />}>
               <ActionButton label="Click here to access the guidelines for DS students" variant="primary" fullWidth />
@@ -205,22 +171,6 @@ const StudentPortal = () => {
               />
             </ContentSection>
 
-            {/* Slip Test Questions */}
-            <ContentSection title="2-1 DS Slip Test Questions" icon={<TestTube className="w-6 h-6" />}>
-              <ActionButton label="DMGT" />
-              <ActionButton label="UHV" />
-              <ActionButton label="ADS" />
-              <ActionButton label="JAVA" />
-              <ActionButton label="IDS" />
-            </ContentSection>
-
-            {/* Performance in Slip Tests */}
-            <ContentSection title="Performance in Slip Tests (2-1 DS)" icon={<ClipboardList className="w-6 h-6" />}>
-              <ActionButton label="2-1 DS-A" />
-              <ActionButton label="2-1 DS-B" />
-              <ActionButton label="2-1 DS-C" />
-            </ContentSection>
-
             {/* Feedback */}
             <ContentSection title="Feedback" icon={<MessageSquare className="w-6 h-6" />}>
               <ActionButton label="2-2 DS-A Feedback" />
@@ -237,11 +187,6 @@ const StudentPortal = () => {
             {/* Academic Calendars */}
             <ContentSection title="Academic Calendars" icon={<Calendar className="w-6 h-6" />}>
               <ActionButton label="2nd DS Academic Calendar" fullWidth />
-            </ContentSection>
-
-            {/* SAC Program */}
-            <ContentSection title="SAC Program" icon={<GraduationCap className="w-6 h-6" />}>
-              <ActionButton label="SAC Activities" variant="primary" fullWidth />
             </ContentSection>
           </div>
         </div>
