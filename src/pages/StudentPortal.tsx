@@ -74,6 +74,14 @@ const StudentPortal = () => {
           </motion.div>
 
           <div className="space-y-6">
+            {/* All Subject Notes/Materials */}
+            <ContentSection title="All Subject Notes / Materials" icon={<FileText className="w-6 h-6" />}>
+              <ActionButton label="1st Year Notes & Materials" />
+              <ActionButton label="2nd Year Notes & Materials" />
+              <ActionButton label="3rd Year Notes & Materials" />
+              <ActionButton label="4th Year Notes & Materials" />
+            </ContentSection>
+
             {/* Student Guidelines */}
             <ContentSection title="Student Guidelines" icon={<BookOpen className="w-6 h-6" />}>
               <a href="/documents/Guidelines_Student_DS.pdf" download className="w-full">
