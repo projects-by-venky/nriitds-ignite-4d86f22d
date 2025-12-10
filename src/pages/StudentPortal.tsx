@@ -76,7 +76,9 @@ const StudentPortal = () => {
           <div className="space-y-6">
             {/* Student Guidelines */}
             <ContentSection title="Student Guidelines" icon={<BookOpen className="w-6 h-6" />}>
-              <ActionButton label="Click here to access the guidelines for DS students" variant="primary" fullWidth />
+              <a href="/documents/Guidelines_Student_DS.pdf" target="_blank" rel="noopener noreferrer" className="w-full">
+                <ActionButton label="Click here to access the guidelines for DS students" variant="primary" fullWidth />
+              </a>
             </ContentSection>
 
             {/* MID Time Tables */}
