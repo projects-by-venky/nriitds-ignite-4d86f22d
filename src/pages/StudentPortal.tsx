@@ -76,10 +76,22 @@ const StudentPortal = () => {
           <div className="space-y-6">
             {/* All Subject Notes/Materials */}
             <ContentSection title="All Subject Notes / Materials" icon={<FileText className="w-6 h-6" />}>
-              <ActionButton label="1st Year Notes & Materials" />
-              <ActionButton label="2nd Year Notes & Materials" />
-              <ActionButton label="3rd Year Notes & Materials" />
-              <ActionButton label="4th Year Notes & Materials" />
+              <ActionButton 
+                label="1st Year Notes & Materials" 
+                onClick={() => navigate(`/department/${deptId}/notes/1`)}
+              />
+              <ActionButton 
+                label="2nd Year Notes & Materials" 
+                onClick={() => navigate(`/department/${deptId}/notes/2`)}
+              />
+              <ActionButton 
+                label="3rd Year Notes & Materials" 
+                onClick={() => navigate(`/department/${deptId}/notes/3`)}
+              />
+              <ActionButton 
+                label="4th Year Notes & Materials" 
+                onClick={() => navigate(`/department/${deptId}/notes/4`)}
+              />
             </ContentSection>
 
             {/* Student Guidelines */}
