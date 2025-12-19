@@ -203,10 +203,16 @@ const StudentPortal = () => {
 
             {/* Syllabus */}
             <ContentSection title="Syllabus" icon={<BookOpen className="w-6 h-6" />}>
-              <ActionButton label="1st Year DS Syllabus" />
-              <ActionButton label="2nd Year DS Syllabus" />
+              <a href="/documents/CSE-DS-Syllabus.pdf" download className="w-full">
+                <ActionButton label="1st Year DS Syllabus" fullWidth />
+              </a>
+              <a href="/documents/CSE-DS-Syllabus.pdf" download className="w-full">
+                <ActionButton label="2nd Year DS Syllabus" fullWidth />
+              </a>
               <ActionButton label="3rd Year DS Syllabus" />
-              <ActionButton label="4th Year DS Syllabus" />
+              <a href="/documents/CSE-DS-Syllabus.pdf" download className="w-full">
+                <ActionButton label="4th Year DS Syllabus" fullWidth />
+              </a>
             </ContentSection>
 
             {/* Academic Calendars */}
