@@ -203,8 +203,10 @@ const StudentPortal = () => {
 
             {/* Syllabus */}
             <ContentSection title="Syllabus" icon={<BookOpen className="w-6 h-6" />}>
-              <ActionButton label="2nd DS Syllabus" />
-              <ActionButton label="3rd DS Syllabus" />
+              <ActionButton label="1st Year DS Syllabus" />
+              <ActionButton label="2nd Year DS Syllabus" />
+              <ActionButton label="3rd Year DS Syllabus" />
+              <ActionButton label="4th Year DS Syllabus" />
             </ContentSection>
 
             {/* Academic Calendars */}
