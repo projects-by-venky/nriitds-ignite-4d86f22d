@@ -209,7 +209,9 @@ const StudentPortal = () => {
 
             {/* Academic Calendars */}
             <ContentSection title="Academic Calendars" icon={<Calendar className="w-6 h-6" />}>
-              <ActionButton label="2nd DS Academic Calendar" fullWidth />
+              <a href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" download className="w-full">
+                <ActionButton label="II Year Academic Calendar 2024-25" fullWidth />
+              </a>
             </ContentSection>
           </div>
         </div>
