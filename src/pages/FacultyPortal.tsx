@@ -171,7 +171,7 @@ const FacultyPortal = () => {
           <div className="max-w-5xl mx-auto space-y-4">
             {/* Guidelines for Teachers */}
             <SectionCard title="Guidelines for Teachers" icon={BookOpen} defaultOpen>
-              <ActionButton label="Click here to access guidelines for the teachers" href="#" />
+              <ActionButton label="Click here to access guidelines for the teachers" href="/documents/Guidelines_All_Teachers.pdf" />
             </SectionCard>
 
             {/* Syllabus Review Forms */}
