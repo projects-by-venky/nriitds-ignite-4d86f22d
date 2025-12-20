@@ -1,27 +1,29 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, FileText, TestTube, UserPlus, Users, Calendar, ClipboardList, BookOpen, GraduationCap, MessageSquare, ActivitySquare, Clock } from "lucide-react";
+import { FileText, BookOpen, Calendar, ClipboardList, MessageSquare, ActivitySquare } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { StudentSidebar } from "@/components/student/StudentSidebar";
 import { ContentSection } from "@/components/student/ContentSection";
 import { ActionButton } from "@/components/student/ActionButton";
+import { YearSemesterSection } from "@/components/student/YearSemesterSection";
 
 const departments = {
-  cse: { name: "Computer Science & Engineering" },
-  ece: { name: "Electronics & Communication" },
-  eee: { name: "Electrical & Electronics" },
-  mech: { name: "Mechanical Engineering" },
-  civil: { name: "Civil Engineering" },
-  aids: { name: "AI & Data Science" },
-  mba: { name: "Business Administration" },
-  mca: { name: "Computer Applications" }
+  cse: { name: "Computer Science & Engineering", code: "CSE" },
+  ece: { name: "Electronics & Communication", code: "ECE" },
+  eee: { name: "Electrical & Electronics", code: "EEE" },
+  mech: { name: "Mechanical Engineering", code: "MECH" },
+  civil: { name: "Civil Engineering", code: "CIVIL" },
+  aids: { name: "AI & Data Science", code: "DS" },
+  mba: { name: "Business Administration", code: "MBA" },
+  mca: { name: "Computer Applications", code: "MCA" }
 };
 
 const StudentPortal = () => {
   const { deptId } = useParams<{ deptId: string }>();
   const navigate = useNavigate();
   const dept = deptId ? departments[deptId as keyof typeof departments] : null;
+  const deptCode = dept?.code || "DS";
 
   if (!dept) {
     return (
@@ -33,6 +35,297 @@ const StudentPortal = () => {
       </div>
     );
   }
+
+  // Helper function to generate sections for each section
+  const sections = ["A", "B", "C"];
+
+  // Subject Notes/Materials data
+  const notesData = [
+    {
+      year: "1st Year",
+      semesters: [
+        { semester: "1-1 Semester", items: [{ label: `1-1 ${deptCode} Notes & Materials`, onClick: () => navigate(`/department/${deptId}/notes/1-1`) }] },
+        { semester: "1-2 Semester", items: [{ label: `1-2 ${deptCode} Notes & Materials`, onClick: () => navigate(`/department/${deptId}/notes/1-2`) }] },
+      ]
+    },
+    {
+      year: "2nd Year",
+      semesters: [
+        { semester: "2-1 Semester", items: [{ label: `2-1 ${deptCode} Notes & Materials`, onClick: () => navigate(`/department/${deptId}/notes/2-1`) }] },
+        { semester: "2-2 Semester", items: [{ label: `2-2 ${deptCode} Notes & Materials`, onClick: () => navigate(`/department/${deptId}/notes/2-2`) }] },
+      ]
+    },
+    {
+      year: "3rd Year",
+      semesters: [
+        { semester: "3-1 Semester", items: [{ label: `3-1 ${deptCode} Notes & Materials`, onClick: () => navigate(`/department/${deptId}/notes/3-1`) }] },
+        { semester: "3-2 Semester", items: [{ label: `3-2 ${deptCode} Notes & Materials`, onClick: () => navigate(`/department/${deptId}/notes/3-2`) }] },
+      ]
+    },
+    {
+      year: "4th Year",
+      semesters: [
+        { semester: "4-1 Semester", items: [{ label: `4-1 ${deptCode} Notes & Materials`, onClick: () => navigate(`/department/${deptId}/notes/4-1`) }] },
+        { semester: "4-2 Semester", items: [{ label: `4-2 ${deptCode} Notes & Materials`, onClick: () => navigate(`/department/${deptId}/notes/4-2`) }] },
+      ]
+    },
+  ];
+
+  // MID Time Tables data
+  const midTimeTableData = [
+    {
+      year: "1st Year",
+      semesters: [
+        { semester: "1-1 Semester", items: [{ label: `1-1 MID Time Table` }] },
+        { semester: "1-2 Semester", items: [{ label: `1-2 MID Time Table` }] },
+      ]
+    },
+    {
+      year: "2nd Year",
+      semesters: [
+        { semester: "2-1 Semester", items: [{ label: `2-1 MID Time Table`, href: "/documents/2-2_Mid-2_TimeTable_April-2025.pdf" }] },
+        { semester: "2-2 Semester", items: [{ label: `2-2 MID Time Table`, href: "/documents/2-2_Mid-2_TimeTable_April-2025.pdf" }] },
+      ]
+    },
+    {
+      year: "3rd Year",
+      semesters: [
+        { semester: "3-1 Semester", items: [{ label: `3-1 MID Time Table` }] },
+        { semester: "3-2 Semester", items: [{ label: `3-2 MID Time Table` }] },
+      ]
+    },
+    {
+      year: "4th Year",
+      semesters: [
+        { semester: "4-1 Semester", items: [{ label: `4-1 MID Time Table` }] },
+        { semester: "4-2 Semester", items: [{ label: `4-2 MID Time Table` }] },
+      ]
+    },
+  ];
+
+  // MID & Assignment Marks data
+  const marksData = [
+    {
+      year: "1st Year",
+      semesters: [
+        { semester: "1-1 Semester", items: [{ label: `1-1 ${deptCode} : Internal Marks`, variant: "primary" as const }] },
+        { semester: "1-2 Semester", items: [{ label: `1-2 ${deptCode} : Internal Marks`, variant: "primary" as const }] },
+      ]
+    },
+    {
+      year: "2nd Year",
+      semesters: [
+        { semester: "2-1 Semester", items: [{ label: `2-1 ${deptCode} : Internal Marks`, variant: "primary" as const }] },
+        { semester: "2-2 Semester", items: [{ label: `2-2 ${deptCode} : Internal Marks`, variant: "primary" as const }] },
+      ]
+    },
+    {
+      year: "3rd Year",
+      semesters: [
+        { semester: "3-1 Semester", items: [{ label: `3-1 ${deptCode} : Internal Marks`, variant: "primary" as const }] },
+        { semester: "3-2 Semester", items: [{ label: `3-2 ${deptCode} : Internal Marks`, variant: "primary" as const }] },
+      ]
+    },
+    {
+      year: "4th Year",
+      semesters: [
+        { semester: "4-1 Semester", items: [{ label: `4-1 ${deptCode} : Internal Marks`, variant: "primary" as const }] },
+        { semester: "4-2 Semester", items: [{ label: `4-2 ${deptCode} : Internal Marks`, variant: "primary" as const }] },
+      ]
+    },
+  ];
+
+  // Hourly Attendance data
+  const hourlyAttendanceData = [
+    {
+      year: "1st Year",
+      semesters: [
+        { semester: "1-1 Semester", items: sections.map(sec => ({ label: `1-1 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/attendance/1-1-${deptCode}-${sec}`) })) },
+        { semester: "1-2 Semester", items: sections.map(sec => ({ label: `1-2 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/attendance/1-2-${deptCode}-${sec}`) })) },
+      ]
+    },
+    {
+      year: "2nd Year",
+      semesters: [
+        { semester: "2-1 Semester", items: sections.map(sec => ({ label: `2-1 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/attendance/2-1-${deptCode}-${sec}`) })) },
+        { semester: "2-2 Semester", items: sections.map(sec => ({ label: `2-2 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/attendance/2-2-${deptCode}-${sec}`) })) },
+      ]
+    },
+    {
+      year: "3rd Year",
+      semesters: [
+        { semester: "3-1 Semester", items: sections.map(sec => ({ label: `3-1 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/attendance/3-1-${deptCode}-${sec}`) })) },
+        { semester: "3-2 Semester", items: sections.map(sec => ({ label: `3-2 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/attendance/3-2-${deptCode}-${sec}`) })) },
+      ]
+    },
+    {
+      year: "4th Year",
+      semesters: [
+        { semester: "4-1 Semester", items: sections.map(sec => ({ label: `4-1 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/attendance/4-1-${deptCode}-${sec}`) })) },
+        { semester: "4-2 Semester", items: sections.map(sec => ({ label: `4-2 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/attendance/4-2-${deptCode}-${sec}`) })) },
+      ]
+    },
+  ];
+
+  // Monthly Attendance data
+  const monthlyAttendanceData = [
+    {
+      year: "1st Year",
+      semesters: [
+        { semester: "1-1 Semester", items: sections.map(sec => ({ label: `1-1 ${deptCode}-${sec} Cumulative`, onClick: () => navigate(`/department/${deptId}/monthly-attendance/1-1-${deptCode}-${sec}`) })) },
+        { semester: "1-2 Semester", items: sections.map(sec => ({ label: `1-2 ${deptCode}-${sec} Cumulative`, onClick: () => navigate(`/department/${deptId}/monthly-attendance/1-2-${deptCode}-${sec}`) })) },
+      ]
+    },
+    {
+      year: "2nd Year",
+      semesters: [
+        { semester: "2-1 Semester", items: sections.map(sec => ({ label: `2-1 ${deptCode}-${sec} Cumulative`, onClick: () => navigate(`/department/${deptId}/monthly-attendance/2-1-${deptCode}-${sec}`) })) },
+        { semester: "2-2 Semester", items: sections.map(sec => ({ label: `2-2 ${deptCode}-${sec} Cumulative`, onClick: () => navigate(`/department/${deptId}/monthly-attendance/2-2-${deptCode}-${sec}`) })) },
+      ]
+    },
+    {
+      year: "3rd Year",
+      semesters: [
+        { semester: "3-1 Semester", items: sections.map(sec => ({ label: `3-1 ${deptCode}-${sec} Cumulative`, onClick: () => navigate(`/department/${deptId}/monthly-attendance/3-1-${deptCode}-${sec}`) })) },
+        { semester: "3-2 Semester", items: sections.map(sec => ({ label: `3-2 ${deptCode}-${sec} Cumulative`, onClick: () => navigate(`/department/${deptId}/monthly-attendance/3-2-${deptCode}-${sec}`) })) },
+      ]
+    },
+    {
+      year: "4th Year",
+      semesters: [
+        { semester: "4-1 Semester", items: sections.map(sec => ({ label: `4-1 ${deptCode}-${sec} Cumulative`, onClick: () => navigate(`/department/${deptId}/monthly-attendance/4-1-${deptCode}-${sec}`) })) },
+        { semester: "4-2 Semester", items: sections.map(sec => ({ label: `4-2 ${deptCode}-${sec} Cumulative`, onClick: () => navigate(`/department/${deptId}/monthly-attendance/4-2-${deptCode}-${sec}`) })) },
+      ]
+    },
+  ];
+
+  // Time Tables data
+  const timeTablesData = [
+    {
+      year: "1st Year",
+      semesters: [
+        { semester: "1-1 Semester", items: sections.map(sec => ({ label: `1-1 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/timetable/1-1-${deptCode}-${sec}`) })) },
+        { semester: "1-2 Semester", items: sections.map(sec => ({ label: `1-2 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/timetable/1-2-${deptCode}-${sec}`) })) },
+      ]
+    },
+    {
+      year: "2nd Year",
+      semesters: [
+        { semester: "2-1 Semester", items: sections.map(sec => ({ label: `2-1 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/timetable/2-1-${deptCode}-${sec}`) })) },
+        { semester: "2-2 Semester", items: sections.map(sec => ({ label: `2-2 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/timetable/2-2-${deptCode}-${sec}`) })) },
+      ]
+    },
+    {
+      year: "3rd Year",
+      semesters: [
+        { semester: "3-1 Semester", items: sections.map(sec => ({ label: `3-1 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/timetable/3-1-${deptCode}-${sec}`) })) },
+        { semester: "3-2 Semester", items: sections.map(sec => ({ label: `3-2 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/timetable/3-2-${deptCode}-${sec}`) })) },
+      ]
+    },
+    {
+      year: "4th Year",
+      semesters: [
+        { semester: "4-1 Semester", items: sections.map(sec => ({ label: `4-1 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/timetable/4-1-${deptCode}-${sec}`) })) },
+        { semester: "4-2 Semester", items: sections.map(sec => ({ label: `4-2 ${deptCode}-${sec}`, onClick: () => navigate(`/department/${deptId}/timetable/4-2-${deptCode}-${sec}`) })) },
+      ]
+    },
+  ];
+
+  // Feedback data
+  const feedbackData = [
+    {
+      year: "1st Year",
+      semesters: [
+        { semester: "1-1 Semester", items: sections.map(sec => ({ label: `1-1 ${deptCode}-${sec} Feedback` })) },
+        { semester: "1-2 Semester", items: sections.map(sec => ({ label: `1-2 ${deptCode}-${sec} Feedback` })) },
+      ]
+    },
+    {
+      year: "2nd Year",
+      semesters: [
+        { semester: "2-1 Semester", items: sections.map(sec => ({ label: `2-1 ${deptCode}-${sec} Feedback` })) },
+        { semester: "2-2 Semester", items: sections.map(sec => ({ label: `2-2 ${deptCode}-${sec} Feedback` })) },
+      ]
+    },
+    {
+      year: "3rd Year",
+      semesters: [
+        { semester: "3-1 Semester", items: sections.map(sec => ({ label: `3-1 ${deptCode}-${sec} Feedback` })) },
+        { semester: "3-2 Semester", items: sections.map(sec => ({ label: `3-2 ${deptCode}-${sec} Feedback` })) },
+      ]
+    },
+    {
+      year: "4th Year",
+      semesters: [
+        { semester: "4-1 Semester", items: sections.map(sec => ({ label: `4-1 ${deptCode}-${sec} Feedback` })) },
+        { semester: "4-2 Semester", items: sections.map(sec => ({ label: `4-2 ${deptCode}-${sec} Feedback` })) },
+      ]
+    },
+  ];
+
+  // Syllabus data
+  const syllabusData = [
+    {
+      year: "1st Year",
+      semesters: [
+        { semester: "1-1 Semester", items: [{ label: `1-1 ${deptCode} Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf" }] },
+        { semester: "1-2 Semester", items: [{ label: `1-2 ${deptCode} Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf" }] },
+      ]
+    },
+    {
+      year: "2nd Year",
+      semesters: [
+        { semester: "2-1 Semester", items: [{ label: `2-1 ${deptCode} Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf" }] },
+        { semester: "2-2 Semester", items: [{ label: `2-2 ${deptCode} Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf" }] },
+      ]
+    },
+    {
+      year: "3rd Year",
+      semesters: [
+        { semester: "3-1 Semester", items: [{ label: `3-1 ${deptCode} Syllabus`, href: "/documents/CSE-DS-3rd-Year-Syllabus.pdf" }] },
+        { semester: "3-2 Semester", items: [{ label: `3-2 ${deptCode} Syllabus`, href: "/documents/CSE-DS-3rd-Year-Syllabus.pdf" }] },
+      ]
+    },
+    {
+      year: "4th Year",
+      semesters: [
+        { semester: "4-1 Semester", items: [{ label: `4-1 ${deptCode} Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf" }] },
+        { semester: "4-2 Semester", items: [{ label: `4-2 ${deptCode} Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf" }] },
+      ]
+    },
+  ];
+
+  // Academic Calendars data
+  const academicCalendarData = [
+    {
+      year: "1st Year",
+      semesters: [
+        { semester: "1-1 Semester", items: [{ label: `1-1 Academic Calendar 2024-25`, href: "/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" }] },
+        { semester: "1-2 Semester", items: [{ label: `1-2 Academic Calendar 2024-25`, href: "/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" }] },
+      ]
+    },
+    {
+      year: "2nd Year",
+      semesters: [
+        { semester: "2-1 Semester", items: [{ label: `2-1 Academic Calendar 2024-25`, href: "/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" }] },
+        { semester: "2-2 Semester", items: [{ label: `2-2 Academic Calendar 2024-25`, href: "/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" }] },
+      ]
+    },
+    {
+      year: "3rd Year",
+      semesters: [
+        { semester: "3-1 Semester", items: [{ label: `3-1 Academic Calendar 2024-25`, href: "/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" }] },
+        { semester: "3-2 Semester", items: [{ label: `3-2 Academic Calendar 2024-25`, href: "/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" }] },
+      ]
+    },
+    {
+      year: "4th Year",
+      semesters: [
+        { semester: "4-1 Semester", items: [{ label: `4-1 Academic Calendar 2024-25`, href: "/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" }] },
+        { semester: "4-2 Semester", items: [{ label: `4-2 Academic Calendar 2024-25`, href: "/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" }] },
+      ]
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background">
@@ -76,22 +369,7 @@ const StudentPortal = () => {
           <div className="space-y-6">
             {/* All Subject Notes/Materials */}
             <ContentSection title="All Subject Notes / Materials" icon={<FileText className="w-6 h-6" />}>
-              <ActionButton 
-                label="1st Year Notes & Materials" 
-                onClick={() => navigate(`/department/${deptId}/notes/1`)}
-              />
-              <ActionButton 
-                label="2nd Year Notes & Materials" 
-                onClick={() => navigate(`/department/${deptId}/notes/2`)}
-              />
-              <ActionButton 
-                label="3rd Year Notes & Materials" 
-                onClick={() => navigate(`/department/${deptId}/notes/3`)}
-              />
-              <ActionButton 
-                label="4th Year Notes & Materials" 
-                onClick={() => navigate(`/department/${deptId}/notes/4`)}
-              />
+              <YearSemesterSection years={notesData} deptId={deptId} />
             </ContentSection>
 
             {/* Student Guidelines */}
@@ -103,204 +381,42 @@ const StudentPortal = () => {
 
             {/* MID Time Tables */}
             <ContentSection title="MID Time Tables" icon={<Calendar className="w-6 h-6" />}>
-              <p className="text-white/60 text-sm mb-2 font-semibold">1st Year</p>
-              <ActionButton label="1-1 MID Time Table" />
-              <ActionButton label="1-2 MID Time Table" />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">2nd Year</p>
-              <a href="/documents/2-2_Mid-2_TimeTable_April-2025.pdf" download className="w-full">
-                <ActionButton label="2-1 MID Time Table" fullWidth />
-              </a>
-              <a href="/documents/2-2_Mid-2_TimeTable_April-2025.pdf" download className="w-full">
-                <ActionButton label="2-2 MID Time Table" fullWidth />
-              </a>
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">3rd Year</p>
-              <ActionButton label="3-1 MID Time Table" />
-              <ActionButton label="3-2 MID Time Table" />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">4th Year</p>
-              <ActionButton label="4-1 MID Time Table" />
-              <ActionButton label="4-2 MID Time Table" />
+              <YearSemesterSection years={midTimeTableData} deptId={deptId} />
             </ContentSection>
 
-            {/* Internal Marks */}
+            {/* MID & Assignment Marks */}
             <ContentSection title="MID & Assignment Marks" icon={<ClipboardList className="w-6 h-6" />}>
-              <p className="text-white/60 text-sm mb-2 font-semibold">1st Year</p>
-              <ActionButton label="1-1 DS : Internal Marks" />
-              <ActionButton label="1-2 DS : Internal Marks" />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">2nd Year</p>
-              <ActionButton label="2-1 DS : Internal Marks" variant="primary" />
-              <ActionButton label="2-2 DS : Internal Marks" variant="primary" />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">3rd Year</p>
-              <ActionButton label="3-1 DS : Internal Marks" />
-              <ActionButton label="3-2 DS : Internal Marks" />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">4th Year</p>
-              <ActionButton label="4-1 DS : Internal Marks" />
-              <ActionButton label="4-2 DS : Internal Marks" />
+              <YearSemesterSection years={marksData} deptId={deptId} />
             </ContentSection>
 
             {/* Hourly Attendance */}
             <ContentSection title="Hourly Attendance" icon={<ActivitySquare className="w-6 h-6" />}>
-              <ActionButton 
-                label="View Hourly Attendance Table" 
-                icon={Clock}
-                variant="primary"
-                fullWidth
-              />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">1st Year</p>
-              <ActionButton label="1-1 DS-A" onClick={() => navigate(`/department/${deptId}/attendance/1-1-DS-A`)} />
-              <ActionButton label="1-1 DS-B" onClick={() => navigate(`/department/${deptId}/attendance/1-1-DS-B`)} />
-              <ActionButton label="1-1 DS-C" onClick={() => navigate(`/department/${deptId}/attendance/1-1-DS-C`)} />
-              <ActionButton label="1-2 DS-A" onClick={() => navigate(`/department/${deptId}/attendance/1-2-DS-A`)} />
-              <ActionButton label="1-2 DS-B" onClick={() => navigate(`/department/${deptId}/attendance/1-2-DS-B`)} />
-              <ActionButton label="1-2 DS-C" onClick={() => navigate(`/department/${deptId}/attendance/1-2-DS-C`)} />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">2nd Year</p>
-              <ActionButton label="2-1 DS-A" onClick={() => navigate(`/department/${deptId}/attendance/2-1-DS-A`)} />
-              <ActionButton label="2-1 DS-B" onClick={() => navigate(`/department/${deptId}/attendance/2-1-DS-B`)} />
-              <ActionButton label="2-1 DS-C" onClick={() => navigate(`/department/${deptId}/attendance/2-1-DS-C`)} />
-              <ActionButton label="2-2 DS-A" onClick={() => navigate(`/department/${deptId}/attendance/2-2-DS-A`)} />
-              <ActionButton label="2-2 DS-B" onClick={() => navigate(`/department/${deptId}/attendance/2-2-DS-B`)} />
-              <ActionButton label="2-2 DS-C" onClick={() => navigate(`/department/${deptId}/attendance/2-2-DS-C`)} />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">3rd Year</p>
-              <ActionButton label="3-1 DS-A" onClick={() => navigate(`/department/${deptId}/attendance/3-1-DS-A`)} />
-              <ActionButton label="3-1 DS-B" onClick={() => navigate(`/department/${deptId}/attendance/3-1-DS-B`)} />
-              <ActionButton label="3-1 DS-C" onClick={() => navigate(`/department/${deptId}/attendance/3-1-DS-C`)} />
-              <ActionButton label="3-2 DS-A" onClick={() => navigate(`/department/${deptId}/attendance/3-2-DS-A`)} />
-              <ActionButton label="3-2 DS-B" onClick={() => navigate(`/department/${deptId}/attendance/3-2-DS-B`)} />
-              <ActionButton label="3-2 DS-C" onClick={() => navigate(`/department/${deptId}/attendance/3-2-DS-C`)} />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">4th Year</p>
-              <ActionButton label="4-1 DS-A" onClick={() => navigate(`/department/${deptId}/attendance/4-1-DS-A`)} />
-              <ActionButton label="4-1 DS-B" onClick={() => navigate(`/department/${deptId}/attendance/4-1-DS-B`)} />
-              <ActionButton label="4-1 DS-C" onClick={() => navigate(`/department/${deptId}/attendance/4-1-DS-C`)} />
-              <ActionButton label="4-2 DS-A" onClick={() => navigate(`/department/${deptId}/attendance/4-2-DS-A`)} />
-              <ActionButton label="4-2 DS-B" onClick={() => navigate(`/department/${deptId}/attendance/4-2-DS-B`)} />
-              <ActionButton label="4-2 DS-C" onClick={() => navigate(`/department/${deptId}/attendance/4-2-DS-C`)} />
+              <YearSemesterSection years={hourlyAttendanceData} deptId={deptId} />
             </ContentSection>
 
-            {/* Cumulative Attendance */}
+            {/* Monthly Cumulative Attendance */}
             <ContentSection title="Monthly Cumulative Attendance" icon={<Calendar className="w-6 h-6" />}>
-              <p className="text-white/60 text-sm mb-2 font-semibold">1st Year</p>
-              <ActionButton label="1-1 DS-A Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/1-1-DS-A`)} />
-              <ActionButton label="1-1 DS-B Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/1-1-DS-B`)} />
-              <ActionButton label="1-1 DS-C Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/1-1-DS-C`)} />
-              <ActionButton label="1-2 DS-A Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/1-2-DS-A`)} />
-              <ActionButton label="1-2 DS-B Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/1-2-DS-B`)} />
-              <ActionButton label="1-2 DS-C Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/1-2-DS-C`)} />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">2nd Year</p>
-              <ActionButton label="2-1 DS-A Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/2-1-DS-A`)} />
-              <ActionButton label="2-1 DS-B Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/2-1-DS-B`)} />
-              <ActionButton label="2-1 DS-C Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/2-1-DS-C`)} />
-              <ActionButton label="2-2 DS-A Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/2-2-DS-A`)} />
-              <ActionButton label="2-2 DS-B Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/2-2-DS-B`)} />
-              <ActionButton label="2-2 DS-C Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/2-2-DS-C`)} />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">3rd Year</p>
-              <ActionButton label="3-1 DS-A Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/3-1-DS-A`)} />
-              <ActionButton label="3-1 DS-B Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/3-1-DS-B`)} />
-              <ActionButton label="3-1 DS-C Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/3-1-DS-C`)} />
-              <ActionButton label="3-2 DS-A Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/3-2-DS-A`)} />
-              <ActionButton label="3-2 DS-B Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/3-2-DS-B`)} />
-              <ActionButton label="3-2 DS-C Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/3-2-DS-C`)} />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">4th Year</p>
-              <ActionButton label="4-1 DS-A Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/4-1-DS-A`)} />
-              <ActionButton label="4-1 DS-B Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/4-1-DS-B`)} />
-              <ActionButton label="4-1 DS-C Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/4-1-DS-C`)} />
-              <ActionButton label="4-2 DS-A Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/4-2-DS-A`)} />
-              <ActionButton label="4-2 DS-B Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/4-2-DS-B`)} />
-              <ActionButton label="4-2 DS-C Cumulative Attendance" fullWidth onClick={() => navigate(`/department/${deptId}/monthly-attendance/4-2-DS-C`)} />
+              <YearSemesterSection years={monthlyAttendanceData} deptId={deptId} />
             </ContentSection>
 
             {/* Time Tables */}
             <ContentSection title="Time Tables" icon={<Calendar className="w-6 h-6" />}>
-              <p className="text-white/60 text-sm mb-2 font-semibold">1st Year</p>
-              <ActionButton label="1-1 DS-A" onClick={() => navigate(`/department/${deptId}/timetable/1-1-DS-A`)} />
-              <ActionButton label="1-1 DS-B" onClick={() => navigate(`/department/${deptId}/timetable/1-1-DS-B`)} />
-              <ActionButton label="1-1 DS-C" onClick={() => navigate(`/department/${deptId}/timetable/1-1-DS-C`)} />
-              <ActionButton label="1-2 DS-A" onClick={() => navigate(`/department/${deptId}/timetable/1-2-DS-A`)} />
-              <ActionButton label="1-2 DS-B" onClick={() => navigate(`/department/${deptId}/timetable/1-2-DS-B`)} />
-              <ActionButton label="1-2 DS-C" onClick={() => navigate(`/department/${deptId}/timetable/1-2-DS-C`)} />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">2nd Year</p>
-              <ActionButton label="2-1 DS-A" onClick={() => navigate(`/department/${deptId}/timetable/2-1-DS-A`)} />
-              <ActionButton label="2-1 DS-B" onClick={() => navigate(`/department/${deptId}/timetable/2-1-DS-B`)} />
-              <ActionButton label="2-1 DS-C" onClick={() => navigate(`/department/${deptId}/timetable/2-1-DS-C`)} />
-              <ActionButton label="2-2 DS-A" onClick={() => navigate(`/department/${deptId}/timetable/2-2-DS-A`)} />
-              <ActionButton label="2-2 DS-B" onClick={() => navigate(`/department/${deptId}/timetable/2-2-DS-B`)} />
-              <ActionButton label="2-2 DS-C" onClick={() => navigate(`/department/${deptId}/timetable/2-2-DS-C`)} />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">3rd Year</p>
-              <ActionButton label="3-1 DS-A" onClick={() => navigate(`/department/${deptId}/timetable/3-1-DS-A`)} />
-              <ActionButton label="3-1 DS-B" onClick={() => navigate(`/department/${deptId}/timetable/3-1-DS-B`)} />
-              <ActionButton label="3-1 DS-C" onClick={() => navigate(`/department/${deptId}/timetable/3-1-DS-C`)} />
-              <ActionButton label="3-2 DS-A" onClick={() => navigate(`/department/${deptId}/timetable/3-2-DS-A`)} />
-              <ActionButton label="3-2 DS-B" onClick={() => navigate(`/department/${deptId}/timetable/3-2-DS-B`)} />
-              <ActionButton label="3-2 DS-C" onClick={() => navigate(`/department/${deptId}/timetable/3-2-DS-C`)} />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">4th Year</p>
-              <ActionButton label="4-1 DS-A" onClick={() => navigate(`/department/${deptId}/timetable/4-1-DS-A`)} />
-              <ActionButton label="4-1 DS-B" onClick={() => navigate(`/department/${deptId}/timetable/4-1-DS-B`)} />
-              <ActionButton label="4-1 DS-C" onClick={() => navigate(`/department/${deptId}/timetable/4-1-DS-C`)} />
-              <ActionButton label="4-2 DS-A" onClick={() => navigate(`/department/${deptId}/timetable/4-2-DS-A`)} />
-              <ActionButton label="4-2 DS-B" onClick={() => navigate(`/department/${deptId}/timetable/4-2-DS-B`)} />
-              <ActionButton label="4-2 DS-C" onClick={() => navigate(`/department/${deptId}/timetable/4-2-DS-C`)} />
+              <YearSemesterSection years={timeTablesData} deptId={deptId} />
             </ContentSection>
 
             {/* Feedback */}
             <ContentSection title="Feedback" icon={<MessageSquare className="w-6 h-6" />}>
-              <p className="text-white/60 text-sm mb-2 font-semibold">1st Year</p>
-              <ActionButton label="1-1 DS-A Feedback" />
-              <ActionButton label="1-1 DS-B Feedback" />
-              <ActionButton label="1-1 DS-C Feedback" />
-              <ActionButton label="1-2 DS-A Feedback" />
-              <ActionButton label="1-2 DS-B Feedback" />
-              <ActionButton label="1-2 DS-C Feedback" />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">2nd Year</p>
-              <ActionButton label="2-1 DS-A Feedback" />
-              <ActionButton label="2-1 DS-B Feedback" />
-              <ActionButton label="2-1 DS-C Feedback" />
-              <ActionButton label="2-2 DS-A Feedback" />
-              <ActionButton label="2-2 DS-B Feedback" />
-              <ActionButton label="2-2 DS-C Feedback" />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">3rd Year</p>
-              <ActionButton label="3-1 DS-A Feedback" />
-              <ActionButton label="3-1 DS-B Feedback" />
-              <ActionButton label="3-1 DS-C Feedback" />
-              <ActionButton label="3-2 DS-A Feedback" />
-              <ActionButton label="3-2 DS-B Feedback" />
-              <ActionButton label="3-2 DS-C Feedback" />
-              <p className="text-white/60 text-sm mb-2 mt-4 font-semibold">4th Year</p>
-              <ActionButton label="4-1 DS-A Feedback" />
-              <ActionButton label="4-1 DS-B Feedback" />
-              <ActionButton label="4-1 DS-C Feedback" />
-              <ActionButton label="4-2 DS-A Feedback" />
-              <ActionButton label="4-2 DS-B Feedback" />
-              <ActionButton label="4-2 DS-C Feedback" />
+              <YearSemesterSection years={feedbackData} deptId={deptId} />
             </ContentSection>
 
             {/* Syllabus */}
             <ContentSection title="Syllabus" icon={<BookOpen className="w-6 h-6" />}>
-              <a href="/documents/CSE-DS-Syllabus.pdf" download className="w-full">
-                <ActionButton label="1st Year DS Syllabus" fullWidth />
-              </a>
-              <a href="/documents/CSE-DS-Syllabus.pdf" download className="w-full">
-                <ActionButton label="2nd Year DS Syllabus" fullWidth />
-              </a>
-              <a href="/documents/CSE-DS-3rd-Year-Syllabus.pdf" download className="w-full">
-                <ActionButton label="3rd Year DS Syllabus" fullWidth />
-              </a>
-              <a href="/documents/CSE-DS-Syllabus.pdf" download className="w-full">
-                <ActionButton label="4th Year DS Syllabus" fullWidth />
-              </a>
+              <YearSemesterSection years={syllabusData} deptId={deptId} />
             </ContentSection>
 
             {/* Academic Calendars */}
             <ContentSection title="Academic Calendars" icon={<Calendar className="w-6 h-6" />}>
-              <a href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" download className="w-full">
-                <ActionButton label="1st Year Academic Calendar 2024-25" fullWidth />
-              </a>
-              <a href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" download className="w-full">
-                <ActionButton label="2nd Year Academic Calendar 2024-25" fullWidth />
-              </a>
-              <a href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" download className="w-full">
-                <ActionButton label="3rd Year Academic Calendar 2024-25" fullWidth />
-              </a>
-              <a href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" download className="w-full">
-                <ActionButton label="4th Year Academic Calendar 2024-25" fullWidth />
-              </a>
+              <YearSemesterSection years={academicCalendarData} deptId={deptId} />
             </ContentSection>
           </div>
         </div>

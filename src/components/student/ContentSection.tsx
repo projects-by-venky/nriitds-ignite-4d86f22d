@@ -21,7 +21,7 @@ export const ContentSection = ({ title, icon, children, delay = 0 }: ContentSect
         {icon && <div className="text-primary">{icon}</div>}
         <h2 className="text-2xl font-bold text-foreground">{title}</h2>
       </div>
-      <div className="flex flex-wrap gap-3">
+      <div className="w-full">
         {children}
       </div>
     </motion.div>
