@@ -28,9 +28,10 @@ interface ActionButtonProps {
   onClick?: () => void;
   href?: string;
   variant?: "primary" | "secondary";
+  download?: boolean;
 }
 
-const ActionButton = ({ label, onClick, href, variant = "primary" }: ActionButtonProps) => {
+const ActionButton = ({ label, onClick, href, variant = "primary", download = false }: ActionButtonProps) => {
   const baseClasses = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-2";
   const variantClasses = variant === "primary" 
     ? "bg-gradient-to-r from-[#0EA5E9] to-[#1E3A8A] text-white hover:shadow-lg hover:shadow-primary/30 hover:scale-105"
@@ -38,7 +39,13 @@ const ActionButton = ({ label, onClick, href, variant = "primary" }: ActionButto
 
   if (href) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={cn(baseClasses, variantClasses)}>
+      <a 
+        href={href} 
+        target={download ? undefined : "_blank"} 
+        rel={download ? undefined : "noopener noreferrer"} 
+        download={download}
+        className={cn(baseClasses, variantClasses)}
+      >
         {label}
         <ExternalLink className="w-3 h-3" />
       </a>
@@ -171,7 +178,7 @@ const FacultyPortal = () => {
           <div className="max-w-5xl mx-auto space-y-4">
             {/* Guidelines for Teachers */}
             <SectionCard title="Guidelines for Teachers" icon={BookOpen}>
-              <ActionButton label="Click here to access guidelines for the teachers" href="/documents/Guidelines_All_Teachers.pdf" />
+              <ActionButton label="Click here to access guidelines for the teachers" href="/documents/Guidelines_All_Teachers.pdf" download />
             </SectionCard>
 
             {/* Syllabus Review Forms */}
