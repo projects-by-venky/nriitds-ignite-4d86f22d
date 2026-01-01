@@ -43,22 +43,25 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1 absolute left-1/2 transform -translate-x-1/2">
             {navLinks.map((link, index) => {
-            const isActive = location.pathname === link.href;
-            return <Link key={link.name} to={link.href}>
-                  <motion.div initial={{
-                opacity: 0,
-                y: -10
-              }} animate={{
-                opacity: 1,
-                y: 0
-              }} transition={{
-                delay: index * 0.1
-              }} className="shadow-sm px-[16px] py-[32px] mx-0 my-0 rounded-none">
-                    {link.name}
-                  </motion.div>
-                </Link>;
-          })}
-            <motion.button initial={{
+              const isActive = location.pathname === link.href;
+              return <Link key={link.name} to={link.href}>
+                <motion.div initial={{
+                  opacity: 0,
+                  y: -10
+                }} animate={{
+                  opacity: 1,
+                  y: 0
+                }} transition={{
+                  delay: index * 0.1
+                }} className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary transition-colors">
+                  {link.name}
+                </motion.div>
+              </Link>;
+            })}
+          </nav>
+
+          {/* Let's See Button - Right Side */}
+          <motion.button initial={{
             opacity: 0,
             y: -10
           }} animate={{
@@ -72,11 +75,13 @@ const Header = () => {
           }} whileTap={{
             scale: 0.98
           }} onClick={() => {
-            window.location.href = '/branches';
-          }} className="ml-4 px-6 py-2 rounded-lg bg-primary text-white font-semibold shadow-[0_0_20px_hsl(217_91%_60%_/_0.4)] hover:shadow-[0_0_30px_hsl(217_91%_60%_/_0.6)] transition-all text-sm cursor-pointer">
-              Lets See
-            </motion.button>
-          </nav>
+            const branchesSection = document.getElementById('branches');
+            if (branchesSection) {
+              branchesSection.scrollIntoView({ behavior: 'smooth' });
+            }
+          }} className="hidden md:block px-6 py-2 rounded-lg bg-primary text-white font-semibold shadow-[0_0_20px_hsl(217_91%_60%_/_0.4)] hover:shadow-[0_0_30px_hsl(217_91%_60%_/_0.6)] transition-all text-sm cursor-pointer">
+            Lets See
+          </motion.button>
 
           {/* Mobile Menu Button */}
           <button onClick={() => setIsOpen(!isOpen)} className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors">
@@ -106,7 +111,10 @@ const Header = () => {
           })}
               <button className="mt-2 px-6 py-3 rounded-lg bg-primary text-white font-semibold shadow-[0_0_20px_hsl(217_91%_60%_/_0.4)] text-sm w-full" onClick={() => {
             setIsOpen(false);
-            window.location.href = '/branches';
+            const branchesSection = document.getElementById('branches');
+            if (branchesSection) {
+              branchesSection.scrollIntoView({ behavior: 'smooth' });
+            }
           }}>
                 Lets See
               </button>
