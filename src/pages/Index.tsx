@@ -5,8 +5,6 @@ import BranchesSection from "@/components/sections/BranchesSection";
 import AboutSection from "@/components/sections/AboutSection";
 import CoursesSection from "@/components/sections/CoursesSection";
 import ResearchSection from "@/components/sections/ResearchSection";
-import CampusLifeSection from "@/components/sections/CampusLifeSection";
-import PlacementsSection from "@/components/sections/PlacementsSection";
 import ChatBot from "@/components/ai/ChatBot";
 
 const Index = () => {
@@ -19,8 +17,6 @@ const Index = () => {
         <AboutSection />
         <CoursesSection />
         <ResearchSection />
-        <PlacementsSection />
-        <CampusLifeSection />
       </main>
       <Footer />
       <ChatBot />

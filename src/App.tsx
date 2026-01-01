@@ -9,10 +9,7 @@ import About from "./pages/About";
 import Branches from "./pages/Branches";
 import Courses from "./pages/Courses";
 import Research from "./pages/Research";
-import Placements from "./pages/Placements";
-import CampusLife from "./pages/CampusLife";
 import Events from "./pages/Events";
-import Contact from "./pages/Contact";
 import Department from "./pages/Department";
 import StudentPortal from "./pages/StudentPortal";
 import FacultyPortal from "./pages/FacultyPortal";
@@ -37,10 +34,7 @@ const App = () => (
           <Route path="/branches" element={<Branches />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/research" element={<Research />} />
-          <Route path="/placements" element={<Placements />} />
-          <Route path="/campus-life" element={<CampusLife />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="/department/:deptId" element={<Department />} />
           <Route path="/department/:deptId/student-portal" element={<StudentPortal />} />
           <Route path="/department/:deptId/faculty-portal" element={<FacultyPortal />} />
