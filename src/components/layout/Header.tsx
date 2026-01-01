@@ -36,7 +36,7 @@ const Header = () => {
               <div className="w-10 h-10 rounded-lg bg-gradient-cyber flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.4)]">
                 <GraduationCap className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-foreground font-heading">NRI Institution</span>
+              <span className="text-xl font-bold text-foreground font-heading">NRIIT</span>
             </motion.div>
           </Link>
 
