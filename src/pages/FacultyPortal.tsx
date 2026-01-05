@@ -171,11 +171,7 @@ const FacultyPortal = () => {
           <div className="space-y-3 md:space-y-4">
             {/* Guidelines for Teachers */}
             <SectionCard title="Guidelines for Teachers" icon={BookOpen}>
-              <ActionButton 
-                label="Download Teacher Guidelines"
-                href="/documents/Guidelines_All_Teachers.pdf"
-                download
-              />
+              <p className="text-sm md:text-base text-muted-foreground">Download Teacher Guidelines</p>
             </SectionCard>
 
             {/* Teaching Guidelines */}
