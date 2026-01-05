@@ -245,9 +245,9 @@ const FacultyPortal = () => {
               </div>
             </SectionCard>
 
-            {/* Mid & Quiz Marks */}
-            <SectionCard title="Mid & Quiz Marks" icon={BarChart3}>
-              <SubSection title="Mid Marks">
+            {/* Mid Marks */}
+            <SectionCard title="Mid Marks" icon={BarChart3}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
                 {["2-2", "3-2"].map((sem) => (
                   sections.map((section) => (
                     <ActionButton 
@@ -258,10 +258,7 @@ const FacultyPortal = () => {
                     />
                   ))
                 ))}
-              </SubSection>
-              <SubSection title="Quiz Marks">
-                <ActionButton label="Quiz 3 marks" href="#" variant="secondary" />
-              </SubSection>
+              </div>
             </SectionCard>
 
             {/* Assignment Marks */}
