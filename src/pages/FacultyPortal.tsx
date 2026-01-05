@@ -174,14 +174,6 @@ const FacultyPortal = () => {
               <p className="text-sm md:text-base text-muted-foreground">Download Teacher Guidelines</p>
             </SectionCard>
 
-            {/* Teaching Guidelines */}
-            <SectionCard title="Teaching Guidelines" icon={GraduationCap}>
-              <ActionButton 
-                label={`${dept.code} Teaching Guidelines`}
-                href="#"
-                variant="secondary"
-              />
-            </SectionCard>
 
             {/* Syllabus Review Forms */}
             <SectionCard title="Syllabus Review Forms" icon={FileText}>
