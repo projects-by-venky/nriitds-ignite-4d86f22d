@@ -178,6 +178,15 @@ const FacultyPortal = () => {
               />
             </SectionCard>
 
+            {/* Teaching Guidelines */}
+            <SectionCard title="Teaching Guidelines" icon={GraduationCap}>
+              <ActionButton 
+                label={`${dept.code} Teaching Guidelines`}
+                href="#"
+                variant="secondary"
+              />
+            </SectionCard>
+
             {/* Syllabus Review Forms */}
             <SectionCard title="Syllabus Review Forms" icon={FileText}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
