@@ -1,7 +1,6 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/sections/HeroSection";
-import ChatBot from "@/components/ai/ChatBot";
 
 const Home = () => {
   return (
@@ -11,7 +10,6 @@ const Home = () => {
         <HeroSection />
       </main>
       <Footer />
-      <ChatBot />
     </div>
   );
 };

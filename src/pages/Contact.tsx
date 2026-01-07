@@ -1,7 +1,6 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ContactSection from "@/components/sections/ContactSection";
-import ChatBot from "@/components/ai/ChatBot";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
@@ -81,7 +80,6 @@ const Contact = () => {
         <ContactSection />
       </main>
       <Footer />
-      <ChatBot />
     </div>
   );
 };

@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ResearchSection from "@/components/sections/ResearchSection";
-import ChatBot from "@/components/ai/ChatBot";
 
 const Research = () => {
   return (
@@ -44,7 +43,6 @@ const Research = () => {
         <ResearchSection />
       </main>
       <Footer />
-      <ChatBot />
     </div>
   );
 };
