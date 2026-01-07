@@ -31,165 +31,43 @@ interface YearData {
 // Common Google Form URL for all sections
 const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeczgdFhUVJ9gq5ca7rKdd-M34aKxbsbi7eQ8nmU7X_Qk-ogQ/viewform?embedded=true";
 
-// Form data structure - easily maintainable
-const syllabusFormsData: YearData[] = [
-  {
-    year: "1st Year",
-    semesters: [
-      {
-        semester: "1-1",
-        branches: [
-          {
-            branch: "CSE",
-            sections: [
-              { section: "Section A", formUrl: GOOGLE_FORM_URL },
-              { section: "Section B", formUrl: GOOGLE_FORM_URL },
-              { section: "Section C", formUrl: GOOGLE_FORM_URL },
-            ],
-          },
-          {
-            branch: "DS",
-            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
-          },
-        ],
-      },
-      {
-        semester: "1-2",
-        branches: [
-          {
-            branch: "CSE",
-            sections: [
-              { section: "Section A", formUrl: GOOGLE_FORM_URL },
-              { section: "Section B", formUrl: GOOGLE_FORM_URL },
-              { section: "Section C", formUrl: GOOGLE_FORM_URL },
-            ],
-          },
-          {
-            branch: "DS",
-            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    year: "2nd Year",
-    semesters: [
-      {
-        semester: "2-1",
-        branches: [
-          {
-            branch: "CSE",
-            sections: [
-              { section: "Section A", formUrl: GOOGLE_FORM_URL },
-              { section: "Section B", formUrl: GOOGLE_FORM_URL },
-              { section: "Section C", formUrl: GOOGLE_FORM_URL },
-            ],
-          },
-          {
-            branch: "DS",
-            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
-          },
-        ],
-      },
-      {
-        semester: "2-2",
-        branches: [
-          {
-            branch: "CSE",
-            sections: [
-              { section: "Section A", formUrl: GOOGLE_FORM_URL },
-              { section: "Section B", formUrl: GOOGLE_FORM_URL },
-              { section: "Section C", formUrl: GOOGLE_FORM_URL },
-            ],
-          },
-          {
-            branch: "DS",
-            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    year: "3rd Year",
-    semesters: [
-      {
-        semester: "3-1",
-        branches: [
-          {
-            branch: "CSE",
-            sections: [
-              { section: "Section A", formUrl: GOOGLE_FORM_URL },
-              { section: "Section B", formUrl: GOOGLE_FORM_URL },
-              { section: "Section C", formUrl: GOOGLE_FORM_URL },
-            ],
-          },
-          {
-            branch: "DS",
-            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
-          },
-        ],
-      },
-      {
-        semester: "3-2",
-        branches: [
-          {
-            branch: "CSE",
-            sections: [
-              { section: "Section A", formUrl: GOOGLE_FORM_URL },
-              { section: "Section B", formUrl: GOOGLE_FORM_URL },
-              { section: "Section C", formUrl: GOOGLE_FORM_URL },
-            ],
-          },
-          {
-            branch: "DS",
-            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    year: "4th Year",
-    semesters: [
-      {
-        semester: "4-1",
-        branches: [
-          {
-            branch: "CSE",
-            sections: [
-              { section: "Section A", formUrl: GOOGLE_FORM_URL },
-              { section: "Section B", formUrl: GOOGLE_FORM_URL },
-              { section: "Section C", formUrl: GOOGLE_FORM_URL },
-            ],
-          },
-          {
-            branch: "DS",
-            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
-          },
-        ],
-      },
-      {
-        semester: "4-2",
-        branches: [
-          {
-            branch: "CSE",
-            sections: [
-              { section: "Section A", formUrl: GOOGLE_FORM_URL },
-              { section: "Section B", formUrl: GOOGLE_FORM_URL },
-              { section: "Section C", formUrl: GOOGLE_FORM_URL },
-            ],
-          },
-          {
-            branch: "DS",
-            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
-          },
-        ],
-      },
-    ],
-  },
-];
+// Branch configuration - sections per branch
+const branchConfig: Record<string, { name: string; sections: string[] }> = {
+  cse: { name: "CSE", sections: ["Section A", "Section B", "Section C"] },
+  ds: { name: "DS", sections: ["Section A"] },
+  ece: { name: "ECE", sections: ["Section A", "Section B"] },
+  eee: { name: "EEE", sections: ["Section A", "Section B"] },
+  mech: { name: "MECH", sections: ["Section A", "Section B"] },
+  civil: { name: "CIVIL", sections: ["Section A"] },
+};
+
+// Generate form data dynamically based on department
+const generateFormsData = (deptId: string): YearData[] => {
+  const branch = branchConfig[deptId] || branchConfig.cse;
+  
+  const years = [
+    { year: "1st Year", semesters: ["1-1", "1-2"] },
+    { year: "2nd Year", semesters: ["2-1", "2-2"] },
+    { year: "3rd Year", semesters: ["3-1", "3-2"] },
+    { year: "4th Year", semesters: ["4-1", "4-2"] },
+  ];
+
+  return years.map(({ year, semesters }) => ({
+    year,
+    semesters: semesters.map((semester) => ({
+      semester,
+      branches: [
+        {
+          branch: branch.name,
+          sections: branch.sections.map((section) => ({
+            section,
+            formUrl: GOOGLE_FORM_URL,
+          })),
+        },
+      ],
+    })),
+  }));
+};
 
 const SyllabusReviewForms = () => {
   const { deptId } = useParams();
@@ -199,6 +77,7 @@ const SyllabusReviewForms = () => {
     section: string;
     url: string;
   } | null>(null);
+  const syllabusFormsData = generateFormsData(deptId || "cse");
   const [openYears, setOpenYears] = useState<string[]>([]);
   const [openSemesters, setOpenSemesters] = useState<string[]>([]);
 
