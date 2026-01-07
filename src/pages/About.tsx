@@ -1,7 +1,6 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import AboutSection from "@/components/sections/AboutSection";
-import ChatBot from "@/components/ai/ChatBot";
 import { motion } from "framer-motion";
 
 const About = () => {
@@ -46,7 +45,6 @@ const About = () => {
         <AboutSection />
       </main>
       <Footer />
-      <ChatBot />
     </div>
   );
 };

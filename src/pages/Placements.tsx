@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PlacementsSection from "@/components/sections/PlacementsSection";
-import ChatBot from "@/components/ai/ChatBot";
 
 const Placements = () => {
   return (
@@ -44,7 +43,6 @@ const Placements = () => {
         <PlacementsSection />
       </main>
       <Footer />
-      <ChatBot />
     </div>
   );
 };

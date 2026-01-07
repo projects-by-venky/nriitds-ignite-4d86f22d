@@ -1,9 +1,8 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CoursesSection from "@/components/sections/CoursesSection";
-import ChatBot from "@/components/ai/ChatBot";
 import { motion } from "framer-motion";
-import { BookOpen, Code, Beaker, Building2, Brain, Heart } from "lucide-react";
+import { BookOpen, Code, Beaker, Building2 } from "lucide-react";
 
 const Courses = () => {
   const highlights = [
@@ -79,7 +78,6 @@ const Courses = () => {
         <CoursesSection />
       </main>
       <Footer />
-      <ChatBot />
     </div>
   );
 };

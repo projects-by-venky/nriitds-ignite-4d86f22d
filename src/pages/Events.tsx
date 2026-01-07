@@ -1,7 +1,6 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import EventsSection from "@/components/sections/EventsSection";
-import ChatBot from "@/components/ai/ChatBot";
 import { motion } from "framer-motion";
 import { Calendar, Users, Trophy, Sparkles } from "lucide-react";
 
@@ -81,7 +80,6 @@ const Events = () => {
         <EventsSection />
       </main>
       <Footer />
-      <ChatBot />
     </div>
   );
 };

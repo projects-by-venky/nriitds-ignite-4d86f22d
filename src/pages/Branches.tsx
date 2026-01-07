@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BranchesSection from "@/components/sections/BranchesSection";
-import ChatBot from "@/components/ai/ChatBot";
 
 const Branches = () => {
   return (
@@ -44,7 +43,6 @@ const Branches = () => {
         <BranchesSection />
       </main>
       <Footer />
-      <ChatBot />
     </div>
   );
 };
