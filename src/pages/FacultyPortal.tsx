@@ -183,18 +183,11 @@ const FacultyPortal = () => {
 
             {/* Syllabus Review Forms */}
             <SectionCard title="Syllabus Review Forms" icon={FileText}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
-                {["2-1", "2-2", "3-1", "3-2"].map((sem) => (
-                  sections.map((section) => (
-                    <ActionButton 
-                      key={`${sem}-${section}`}
-                      label={`${sem} ${dept.code}-${section} Form`}
-                      href="#"
-                      variant="secondary"
-                    />
-                  ))
-                ))}
-              </div>
+              <ActionButton 
+                label="Open Syllabus Review Forms"
+                href={`/department/${deptId}/syllabus-review-forms`}
+                variant="secondary"
+              />
             </SectionCard>
 
             {/* Slip Test Marks */}
