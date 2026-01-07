@@ -28,6 +28,9 @@ interface YearData {
   semesters: SemesterData[];
 }
 
+// Common Google Form URL for all sections
+const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeczgdFhUVJ9gq5ca7rKdd-M34aKxbsbi7eQ8nmU7X_Qk-ogQ/viewform?embedded=true";
+
 // Form data structure - easily maintainable
 const syllabusFormsData: YearData[] = [
   {
@@ -39,14 +42,14 @@ const syllabusFormsData: YearData[] = [
           {
             branch: "CSE",
             sections: [
-              { section: "Section A", formUrl: "" },
-              { section: "Section B", formUrl: "" },
-              { section: "Section C", formUrl: "" },
+              { section: "Section A", formUrl: GOOGLE_FORM_URL },
+              { section: "Section B", formUrl: GOOGLE_FORM_URL },
+              { section: "Section C", formUrl: GOOGLE_FORM_URL },
             ],
           },
           {
             branch: "DS",
-            sections: [{ section: "Section A", formUrl: "" }],
+            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
           },
         ],
       },
@@ -56,14 +59,14 @@ const syllabusFormsData: YearData[] = [
           {
             branch: "CSE",
             sections: [
-              { section: "Section A", formUrl: "" },
-              { section: "Section B", formUrl: "" },
-              { section: "Section C", formUrl: "" },
+              { section: "Section A", formUrl: GOOGLE_FORM_URL },
+              { section: "Section B", formUrl: GOOGLE_FORM_URL },
+              { section: "Section C", formUrl: GOOGLE_FORM_URL },
             ],
           },
           {
             branch: "DS",
-            sections: [{ section: "Section A", formUrl: "" }],
+            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
           },
         ],
       },
@@ -78,18 +81,14 @@ const syllabusFormsData: YearData[] = [
           {
             branch: "CSE",
             sections: [
-              {
-                section: "Section A",
-                formUrl:
-                  "https://docs.google.com/forms/d/e/1FAIpQLSeczgdFhUVJ9gq5ca7rKdd-M34aKxbsbi7eQ8nmU7X_Qk-ogQ/viewform?embedded=true",
-              },
-              { section: "Section B", formUrl: "" },
-              { section: "Section C", formUrl: "" },
+              { section: "Section A", formUrl: GOOGLE_FORM_URL },
+              { section: "Section B", formUrl: GOOGLE_FORM_URL },
+              { section: "Section C", formUrl: GOOGLE_FORM_URL },
             ],
           },
           {
             branch: "DS",
-            sections: [{ section: "Section A", formUrl: "" }],
+            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
           },
         ],
       },
@@ -99,14 +98,14 @@ const syllabusFormsData: YearData[] = [
           {
             branch: "CSE",
             sections: [
-              { section: "Section A", formUrl: "" },
-              { section: "Section B", formUrl: "" },
-              { section: "Section C", formUrl: "" },
+              { section: "Section A", formUrl: GOOGLE_FORM_URL },
+              { section: "Section B", formUrl: GOOGLE_FORM_URL },
+              { section: "Section C", formUrl: GOOGLE_FORM_URL },
             ],
           },
           {
             branch: "DS",
-            sections: [{ section: "Section A", formUrl: "" }],
+            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
           },
         ],
       },
@@ -121,14 +120,14 @@ const syllabusFormsData: YearData[] = [
           {
             branch: "CSE",
             sections: [
-              { section: "Section A", formUrl: "" },
-              { section: "Section B", formUrl: "" },
-              { section: "Section C", formUrl: "" },
+              { section: "Section A", formUrl: GOOGLE_FORM_URL },
+              { section: "Section B", formUrl: GOOGLE_FORM_URL },
+              { section: "Section C", formUrl: GOOGLE_FORM_URL },
             ],
           },
           {
             branch: "DS",
-            sections: [{ section: "Section A", formUrl: "" }],
+            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
           },
         ],
       },
@@ -138,14 +137,14 @@ const syllabusFormsData: YearData[] = [
           {
             branch: "CSE",
             sections: [
-              { section: "Section A", formUrl: "" },
-              { section: "Section B", formUrl: "" },
-              { section: "Section C", formUrl: "" },
+              { section: "Section A", formUrl: GOOGLE_FORM_URL },
+              { section: "Section B", formUrl: GOOGLE_FORM_URL },
+              { section: "Section C", formUrl: GOOGLE_FORM_URL },
             ],
           },
           {
             branch: "DS",
-            sections: [{ section: "Section A", formUrl: "" }],
+            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
           },
         ],
       },
@@ -160,14 +159,14 @@ const syllabusFormsData: YearData[] = [
           {
             branch: "CSE",
             sections: [
-              { section: "Section A", formUrl: "" },
-              { section: "Section B", formUrl: "" },
-              { section: "Section C", formUrl: "" },
+              { section: "Section A", formUrl: GOOGLE_FORM_URL },
+              { section: "Section B", formUrl: GOOGLE_FORM_URL },
+              { section: "Section C", formUrl: GOOGLE_FORM_URL },
             ],
           },
           {
             branch: "DS",
-            sections: [{ section: "Section A", formUrl: "" }],
+            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
           },
         ],
       },
@@ -177,14 +176,14 @@ const syllabusFormsData: YearData[] = [
           {
             branch: "CSE",
             sections: [
-              { section: "Section A", formUrl: "" },
-              { section: "Section B", formUrl: "" },
-              { section: "Section C", formUrl: "" },
+              { section: "Section A", formUrl: GOOGLE_FORM_URL },
+              { section: "Section B", formUrl: GOOGLE_FORM_URL },
+              { section: "Section C", formUrl: GOOGLE_FORM_URL },
             ],
           },
           {
             branch: "DS",
-            sections: [{ section: "Section A", formUrl: "" }],
+            sections: [{ section: "Section A", formUrl: GOOGLE_FORM_URL }],
           },
         ],
       },
