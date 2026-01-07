@@ -17,6 +17,7 @@ import Attendance from "./pages/Attendance";
 import MonthlyAttendance from "./pages/MonthlyAttendance";
 import Timetable from "./pages/Timetable";
 import YearNotes from "./pages/YearNotes";
+import SyllabusReviewForms from "./pages/SyllabusReviewForms";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/department/:deptId/monthly-attendance/:section" element={<MonthlyAttendance />} />
           <Route path="/department/:deptId/timetable/:section" element={<Timetable />} />
           <Route path="/department/:deptId/notes/:year" element={<YearNotes />} />
+          <Route path="/department/:deptId/syllabus-review-forms" element={<SyllabusReviewForms />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
