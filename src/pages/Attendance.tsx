@@ -313,18 +313,16 @@ const Attendance = () => {
           />
 
           {/* Attendance Table - Responsive wrapper */}
-          <div className="bg-card border border-border rounded-xl overflow-hidden">
-            <div className="overflow-x-auto">
-              <AttendanceTable 
-                statusFilter={statusFilter}
-                startDate={startDate}
-                endDate={endDate}
-                searchQuery={searchQuery}
-                selectedStudents={selectedStudents}
-                onSelectStudent={handleSelectStudent}
-                onSelectAll={handleSelectAll}
-              />
-            </div>
+          <div className="bg-card border border-border rounded-xl">
+            <AttendanceTable 
+              statusFilter={statusFilter}
+              startDate={startDate}
+              endDate={endDate}
+              searchQuery={searchQuery}
+              selectedStudents={selectedStudents}
+              onSelectStudent={handleSelectStudent}
+              onSelectAll={handleSelectAll}
+            />
           </div>
         </motion.div>
       </div>

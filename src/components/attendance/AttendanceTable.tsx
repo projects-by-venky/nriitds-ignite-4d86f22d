@@ -1,4 +1,3 @@
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { AttendanceFilter } from "@/pages/Attendance";
@@ -217,16 +216,16 @@ export const AttendanceTable = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="bg-white rounded-lg border-2 border-[#1E3A8A] shadow-xl overflow-hidden"
+      className="bg-white rounded-lg border-2 border-[#1E3A8A] shadow-xl"
     >
-      <ScrollArea className="w-full h-[calc(100vh-200px)]">
+      <div className="overflow-auto max-h-[calc(100vh-280px)]">
         <div className="min-w-max">
           {/* Table Structure */}
           <table className="w-full border-collapse">
             {/* Header Group 1: Dates */}
-            <thead className="sticky top-0 z-20 bg-white shadow-sm">
-              <tr className="border-b-2 border-[#1E3A8A]">
-                <th className="sticky left-0 z-30 bg-white border-r-2 border-[#1E3A8A] px-3 py-3 text-center min-w-[50px]">
+            <thead className="sticky top-0 z-20 bg-white">
+              <tr className="border-b-2 border-[#1E3A8A] bg-blue-100">
+                <th className="sticky left-0 z-30 bg-blue-100 border-r-2 border-[#1E3A8A] px-3 py-2 text-center min-w-[50px]">
                   <Checkbox
                     checked={allSelected}
                     onCheckedChange={(checked) => 
@@ -239,14 +238,14 @@ export const AttendanceTable = ({
                     )}
                   />
                 </th>
-                <th className="sticky left-[50px] z-30 bg-white border-r-2 border-[#1E3A8A] px-4 py-3 text-left font-bold text-black min-w-[140px]">
+                <th className="sticky left-[50px] z-30 bg-blue-100 border-r-2 border-[#1E3A8A] px-4 py-2 text-left font-bold text-black min-w-[140px]">
                   Date
                 </th>
                 {filteredDates.map((dateObj, dateIdx) => (
                   <th
                     key={dateIdx}
                     colSpan={dateObj.hours.length}
-                    className="border-r-2 border-[#1E3A8A] px-4 py-3 text-center font-bold text-black bg-blue-50"
+                    className="border-r-2 border-[#1E3A8A] px-4 py-2 text-center font-bold text-black bg-blue-100"
                   >
                     {dateObj.date}
                   </th>
@@ -254,16 +253,16 @@ export const AttendanceTable = ({
               </tr>
 
               {/* Header Group 2: Hour Numbers */}
-              <tr className="border-b-2 border-[#1E3A8A]">
-                <th className="sticky left-0 z-30 bg-white border-r-2 border-[#1E3A8A] px-3 py-3 min-w-[50px]"></th>
-                <th className="sticky left-[50px] z-30 bg-white border-r-2 border-[#1E3A8A] px-4 py-3 text-left font-bold text-black">
+              <tr className="border-b border-[#1E3A8A] bg-blue-50">
+                <th className="sticky left-0 z-30 bg-blue-50 border-r-2 border-[#1E3A8A] px-3 py-2 min-w-[50px]"></th>
+                <th className="sticky left-[50px] z-30 bg-blue-50 border-r-2 border-[#1E3A8A] px-4 py-2 text-left font-bold text-black">
                   Hour
                 </th>
                 {filteredDates.map((dateObj, dateIdx) =>
                   dateObj.hours.map((hourObj, hourIdx) => (
                     <th
                       key={`${dateIdx}-${hourIdx}`}
-                      className="border-r border-[#1E3A8A] px-3 py-3 text-center font-semibold text-sm text-black min-w-[70px] bg-blue-50"
+                      className="border-r border-[#1E3A8A] px-3 py-2 text-center font-semibold text-sm text-black min-w-[60px] bg-blue-50"
                     >
                       {hourObj.hour}
                     </th>
@@ -272,9 +271,9 @@ export const AttendanceTable = ({
               </tr>
 
               {/* Header Group 3: Subject/Lab */}
-              <tr className="border-b border-[#1E3A8A]">
-                <th className="sticky left-0 z-30 bg-white border-r-2 border-[#1E3A8A] px-3 py-3 min-w-[50px]"></th>
-                <th className="sticky left-[50px] z-30 bg-white border-r-2 border-[#1E3A8A] px-4 py-3 text-left font-bold text-black">
+              <tr className="border-b border-[#1E3A8A] bg-white">
+                <th className="sticky left-0 z-30 bg-white border-r-2 border-[#1E3A8A] px-3 py-2 min-w-[50px]"></th>
+                <th className="sticky left-[50px] z-30 bg-white border-r-2 border-[#1E3A8A] px-4 py-2 text-left font-bold text-black">
                   Subject/Lab
                 </th>
                 {filteredDates.map((dateObj, dateIdx) =>
@@ -290,9 +289,9 @@ export const AttendanceTable = ({
               </tr>
 
               {/* Header Group 4: Faculty */}
-              <tr className="border-b-2 border-[#1E3A8A]">
-                <th className="sticky left-0 z-30 bg-white border-r-2 border-[#1E3A8A] px-3 py-3 min-w-[50px]"></th>
-                <th className="sticky left-[50px] z-30 bg-white border-r-2 border-[#1E3A8A] px-4 py-3 text-left font-bold text-black">
+              <tr className="border-b-2 border-[#1E3A8A] bg-white">
+                <th className="sticky left-0 z-30 bg-white border-r-2 border-[#1E3A8A] px-3 py-2 min-w-[50px]"></th>
+                <th className="sticky left-[50px] z-30 bg-white border-r-2 border-[#1E3A8A] px-4 py-2 text-left font-bold text-black">
                   Faculty
                 </th>
                 {filteredDates.map((dateObj, dateIdx) =>
@@ -359,9 +358,7 @@ export const AttendanceTable = ({
             </tbody>
           </table>
         </div>
-        <ScrollBar orientation="vertical" />
-        <ScrollBar orientation="horizontal" className="h-3" />
-      </ScrollArea>
+      </div>
     </motion.div>
   );
 };
