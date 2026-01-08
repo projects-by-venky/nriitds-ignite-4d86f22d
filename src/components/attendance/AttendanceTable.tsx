@@ -222,47 +222,44 @@ export const AttendanceTable = ({
         <div className="min-w-max">
           {/* Table Structure */}
           <table className="w-full border-collapse">
-            {/* Header Group 1: Dates */}
-            <thead className="sticky top-0 z-20 bg-white">
-              <tr className="border-b-2 border-[#1E3A8A] bg-blue-100">
-                <th className="sticky left-0 z-30 bg-blue-100 border-r-2 border-[#1E3A8A] px-3 py-2 text-center min-w-[50px]">
+            <thead className="sticky top-0 z-20">
+              {/* Row 1: Dates - This row must be visible first */}
+              <tr className="bg-[#1E3A8A] text-white">
+                <th className="sticky left-0 z-30 bg-[#1E3A8A] border-r border-white/30 px-3 py-3 text-center min-w-[50px]">
                   <Checkbox
                     checked={allSelected}
                     onCheckedChange={(checked) => 
                       onSelectAll?.(allFilteredRollNos, checked === true)
                     }
                     aria-label="Select all students"
-                    className={cn(
-                      "border-[#1E3A8A] data-[state=checked]:bg-[#1E3A8A] data-[state=checked]:border-[#1E3A8A]",
-                      someSelected && !allSelected && "data-[state=checked]:bg-[#1E3A8A]/50"
-                    )}
+                    className="border-white data-[state=checked]:bg-white data-[state=checked]:border-white data-[state=checked]:text-[#1E3A8A]"
                   />
                 </th>
-                <th className="sticky left-[50px] z-30 bg-blue-100 border-r-2 border-[#1E3A8A] px-4 py-2 text-left font-bold text-black min-w-[140px]">
+                <th className="sticky left-[50px] z-30 bg-[#1E3A8A] border-r border-white/30 px-4 py-3 text-left font-bold min-w-[140px]">
                   Date
                 </th>
                 {filteredDates.map((dateObj, dateIdx) => (
                   <th
-                    key={dateIdx}
+                    key={`date-${dateIdx}`}
                     colSpan={dateObj.hours.length}
-                    className="border-r-2 border-[#1E3A8A] px-4 py-2 text-center font-bold text-black bg-blue-100"
+                    className="border-r border-white/30 px-4 py-3 text-center font-bold"
                   >
                     {dateObj.date}
                   </th>
                 ))}
               </tr>
-
-              {/* Header Group 2: Hour Numbers */}
-              <tr className="border-b border-[#1E3A8A] bg-blue-50">
-                <th className="sticky left-0 z-30 bg-blue-50 border-r-2 border-[#1E3A8A] px-3 py-2 min-w-[50px]"></th>
-                <th className="sticky left-[50px] z-30 bg-blue-50 border-r-2 border-[#1E3A8A] px-4 py-2 text-left font-bold text-black">
+              
+              {/* Row 2: Hours */}
+              <tr className="bg-blue-100">
+                <th className="sticky left-0 z-30 bg-blue-100 border-r-2 border-[#1E3A8A] px-3 py-2 min-w-[50px]"></th>
+                <th className="sticky left-[50px] z-30 bg-blue-100 border-r-2 border-[#1E3A8A] px-4 py-2 text-left font-bold text-black">
                   Hour
                 </th>
                 {filteredDates.map((dateObj, dateIdx) =>
                   dateObj.hours.map((hourObj, hourIdx) => (
                     <th
-                      key={`${dateIdx}-${hourIdx}`}
-                      className="border-r border-[#1E3A8A] px-3 py-2 text-center font-semibold text-sm text-black min-w-[60px] bg-blue-50"
+                      key={`hour-${dateIdx}-${hourIdx}`}
+                      className="border-r border-[#1E3A8A] px-3 py-2 text-center font-semibold text-sm text-black min-w-[60px]"
                     >
                       {hourObj.hour}
                     </th>
@@ -270,17 +267,17 @@ export const AttendanceTable = ({
                 )}
               </tr>
 
-              {/* Header Group 3: Subject/Lab */}
-              <tr className="border-b border-[#1E3A8A] bg-white">
-                <th className="sticky left-0 z-30 bg-white border-r-2 border-[#1E3A8A] px-3 py-2 min-w-[50px]"></th>
-                <th className="sticky left-[50px] z-30 bg-white border-r-2 border-[#1E3A8A] px-4 py-2 text-left font-bold text-black">
+              {/* Row 3: Subject/Lab */}
+              <tr className="bg-blue-50">
+                <th className="sticky left-0 z-30 bg-blue-50 border-r-2 border-[#1E3A8A] px-3 py-2 min-w-[50px]"></th>
+                <th className="sticky left-[50px] z-30 bg-blue-50 border-r-2 border-[#1E3A8A] px-4 py-2 text-left font-bold text-black">
                   Subject/Lab
                 </th>
                 {filteredDates.map((dateObj, dateIdx) =>
                   dateObj.hours.map((hourObj, hourIdx) => (
                     <th
-                      key={`${dateIdx}-${hourIdx}`}
-                      className="border-r border-[#1E3A8A] px-3 py-2 text-center text-xs font-medium text-black bg-white"
+                      key={`sub-${dateIdx}-${hourIdx}`}
+                      className="border-r border-[#1E3A8A] px-3 py-2 text-center text-xs font-medium text-black"
                     >
                       {hourObj.subject}
                     </th>
@@ -288,8 +285,8 @@ export const AttendanceTable = ({
                 )}
               </tr>
 
-              {/* Header Group 4: Faculty */}
-              <tr className="border-b-2 border-[#1E3A8A] bg-white">
+              {/* Row 4: Faculty */}
+              <tr className="bg-white border-b-2 border-[#1E3A8A]">
                 <th className="sticky left-0 z-30 bg-white border-r-2 border-[#1E3A8A] px-3 py-2 min-w-[50px]"></th>
                 <th className="sticky left-[50px] z-30 bg-white border-r-2 border-[#1E3A8A] px-4 py-2 text-left font-bold text-black">
                   Faculty
@@ -297,8 +294,8 @@ export const AttendanceTable = ({
                 {filteredDates.map((dateObj, dateIdx) =>
                   dateObj.hours.map((hourObj, hourIdx) => (
                     <th
-                      key={`${dateIdx}-${hourIdx}`}
-                      className="border-r border-[#1E3A8A] px-3 py-2 text-center text-xs font-medium text-black bg-white"
+                      key={`fac-${dateIdx}-${hourIdx}`}
+                      className="border-r border-[#1E3A8A] px-3 py-2 text-center text-xs font-medium text-black"
                     >
                       {hourObj.faculty}
                     </th>

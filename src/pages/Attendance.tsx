@@ -313,7 +313,7 @@ const Attendance = () => {
           />
 
           {/* Attendance Table - Responsive wrapper */}
-          <div className="bg-card border border-border rounded-xl">
+          <div className="bg-card border border-border rounded-xl overflow-hidden">
             <AttendanceTable 
               statusFilter={statusFilter}
               startDate={startDate}
