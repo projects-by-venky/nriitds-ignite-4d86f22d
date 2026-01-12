@@ -17,7 +17,8 @@ import Attendance from "./pages/Attendance";
 import MonthlyAttendance from "./pages/MonthlyAttendance";
 import Timetable from "./pages/Timetable";
 import YearNotes from "./pages/YearNotes";
-import SyllabusReviewForms from "./pages/SyllabusReviewForms";
+import SyllabusReviewSelect from "./pages/SyllabusReviewSelect";
+import SyllabusReviewForm from "./pages/SyllabusReviewForm";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,7 +45,11 @@ const App = () => (
           <Route path="/department/:deptId/monthly-attendance/:section" element={<MonthlyAttendance />} />
           <Route path="/department/:deptId/timetable/:section" element={<Timetable />} />
           <Route path="/department/:deptId/notes/:year" element={<YearNotes />} />
-          <Route path="/department/:deptId/syllabus-review-forms" element={<SyllabusReviewForms />} />
+          {/* Syllabus Review Forms Routes */}
+          <Route path="/faculty/syllabus-review" element={<SyllabusReviewSelect />} />
+          <Route path="/faculty/syllabus-review/:branch" element={<SyllabusReviewSelect />} />
+          <Route path="/faculty/syllabus-review/:branch/:semester" element={<SyllabusReviewSelect />} />
+          <Route path="/faculty/syllabus-review/:branch/:semester/:section" element={<SyllabusReviewForm />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

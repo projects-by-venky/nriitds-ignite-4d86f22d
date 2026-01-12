@@ -3,52 +3,13 @@ import { motion } from "framer-motion";
 import { 
   ArrowLeft, BookOpen, FileText, ClipboardList, Upload, Calendar, 
   Users, GraduationCap, Award, Clock, BarChart3, FileCheck, 
-  Briefcase, ChevronDown, ChevronUp, ExternalLink, X
+  Briefcase, ChevronDown, ChevronUp, ExternalLink
 } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import MobileBottomNav from "@/components/layout/MobileBottomNav";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-
-// Syllabus Review Form URLs - replace with actual Google Form URLs
-const syllabusReviewForms: Record<string, Record<string, string>> = {
-  "1-1": {
-    "A": "https://docs.google.com/forms/d/e/example-1-1-A/viewform?embedded=true",
-    "B": "https://docs.google.com/forms/d/e/example-1-1-B/viewform?embedded=true",
-    "C": "https://docs.google.com/forms/d/e/example-1-1-C/viewform?embedded=true",
-  },
-  "1-2": {
-    "A": "https://docs.google.com/forms/d/e/example-1-2-A/viewform?embedded=true",
-    "B": "https://docs.google.com/forms/d/e/example-1-2-B/viewform?embedded=true",
-    "C": "https://docs.google.com/forms/d/e/example-1-2-C/viewform?embedded=true",
-  },
-  "2-1": {
-    "A": "https://docs.google.com/forms/d/e/example-2-1-A/viewform?embedded=true",
-    "B": "https://docs.google.com/forms/d/e/example-2-1-B/viewform?embedded=true",
-    "C": "https://docs.google.com/forms/d/e/example-2-1-C/viewform?embedded=true",
-  },
-  "2-2": {
-    "A": "https://docs.google.com/forms/d/e/example-2-2-A/viewform?embedded=true",
-    "B": "https://docs.google.com/forms/d/e/example-2-2-B/viewform?embedded=true",
-    "C": "https://docs.google.com/forms/d/e/example-2-2-C/viewform?embedded=true",
-  },
-  "3-1": {
-    "A": "https://docs.google.com/forms/d/e/example-3-1-A/viewform?embedded=true",
-    "B": "https://docs.google.com/forms/d/e/example-3-1-B/viewform?embedded=true",
-    "C": "https://docs.google.com/forms/d/e/example-3-1-C/viewform?embedded=true",
-  },
-  "3-2": {
-    "A": "https://docs.google.com/forms/d/e/example-3-2-A/viewform?embedded=true",
-    "B": "https://docs.google.com/forms/d/e/example-3-2-B/viewform?embedded=true",
-    "C": "https://docs.google.com/forms/d/e/example-3-2-C/viewform?embedded=true",
-  },
-  "4-1": {
-    "A": "https://docs.google.com/forms/d/e/example-4-1-A/viewform?embedded=true",
-    "B": "https://docs.google.com/forms/d/e/example-4-1-B/viewform?embedded=true",
-    "C": "https://docs.google.com/forms/d/e/example-4-1-C/viewform?embedded=true",
-  },
-};
 
 const departments = {
   cse: { name: "Computer Science & Engineering", code: "CSE" },
@@ -163,10 +124,6 @@ const SubSection = ({ title, children }: SubSectionProps) => (
 const FacultyPortal = () => {
   const { deptId } = useParams<{ deptId: string }>();
   const dept = deptId ? departments[deptId as keyof typeof departments] : null;
-  
-  // Syllabus Review Forms state
-  const [openSemester, setOpenSemester] = useState<string | null>(null);
-  const [selectedForm, setSelectedForm] = useState<{ semester: string; section: string; url: string } | null>(null);
 
   if (!dept) {
     return (
@@ -180,18 +137,6 @@ const FacultyPortal = () => {
   }
 
   const sections = ["A", "B", "C"];
-  const semesters = ["1-1", "1-2", "2-1", "2-2", "3-1", "3-2", "4-1"];
-
-  const handleSectionClick = (semester: string, section: string) => {
-    const url = syllabusReviewForms[semester]?.[section];
-    if (url) {
-      setSelectedForm({ semester, section, url });
-    }
-  };
-
-  const closeForm = () => {
-    setSelectedForm(null);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background">
@@ -237,73 +182,19 @@ const FacultyPortal = () => {
 
             {/* Syllabus Review Forms */}
             <SectionCard title="Syllabus Review Forms" icon={FileText}>
-              {selectedForm ? (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-sm md:text-base font-semibold text-foreground">
-                      {selectedForm.semester} - Section {selectedForm.section} Review Form
-                    </h4>
-                    <button
-                      onClick={closeForm}
-                      className="p-2 rounded-lg bg-destructive/10 hover:bg-destructive/20 text-destructive transition-colors"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                  <div className="w-full rounded-xl overflow-hidden border border-border">
-                    <iframe
-                      src={selectedForm.url}
-                      width="100%"
-                      height="600"
-                      frameBorder="0"
-                      className="bg-white"
-                    >
-                      Loading form...
-                    </iframe>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {semesters.map((semester) => (
-                    <div key={semester} className="border border-border/50 rounded-xl overflow-hidden">
-                      <button
-                        onClick={() => setOpenSemester(openSemester === semester ? null : semester)}
-                        className="w-full px-4 py-3 flex items-center justify-between bg-card/50 hover:bg-card/80 transition-colors"
-                      >
-                        <span className="text-sm md:text-base font-medium text-foreground">
-                          Semester {semester}
-                        </span>
-                        {openSemester === semester ? (
-                          <ChevronUp className="w-4 h-4 text-muted-foreground" />
-                        ) : (
-                          <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                        )}
-                      </button>
-                      {openSemester === semester && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          className="px-4 py-3 bg-background/50 border-t border-border/50"
-                        >
-                          <div className="grid grid-cols-3 gap-2">
-                            {sections.map((section) => (
-                              <button
-                                key={section}
-                                onClick={() => handleSectionClick(semester, section)}
-                                className="px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#0EA5E9]/20 to-[#1E3A8A]/20 
-                                         hover:from-[#0EA5E9]/30 hover:to-[#1E3A8A]/30 border border-primary/30 
-                                         hover:border-primary/50 text-foreground font-medium text-sm transition-all"
-                              >
-                                Section {section}
-                              </button>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground mb-4">
+                  Access syllabus review forms for all branches, semesters, and sections.
+                </p>
+                <Link 
+                  to={`/faculty/syllabus-review/${deptId}`}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#0EA5E9] to-[#1E3A8A] 
+                           text-white font-medium hover:shadow-lg hover:shadow-primary/30 transition-all duration-300"
+                >
+                  <FileText className="w-5 h-5" />
+                  Open Syllabus Review Forms
+                </Link>
+              </div>
             </SectionCard>
 
             {/* Slip Test Marks */}
