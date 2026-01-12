@@ -13,6 +13,16 @@ import { cn } from "@/lib/utils";
 
 // Syllabus Review Form URLs - replace with actual Google Form URLs
 const syllabusReviewForms: Record<string, Record<string, string>> = {
+  "1-1": {
+    "A": "https://docs.google.com/forms/d/e/example-1-1-A/viewform?embedded=true",
+    "B": "https://docs.google.com/forms/d/e/example-1-1-B/viewform?embedded=true",
+    "C": "https://docs.google.com/forms/d/e/example-1-1-C/viewform?embedded=true",
+  },
+  "1-2": {
+    "A": "https://docs.google.com/forms/d/e/example-1-2-A/viewform?embedded=true",
+    "B": "https://docs.google.com/forms/d/e/example-1-2-B/viewform?embedded=true",
+    "C": "https://docs.google.com/forms/d/e/example-1-2-C/viewform?embedded=true",
+  },
   "2-1": {
     "A": "https://docs.google.com/forms/d/e/example-2-1-A/viewform?embedded=true",
     "B": "https://docs.google.com/forms/d/e/example-2-1-B/viewform?embedded=true",
@@ -37,11 +47,6 @@ const syllabusReviewForms: Record<string, Record<string, string>> = {
     "A": "https://docs.google.com/forms/d/e/example-4-1-A/viewform?embedded=true",
     "B": "https://docs.google.com/forms/d/e/example-4-1-B/viewform?embedded=true",
     "C": "https://docs.google.com/forms/d/e/example-4-1-C/viewform?embedded=true",
-  },
-  "4-2": {
-    "A": "https://docs.google.com/forms/d/e/example-4-2-A/viewform?embedded=true",
-    "B": "https://docs.google.com/forms/d/e/example-4-2-B/viewform?embedded=true",
-    "C": "https://docs.google.com/forms/d/e/example-4-2-C/viewform?embedded=true",
   },
 };
 
@@ -175,7 +180,7 @@ const FacultyPortal = () => {
   }
 
   const sections = ["A", "B", "C"];
-  const semesters = ["2-1", "2-2", "3-1", "3-2", "4-1", "4-2"];
+  const semesters = ["1-1", "1-2", "2-1", "2-2", "3-1", "3-2", "4-1"];
 
   const handleSectionClick = (semester: string, section: string) => {
     const url = syllabusReviewForms[semester]?.[section];
