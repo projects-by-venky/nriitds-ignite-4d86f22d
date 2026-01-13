@@ -14,7 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      syllabus_reviews: {
+        Row: {
+          branch: string
+          comments: string | null
+          created_at: string
+          email: string
+          hours_completed: number
+          hours_planned: number
+          hours_required: number
+          id: string
+          percentage_completion: number
+          section: string
+          semester: string
+          subject_type: string
+          teacher_name: string
+          teaching_notes_digitization: number
+          unit_in_progress: string
+          units_completed: number
+        }
+        Insert: {
+          branch: string
+          comments?: string | null
+          created_at?: string
+          email: string
+          hours_completed: number
+          hours_planned: number
+          hours_required: number
+          id?: string
+          percentage_completion: number
+          section: string
+          semester: string
+          subject_type: string
+          teacher_name: string
+          teaching_notes_digitization: number
+          unit_in_progress: string
+          units_completed: number
+        }
+        Update: {
+          branch?: string
+          comments?: string | null
+          created_at?: string
+          email?: string
+          hours_completed?: number
+          hours_planned?: number
+          hours_required?: number
+          id?: string
+          percentage_completion?: number
+          section?: string
+          semester?: string
+          subject_type?: string
+          teacher_name?: string
+          teaching_notes_digitization?: number
+          unit_in_progress?: string
+          units_completed?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
