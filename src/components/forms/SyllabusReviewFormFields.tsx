@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, CheckCircle } from "lucide-react";
+import { Loader2, CheckCircle, Send, RotateCcw, Mail, BookOpen, User, Clock, Target, Layers, FileText, Percent } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -130,11 +130,20 @@ const SyllabusReviewFormFields = ({ branch, semester, section }: SyllabusReviewF
 
   if (isSubmitted) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border p-8 text-center">
-        <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">Response Recorded</h3>
-        <p className="text-gray-600 mb-6">Your syllabus review has been submitted successfully.</p>
-        <Button onClick={handleClearForm} variant="outline">
+      <div className="p-8 md:p-12 text-center">
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-500/20 mb-6">
+          <CheckCircle className="w-10 h-10 text-green-500" />
+        </div>
+        <h3 className="text-2xl font-bold text-foreground mb-3">Response Recorded!</h3>
+        <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+          Your syllabus review has been submitted successfully. Thank you for your contribution.
+        </p>
+        <Button 
+          onClick={handleClearForm} 
+          variant="outline"
+          className="gap-2 border-primary/30 hover:border-primary hover:bg-primary/10"
+        >
+          <RotateCcw className="w-4 h-4" />
           Submit Another Response
         </Button>
       </div>
@@ -142,30 +151,33 @@ const SyllabusReviewFormFields = ({ branch, semester, section }: SyllabusReviewF
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
-      {/* Form Header */}
-      <div className="bg-primary h-2" />
-      <div className="p-6 border-b">
-        <p className="text-sm text-red-500 mt-2">* Indicates required question</p>
+    <div className="divide-y divide-border">
+      {/* Required Notice */}
+      <div className="p-6 bg-destructive/5 border-b border-destructive/20">
+        <p className="text-sm text-destructive flex items-center gap-2">
+          <span className="text-lg">*</span>
+          Indicates required question
+        </p>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-0">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="divide-y divide-border">
           {/* Email */}
-          <div className="p-6 border-b">
+          <div className="p-6 hover:bg-muted/30 transition-colors">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-900">
-                    Email <span className="text-red-500">*</span>
+                  <FormLabel className="text-sm font-semibold text-foreground flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-primary" />
+                    Email <span className="text-destructive">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input 
                       type="email" 
-                      placeholder="Your email" 
-                      className="border-0 border-b border-gray-300 rounded-none px-0 focus:border-primary focus-visible:ring-0"
+                      placeholder="Enter your email address" 
+                      className="mt-2 bg-background/50 border-border focus:border-primary"
                       {...field} 
                     />
                   </FormControl>
@@ -176,24 +188,25 @@ const SyllabusReviewFormFields = ({ branch, semester, section }: SyllabusReviewF
           </div>
 
           {/* Subject Type */}
-          <div className="p-6 border-b">
+          <div className="p-6 hover:bg-muted/30 transition-colors">
             <FormField
               control={form.control}
               name="subject_type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-900">
-                    SUBJECT(Theory/Lab) <span className="text-red-500">*</span>
+                  <FormLabel className="text-sm font-semibold text-foreground flex items-center gap-2">
+                    <BookOpen className="w-4 h-4 text-primary" />
+                    Subject Type (Theory/Lab) <span className="text-destructive">*</span>
                   </FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="w-48 mt-2">
-                        <SelectValue placeholder="Choose" />
+                      <SelectTrigger className="mt-2 w-full sm:w-64 bg-background/50 border-border">
+                        <SelectValue placeholder="Select type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Theory">Theory</SelectItem>
-                      <SelectItem value="Lab">Lab</SelectItem>
+                      <SelectItem value="Theory">📚 Theory</SelectItem>
+                      <SelectItem value="Lab">🔬 Lab</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -203,19 +216,20 @@ const SyllabusReviewFormFields = ({ branch, semester, section }: SyllabusReviewF
           </div>
 
           {/* Teacher Name */}
-          <div className="p-6 border-b">
+          <div className="p-6 hover:bg-muted/30 transition-colors">
             <FormField
               control={form.control}
               name="teacher_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-900">
-                    NAME OF THE TEACHER <span className="text-red-500">*</span>
+                  <FormLabel className="text-sm font-semibold text-foreground flex items-center gap-2">
+                    <User className="w-4 h-4 text-primary" />
+                    Name of the Teacher <span className="text-destructive">*</span>
                   </FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="w-64 mt-2">
-                        <SelectValue placeholder="Choose" />
+                      <SelectTrigger className="mt-2 w-full sm:w-80 bg-background/50 border-border">
+                        <SelectValue placeholder="Select teacher" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -232,169 +246,186 @@ const SyllabusReviewFormFields = ({ branch, semester, section }: SyllabusReviewF
             />
           </div>
 
-          {/* Hours Planned */}
-          <div className="p-6 border-b">
-            <FormField
-              control={form.control}
-              name="hours_planned"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-900">
-                    No. of hours planned as per lesson plan <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      placeholder="Your answer" 
-                      className="border-0 border-b border-gray-300 rounded-none px-0 focus:border-primary focus-visible:ring-0 w-64"
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          {/* Hours Section */}
+          <div className="p-6 hover:bg-muted/30 transition-colors">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Hours Planned */}
+              <FormField
+                control={form.control}
+                name="hours_planned"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-semibold text-foreground flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-primary" />
+                      Hours Planned <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        placeholder="0" 
+                        className="mt-2 bg-background/50 border-border"
+                        {...field} 
+                      />
+                    </FormControl>
+                    <p className="text-xs text-muted-foreground mt-1">As per lesson plan</p>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Hours Completed */}
+              <FormField
+                control={form.control}
+                name="hours_completed"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-semibold text-foreground flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-secondary" />
+                      Hours Completed <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        placeholder="0" 
+                        className="mt-2 bg-background/50 border-border"
+                        {...field} 
+                      />
+                    </FormControl>
+                    <p className="text-xs text-muted-foreground mt-1">Till date</p>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
 
-          {/* Hours Completed */}
-          <div className="p-6 border-b">
-            <FormField
-              control={form.control}
-              name="hours_completed"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-900">
-                    No. of hours completed till date <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      placeholder="Your answer" 
-                      className="border-0 border-b border-gray-300 rounded-none px-0 focus:border-primary focus-visible:ring-0 w-64"
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          {/* Percentage & Hours Required */}
+          <div className="p-6 hover:bg-muted/30 transition-colors">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Percentage Completion */}
+              <FormField
+                control={form.control}
+                name="percentage_completion"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-semibold text-foreground flex items-center gap-2">
+                      <Percent className="w-4 h-4 text-primary" />
+                      Completion % <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        step="0.01"
+                        placeholder="0" 
+                        className="mt-2 bg-background/50 border-border"
+                        {...field} 
+                      />
+                    </FormControl>
+                    <p className="text-xs text-muted-foreground mt-1">Syllabus completion till date</p>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Hours Required */}
+              <FormField
+                control={form.control}
+                name="hours_required"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-semibold text-foreground flex items-center gap-2">
+                      <Target className="w-4 h-4 text-secondary" />
+                      Hours Required <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        placeholder="0" 
+                        className="mt-2 bg-background/50 border-border"
+                        {...field} 
+                      />
+                    </FormControl>
+                    <p className="text-xs text-muted-foreground mt-1">To complete syllabus</p>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
 
-          {/* Percentage Completion */}
-          <div className="p-6 border-b">
-            <FormField
-              control={form.control}
-              name="percentage_completion"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-900">
-                    Percentage completion of syllabus till date <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      step="0.01"
-                      placeholder="Your answer" 
-                      className="border-0 border-b border-gray-300 rounded-none px-0 focus:border-primary focus-visible:ring-0 w-64"
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          {/* Units Section */}
+          <div className="p-6 hover:bg-muted/30 transition-colors">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Units Completed */}
+              <FormField
+                control={form.control}
+                name="units_completed"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-semibold text-foreground flex items-center gap-2">
+                      <Layers className="w-4 h-4 text-primary" />
+                      Units Completed <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        placeholder="0" 
+                        className="mt-2 bg-background/50 border-border"
+                        {...field} 
+                      />
+                    </FormControl>
+                    <p className="text-xs text-muted-foreground mt-1">100% completed units</p>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          {/* Hours Required */}
-          <div className="p-6 border-b">
-            <FormField
-              control={form.control}
-              name="hours_required"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-900">
-                    No. of hours required further to complete the syllabus <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      placeholder="Your answer" 
-                      className="border-0 border-b border-gray-300 rounded-none px-0 focus:border-primary focus-visible:ring-0 w-64"
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Units Completed */}
-          <div className="p-6 border-b">
-            <FormField
-              control={form.control}
-              name="units_completed"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-900">
-                    No. of units totally(100%) completed <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      placeholder="Your answer" 
-                      className="border-0 border-b border-gray-300 rounded-none px-0 focus:border-primary focus-visible:ring-0 w-64"
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Unit in Progress */}
-          <div className="p-6 border-b">
-            <FormField
-              control={form.control}
-              name="unit_in_progress"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-900">
-                    Unit no. presently in progress with % completion <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input 
-                      placeholder="Your answer" 
-                      className="border-0 border-b border-gray-300 rounded-none px-0 focus:border-primary focus-visible:ring-0 w-64"
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              {/* Unit in Progress */}
+              <FormField
+                control={form.control}
+                name="unit_in_progress"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-semibold text-foreground flex items-center gap-2">
+                      <Layers className="w-4 h-4 text-secondary" />
+                      Unit in Progress <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input 
+                        placeholder="e.g., Unit 3 - 60%" 
+                        className="mt-2 bg-background/50 border-border"
+                        {...field} 
+                      />
+                    </FormControl>
+                    <p className="text-xs text-muted-foreground mt-1">With % completion</p>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
 
           {/* Teaching Notes Digitization */}
-          <div className="p-6 border-b">
+          <div className="p-6 hover:bg-muted/30 transition-colors">
             <FormField
               control={form.control}
               name="teaching_notes_digitization"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-900">
-                    Teaching notes digitization progress(%) <span className="text-red-500">*</span>
+                  <FormLabel className="text-sm font-semibold text-foreground flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-primary" />
+                    Teaching Notes Digitization (%) <span className="text-destructive">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input 
                       type="number" 
                       step="0.01"
-                      placeholder="Your answer" 
-                      className="border-0 border-b border-gray-300 rounded-none px-0 focus:border-primary focus-visible:ring-0 w-64"
+                      placeholder="0" 
+                      className="mt-2 w-full sm:w-64 bg-background/50 border-border"
                       {...field} 
                     />
                   </FormControl>
+                  <p className="text-xs text-muted-foreground mt-1">Progress percentage</p>
                   <FormMessage />
                 </FormItem>
               )}
@@ -402,19 +433,19 @@ const SyllabusReviewFormFields = ({ branch, semester, section }: SyllabusReviewF
           </div>
 
           {/* Comments */}
-          <div className="p-6 border-b">
+          <div className="p-6 hover:bg-muted/30 transition-colors">
             <FormField
               control={form.control}
               name="comments"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-900">
-                    Comments if any
+                  <FormLabel className="text-sm font-semibold text-foreground">
+                    Comments (Optional)
                   </FormLabel>
                   <FormControl>
                     <Textarea 
-                      placeholder="Your answer" 
-                      className="border-0 border-b border-gray-300 rounded-none px-0 focus:border-primary focus-visible:ring-0 resize-none min-h-[60px]"
+                      placeholder="Any additional comments or notes..." 
+                      className="mt-2 bg-background/50 border-border resize-none min-h-[100px]"
                       {...field} 
                     />
                   </FormControl>
@@ -424,37 +455,46 @@ const SyllabusReviewFormFields = ({ branch, semester, section }: SyllabusReviewF
             />
           </div>
 
-          {/* Submit Button */}
-          <div className="p-6 flex items-center justify-between">
-            <Button 
-              type="submit" 
-              disabled={isSubmitting}
-              className="bg-primary hover:bg-primary/90"
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Submitting...
-                </>
-              ) : (
-                "Submit"
-              )}
-            </Button>
-            <Button 
-              type="button" 
-              variant="ghost" 
-              onClick={handleClearForm}
-              className="text-primary hover:text-primary/80"
-            >
-              Clear form
-            </Button>
+          {/* Submit Section */}
+          <div className="p-6 bg-muted/20">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <Button 
+                type="submit" 
+                disabled={isSubmitting}
+                size="lg"
+                className="w-full sm:w-auto gap-2 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" />
+                    Submit Response
+                  </>
+                )}
+              </Button>
+              <Button 
+                type="button" 
+                variant="ghost" 
+                onClick={handleClearForm}
+                className="text-muted-foreground hover:text-foreground gap-2"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Clear form
+              </Button>
+            </div>
           </div>
         </form>
       </Form>
 
-      {/* Footer */}
-      <div className="p-4 bg-gray-50 text-center text-xs text-gray-500 border-t">
-        <p>Never submit passwords through this form.</p>
+      {/* Footer Notice */}
+      <div className="p-4 bg-muted/10 text-center">
+        <p className="text-xs text-muted-foreground">
+          🔒 Never submit passwords through this form
+        </p>
       </div>
     </div>
   );

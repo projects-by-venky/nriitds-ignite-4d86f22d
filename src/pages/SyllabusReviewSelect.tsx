@@ -252,7 +252,7 @@ const SectionSelection = ({ branch, semester }: { branch: string; semester: stri
             title={`Section ${section}`}
             subtitle={`${semester} | ${dept.code} | Section ${section}`}
             icon={<Users className="w-6 h-6 text-white" />}
-            href={`/faculty/syllabus-review/${branch}/${semester}/section-${section.toLowerCase()}`}
+            href={`/faculty/syllabus-review/${branch}/${semester}/${section}`}
             delay={index * 0.1}
           />
         ))}
