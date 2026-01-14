@@ -14,6 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
+      research_projects: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          branch: string
+          category: Database["public"]["Enums"]["project_category"]
+          contact_email: string
+          contributor_names: string[]
+          contributor_type: Database["public"]["Enums"]["contributor_type"]
+          created_at: string
+          department: string
+          description: string
+          designations: string[] | null
+          document_urls: string[] | null
+          external_links: Json | null
+          how_it_was_built: string
+          id: string
+          image_urls: string[] | null
+          outcomes_impact: string
+          problem_statement: string
+          proposed_solution: string
+          rejection_reason: string | null
+          roll_numbers: string[] | null
+          status: Database["public"]["Enums"]["approval_status"]
+          summary: string
+          title: string
+          tools_technologies: string[]
+          updated_at: string
+          video_urls: string[] | null
+          year_section: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          branch: string
+          category: Database["public"]["Enums"]["project_category"]
+          contact_email: string
+          contributor_names: string[]
+          contributor_type: Database["public"]["Enums"]["contributor_type"]
+          created_at?: string
+          department: string
+          description: string
+          designations?: string[] | null
+          document_urls?: string[] | null
+          external_links?: Json | null
+          how_it_was_built: string
+          id?: string
+          image_urls?: string[] | null
+          outcomes_impact: string
+          problem_statement: string
+          proposed_solution: string
+          rejection_reason?: string | null
+          roll_numbers?: string[] | null
+          status?: Database["public"]["Enums"]["approval_status"]
+          summary: string
+          title: string
+          tools_technologies?: string[]
+          updated_at?: string
+          video_urls?: string[] | null
+          year_section?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          branch?: string
+          category?: Database["public"]["Enums"]["project_category"]
+          contact_email?: string
+          contributor_names?: string[]
+          contributor_type?: Database["public"]["Enums"]["contributor_type"]
+          created_at?: string
+          department?: string
+          description?: string
+          designations?: string[] | null
+          document_urls?: string[] | null
+          external_links?: Json | null
+          how_it_was_built?: string
+          id?: string
+          image_urls?: string[] | null
+          outcomes_impact?: string
+          problem_statement?: string
+          proposed_solution?: string
+          rejection_reason?: string | null
+          roll_numbers?: string[] | null
+          status?: Database["public"]["Enums"]["approval_status"]
+          summary?: string
+          title?: string
+          tools_technologies?: string[]
+          updated_at?: string
+          video_urls?: string[] | null
+          year_section?: string | null
+        }
+        Relationships: []
+      }
       syllabus_reviews: {
         Row: {
           branch: string
@@ -79,7 +172,9 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      approval_status: "pending" | "approved" | "rejected"
+      contributor_type: "student" | "faculty"
+      project_category: "research" | "project" | "innovation"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -206,6 +301,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      approval_status: ["pending", "approved", "rejected"],
+      contributor_type: ["student", "faculty"],
+      project_category: ["research", "project", "innovation"],
+    },
   },
 } as const
