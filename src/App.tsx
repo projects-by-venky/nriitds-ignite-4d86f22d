@@ -9,6 +9,8 @@ import About from "./pages/About";
 import Branches from "./pages/Branches";
 import Courses from "./pages/Courses";
 import Research from "./pages/Research";
+import ResearchDetail from "./pages/ResearchDetail";
+import ResearchUpload from "./pages/ResearchUpload";
 import Events from "./pages/Events";
 import Department from "./pages/Department";
 import StudentPortal from "./pages/StudentPortal";
@@ -36,6 +38,8 @@ const App = () => (
           <Route path="/branches" element={<Branches />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/research" element={<Research />} />
+          <Route path="/research/upload" element={<ResearchUpload />} />
+          <Route path="/research/:id" element={<ResearchDetail />} />
           <Route path="/events" element={<Events />} />
           <Route path="/department/:deptId" element={<Department />} />
           <Route path="/department/:deptId/student-portal" element={<StudentPortal />} />
