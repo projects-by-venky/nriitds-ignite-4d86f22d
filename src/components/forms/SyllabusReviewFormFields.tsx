@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { supabase } from "@/integrations/supabase/client";
+import { getBackendClient } from "@/integrations/backend/client";
 import { toast } from "@/hooks/use-toast";
 
 // Validation schema matching Google Form fields
@@ -85,6 +85,8 @@ const SyllabusReviewFormFields = ({ branch, semester, section }: SyllabusReviewF
   const onSubmit = async (data: SyllabusReviewFormData) => {
     setIsSubmitting(true);
     try {
+      const supabase = getBackendClient();
+
       const { error } = await supabase.from("syllabus_reviews").insert({
         branch,
         semester,
