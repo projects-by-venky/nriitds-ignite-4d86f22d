@@ -29,7 +29,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useSubmitResearchProject } from '@/hooks/useResearchProjects';
 import { ContributorType, ProjectCategory, ExternalLink, ResearchProjectInsert } from '@/types/research';
-import { supabase } from '@/integrations/supabase/client';
+import { getBackendClient } from '@/integrations/backend/client';
 
 const STEPS = [
   { id: 1, title: 'Contributor Type', icon: GraduationCap },
@@ -120,6 +120,8 @@ const ResearchUpload = () => {
   };
 
   const uploadFile = async (file: File, folder: string): Promise<string> => {
+    const supabase = getBackendClient();
+
     const fileExt = file.name.split('.').pop();
     const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
     
