@@ -1,11 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { getBackendClient } from '@/integrations/backend/client';
 import { ResearchProject, ResearchProjectInsert, ContributorType, ExternalLink } from '@/types/research';
 
 export const useResearchProjects = (contributorType?: ContributorType) => {
   return useQuery({
     queryKey: ['research-projects', contributorType],
     queryFn: async () => {
+      const supabase = getBackendClient();
+
       let query = supabase
         .from('research_projects')
         .select('*')
@@ -33,6 +35,8 @@ export const useResearchProject = (id: string) => {
   return useQuery({
     queryKey: ['research-project', id],
     queryFn: async () => {
+      const supabase = getBackendClient();
+
       const { data, error } = await supabase
         .from('research_projects')
         .select('*')
@@ -56,6 +60,8 @@ export const useSubmitResearchProject = () => {
   
   return useMutation({
     mutationFn: async (project: ResearchProjectInsert) => {
+      const supabase = getBackendClient();
+
       const { data, error } = await supabase
         .from('research_projects')
         .insert({
