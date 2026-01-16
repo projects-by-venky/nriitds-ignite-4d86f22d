@@ -14,6 +14,108 @@ export type Database = {
   }
   public: {
     Tables: {
+      events: {
+        Row: {
+          attachment_urls: string[] | null
+          created_at: string
+          created_by: string | null
+          department: string | null
+          description: string
+          end_date: string | null
+          end_time: string | null
+          event_type: Database["public"]["Enums"]["event_type"]
+          faculty_coordinator: string | null
+          faculty_email: string | null
+          faculty_phone: string | null
+          gallery_urls: string[] | null
+          id: string
+          is_published: boolean | null
+          organized_by: string
+          poster_url: string | null
+          registration_deadline: string | null
+          registration_link: string | null
+          registration_required: boolean | null
+          schedule: Json | null
+          short_description: string | null
+          start_date: string
+          start_time: string | null
+          status: Database["public"]["Enums"]["event_status"]
+          student_coordinator: string | null
+          student_email: string | null
+          student_phone: string | null
+          title: string
+          updated_at: string
+          venue: string
+          who_can_attend: string | null
+        }
+        Insert: {
+          attachment_urls?: string[] | null
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          description: string
+          end_date?: string | null
+          end_time?: string | null
+          event_type?: Database["public"]["Enums"]["event_type"]
+          faculty_coordinator?: string | null
+          faculty_email?: string | null
+          faculty_phone?: string | null
+          gallery_urls?: string[] | null
+          id?: string
+          is_published?: boolean | null
+          organized_by: string
+          poster_url?: string | null
+          registration_deadline?: string | null
+          registration_link?: string | null
+          registration_required?: boolean | null
+          schedule?: Json | null
+          short_description?: string | null
+          start_date: string
+          start_time?: string | null
+          status?: Database["public"]["Enums"]["event_status"]
+          student_coordinator?: string | null
+          student_email?: string | null
+          student_phone?: string | null
+          title: string
+          updated_at?: string
+          venue: string
+          who_can_attend?: string | null
+        }
+        Update: {
+          attachment_urls?: string[] | null
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          description?: string
+          end_date?: string | null
+          end_time?: string | null
+          event_type?: Database["public"]["Enums"]["event_type"]
+          faculty_coordinator?: string | null
+          faculty_email?: string | null
+          faculty_phone?: string | null
+          gallery_urls?: string[] | null
+          id?: string
+          is_published?: boolean | null
+          organized_by?: string
+          poster_url?: string | null
+          registration_deadline?: string | null
+          registration_link?: string | null
+          registration_required?: boolean | null
+          schedule?: Json | null
+          short_description?: string | null
+          start_date?: string
+          start_time?: string | null
+          status?: Database["public"]["Enums"]["event_status"]
+          student_coordinator?: string | null
+          student_email?: string | null
+          student_phone?: string | null
+          title?: string
+          updated_at?: string
+          venue?: string
+          who_can_attend?: string | null
+        }
+        Relationships: []
+      }
       research_projects: {
         Row: {
           approved_at: string | null
@@ -174,6 +276,15 @@ export type Database = {
     Enums: {
       approval_status: "pending" | "approved" | "rejected"
       contributor_type: "student" | "faculty"
+      event_status: "draft" | "upcoming" | "ongoing" | "completed" | "cancelled"
+      event_type:
+        | "festival"
+        | "workshop"
+        | "seminar"
+        | "sports"
+        | "cultural"
+        | "technical"
+        | "other"
       project_category: "research" | "project" | "innovation"
     }
     CompositeTypes: {
@@ -304,6 +415,16 @@ export const Constants = {
     Enums: {
       approval_status: ["pending", "approved", "rejected"],
       contributor_type: ["student", "faculty"],
+      event_status: ["draft", "upcoming", "ongoing", "completed", "cancelled"],
+      event_type: [
+        "festival",
+        "workshop",
+        "seminar",
+        "sports",
+        "cultural",
+        "technical",
+        "other",
+      ],
       project_category: ["research", "project", "innovation"],
     },
   },
