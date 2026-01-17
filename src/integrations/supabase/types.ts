@@ -19,6 +19,8 @@ export type Database = {
           attachment_urls: string[] | null
           created_at: string
           created_by: string | null
+          deleted_at: string | null
+          deleted_by: string | null
           department: string | null
           description: string
           end_date: string | null
@@ -52,6 +54,8 @@ export type Database = {
           attachment_urls?: string[] | null
           created_at?: string
           created_by?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           department?: string | null
           description: string
           end_date?: string | null
@@ -85,6 +89,8 @@ export type Database = {
           attachment_urls?: string[] | null
           created_at?: string
           created_by?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           department?: string | null
           description?: string
           end_date?: string | null
@@ -113,6 +119,39 @@ export type Database = {
           updated_at?: string
           venue?: string
           who_can_attend?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          department: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          department?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          department?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -266,14 +305,44 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_role: { Args: { _user_id: string }; Returns: string }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin_or_faculty: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
+      app_role: "admin" | "faculty" | "student"
       approval_status: "pending" | "approved" | "rejected"
       contributor_type: "student" | "faculty"
       event_status: "draft" | "upcoming" | "ongoing" | "completed" | "cancelled"
@@ -413,6 +482,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["admin", "faculty", "student"],
       approval_status: ["pending", "approved", "rejected"],
       contributor_type: ["student", "faculty"],
       event_status: ["draft", "upcoming", "ongoing", "completed", "cancelled"],

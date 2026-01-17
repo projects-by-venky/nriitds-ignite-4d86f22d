@@ -14,6 +14,7 @@ import ResearchUpload from "./pages/ResearchUpload";
 import Events from "./pages/Events";
 import EventDetail from "./pages/EventDetail";
 import EventUpload from "./pages/EventUpload";
+import Auth from "./pages/Auth";
 import Department from "./pages/Department";
 import StudentPortal from "./pages/StudentPortal";
 import FacultyPortal from "./pages/FacultyPortal";
@@ -45,6 +46,7 @@ const App = () => (
           <Route path="/events" element={<Events />} />
           <Route path="/events/upload" element={<EventUpload />} />
           <Route path="/events/:id" element={<EventDetail />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/department/:deptId" element={<Department />} />
           <Route path="/department/:deptId/student-portal" element={<StudentPortal />} />
           <Route path="/department/:deptId/faculty-portal" element={<FacultyPortal />} />

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { useEvents } from "@/hooks/useEvents";
@@ -7,15 +6,17 @@ import EventsGrid from "@/components/events/EventsGrid";
 import EventCalendar from "@/components/events/EventCalendar";
 import ViewToggle from "@/components/events/ViewToggle";
 import MonthSelector from "@/components/events/MonthSelector";
-import { Button } from "@/components/ui/button";
+import EventAccessMenu from "@/components/events/EventAccessMenu";
+import EventManageDialog from "@/components/events/EventManageDialog";
 import { motion } from "framer-motion";
-import { Calendar, Users, Trophy, Sparkles, Plus } from "lucide-react";
+import { Calendar, Users, Trophy, Sparkles } from "lucide-react";
 
 type ViewType = 'card' | 'calendar';
 
 const Events = () => {
   const [viewType, setViewType] = useState<ViewType>('card');
   const [selectedMonth, setSelectedMonth] = useState(new Date());
+  const [manageDialogOpen, setManageDialogOpen] = useState(false);
   
   const { data: events = [], isLoading } = useEvents(selectedMonth);
 
@@ -105,14 +106,12 @@ const Events = () => {
                 <MonthSelector selectedMonth={selectedMonth} onMonthChange={setSelectedMonth} />
               </div>
               
-              {/* Add Event Button - Visible to all for now */}
-              <Link to="/events/upload">
-                <Button className="gap-2 shadow-lg shadow-primary/20">
-                  <Plus className="h-4 w-4" />
-                  Add New Event
-                </Button>
-              </Link>
+              {/* Access Menu - Shows login for guests, full menu for admin/faculty */}
+              <EventAccessMenu onOpenManage={() => setManageDialogOpen(true)} />
             </motion.div>
+            
+            {/* Event Management Dialog */}
+            <EventManageDialog open={manageDialogOpen} onOpenChange={setManageDialogOpen} />
 
             {/* View Content */}
             <motion.div
