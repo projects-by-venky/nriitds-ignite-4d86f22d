@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -44,7 +45,11 @@ const App = () => (
           <Route path="/research/upload" element={<ResearchUpload />} />
           <Route path="/research/:id" element={<ResearchDetail />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/events/upload" element={<EventUpload />} />
+          <Route path="/events/upload" element={
+            <ProtectedRoute requireAdminOrFaculty>
+              <EventUpload />
+            </ProtectedRoute>
+          } />
           <Route path="/events/:id" element={<EventDetail />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/department/:deptId" element={<Department />} />
