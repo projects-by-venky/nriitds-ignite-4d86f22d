@@ -328,7 +328,198 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      events_public: {
+        Row: {
+          attachment_urls: string[] | null
+          created_at: string | null
+          department: string | null
+          description: string | null
+          end_date: string | null
+          end_time: string | null
+          event_type: Database["public"]["Enums"]["event_type"] | null
+          faculty_coordinator: string | null
+          faculty_email: string | null
+          faculty_phone: string | null
+          gallery_urls: string[] | null
+          id: string | null
+          is_published: boolean | null
+          organized_by: string | null
+          poster_url: string | null
+          registration_deadline: string | null
+          registration_link: string | null
+          registration_required: boolean | null
+          schedule: Json | null
+          short_description: string | null
+          start_date: string | null
+          start_time: string | null
+          status: Database["public"]["Enums"]["event_status"] | null
+          student_coordinator: string | null
+          student_email: string | null
+          student_phone: string | null
+          title: string | null
+          updated_at: string | null
+          venue: string | null
+          who_can_attend: string | null
+        }
+        Insert: {
+          attachment_urls?: string[] | null
+          created_at?: string | null
+          department?: string | null
+          description?: string | null
+          end_date?: string | null
+          end_time?: string | null
+          event_type?: Database["public"]["Enums"]["event_type"] | null
+          faculty_coordinator?: never
+          faculty_email?: never
+          faculty_phone?: never
+          gallery_urls?: string[] | null
+          id?: string | null
+          is_published?: boolean | null
+          organized_by?: string | null
+          poster_url?: string | null
+          registration_deadline?: string | null
+          registration_link?: string | null
+          registration_required?: boolean | null
+          schedule?: Json | null
+          short_description?: string | null
+          start_date?: string | null
+          start_time?: string | null
+          status?: Database["public"]["Enums"]["event_status"] | null
+          student_coordinator?: never
+          student_email?: never
+          student_phone?: never
+          title?: string | null
+          updated_at?: string | null
+          venue?: string | null
+          who_can_attend?: string | null
+        }
+        Update: {
+          attachment_urls?: string[] | null
+          created_at?: string | null
+          department?: string | null
+          description?: string | null
+          end_date?: string | null
+          end_time?: string | null
+          event_type?: Database["public"]["Enums"]["event_type"] | null
+          faculty_coordinator?: never
+          faculty_email?: never
+          faculty_phone?: never
+          gallery_urls?: string[] | null
+          id?: string | null
+          is_published?: boolean | null
+          organized_by?: string | null
+          poster_url?: string | null
+          registration_deadline?: string | null
+          registration_link?: string | null
+          registration_required?: boolean | null
+          schedule?: Json | null
+          short_description?: string | null
+          start_date?: string | null
+          start_time?: string | null
+          status?: Database["public"]["Enums"]["event_status"] | null
+          student_coordinator?: never
+          student_email?: never
+          student_phone?: never
+          title?: string | null
+          updated_at?: string | null
+          venue?: string | null
+          who_can_attend?: string | null
+        }
+        Relationships: []
+      }
+      research_projects_public: {
+        Row: {
+          approved_at: string | null
+          branch: string | null
+          category: Database["public"]["Enums"]["project_category"] | null
+          contact_email: string | null
+          contributor_names: string[] | null
+          contributor_type:
+            | Database["public"]["Enums"]["contributor_type"]
+            | null
+          created_at: string | null
+          department: string | null
+          description: string | null
+          designations: string[] | null
+          document_urls: string[] | null
+          external_links: Json | null
+          how_it_was_built: string | null
+          id: string | null
+          image_urls: string[] | null
+          outcomes_impact: string | null
+          problem_statement: string | null
+          proposed_solution: string | null
+          roll_numbers: string[] | null
+          status: Database["public"]["Enums"]["approval_status"] | null
+          summary: string | null
+          title: string | null
+          tools_technologies: string[] | null
+          updated_at: string | null
+          video_urls: string[] | null
+          year_section: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          branch?: string | null
+          category?: Database["public"]["Enums"]["project_category"] | null
+          contact_email?: never
+          contributor_names?: string[] | null
+          contributor_type?:
+            | Database["public"]["Enums"]["contributor_type"]
+            | null
+          created_at?: string | null
+          department?: string | null
+          description?: string | null
+          designations?: string[] | null
+          document_urls?: string[] | null
+          external_links?: Json | null
+          how_it_was_built?: string | null
+          id?: string | null
+          image_urls?: string[] | null
+          outcomes_impact?: string | null
+          problem_statement?: string | null
+          proposed_solution?: string | null
+          roll_numbers?: string[] | null
+          status?: Database["public"]["Enums"]["approval_status"] | null
+          summary?: string | null
+          title?: string | null
+          tools_technologies?: string[] | null
+          updated_at?: string | null
+          video_urls?: string[] | null
+          year_section?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          branch?: string | null
+          category?: Database["public"]["Enums"]["project_category"] | null
+          contact_email?: never
+          contributor_names?: string[] | null
+          contributor_type?:
+            | Database["public"]["Enums"]["contributor_type"]
+            | null
+          created_at?: string | null
+          department?: string | null
+          description?: string | null
+          designations?: string[] | null
+          document_urls?: string[] | null
+          external_links?: Json | null
+          how_it_was_built?: string | null
+          id?: string | null
+          image_urls?: string[] | null
+          outcomes_impact?: string | null
+          problem_statement?: string | null
+          proposed_solution?: string | null
+          roll_numbers?: string[] | null
+          status?: Database["public"]["Enums"]["approval_status"] | null
+          summary?: string | null
+          title?: string | null
+          tools_technologies?: string[] | null
+          updated_at?: string | null
+          video_urls?: string[] | null
+          year_section?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_user_role: { Args: { _user_id: string }; Returns: string }

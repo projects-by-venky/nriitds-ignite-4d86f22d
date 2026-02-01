@@ -11,8 +11,13 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader2, Mail, Lock, User, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 const emailSchema = z.string().trim().email({ message: "Invalid email address" }).max(255);
-const passwordSchema = z.string().min(6, { message: "Password must be at least 6 characters" }).max(100);
-const nameSchema = z.string().trim().max(100).optional();
+const passwordSchema = z.string()
+  .min(8, { message: "Password must be at least 8 characters" })
+  .max(100)
+  .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
+  .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+  .regex(/[0-9]/, { message: "Password must contain at least one number" });
+const nameSchema = z.string().trim().min(2, { message: "Name must be at least 2 characters" }).max(100).optional();
 
 const Auth = () => {
   const navigate = useNavigate();
