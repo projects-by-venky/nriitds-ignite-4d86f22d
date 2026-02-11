@@ -8,7 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Mail, Lock, User, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Loader2, Mail, Lock, User, ArrowLeft, Eye, EyeOff, Building2 } from 'lucide-react';
 
 const emailSchema = z.string().trim().email({ message: "Invalid email address" }).max(255);
 const passwordSchema = z.string()
@@ -28,9 +29,10 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
+  const [branch, setBranch] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string; branch?: string }>({});
 
   // Redirect if already logged in
   useEffect(() => {
@@ -40,7 +42,7 @@ const Auth = () => {
   }, [user, authLoading, navigate]);
 
   const validateForm = () => {
-    const newErrors: { email?: string; password?: string; name?: string } = {};
+    const newErrors: { email?: string; password?: string; name?: string; branch?: string } = {};
     
     const emailResult = emailSchema.safeParse(email);
     if (!emailResult.success) {
@@ -57,6 +59,10 @@ const Auth = () => {
       if (!nameResult.success) {
         newErrors.name = nameResult.error.errors[0].message;
       }
+    }
+
+    if (!isLogin && !branch) {
+      newErrors.branch = 'Please select a branch';
     }
     
     setErrors(newErrors);
@@ -95,7 +101,7 @@ const Auth = () => {
           navigate('/');
         }
       } else {
-        const { error } = await signUp(email, password, fullName);
+        const { error } = await signUp(email, password, fullName, branch);
         if (error) {
           if (error.message.includes('already registered')) {
             toast({
@@ -167,12 +173,12 @@ const Auth = () => {
                 <span className="text-2xl font-bold text-white">N</span>
               </motion.div>
               <CardTitle className="text-2xl font-bold">
-                {isLogin ? 'Welcome Back' : 'Create Account'}
+                {isLogin ? 'Faculty Login' : 'Faculty Sign Up'}
               </CardTitle>
               <CardDescription>
                 {isLogin 
-                  ? 'Sign in to access admin and faculty features' 
-                  : 'Sign up to get started with NRIIT portal'}
+                  ? 'Sign in to access faculty and admin features' 
+                  : 'Create your faculty account for NRIIT portal'}
               </CardDescription>
             </CardHeader>
             
@@ -200,6 +206,36 @@ const Auth = () => {
                       </div>
                       {errors.name && (
                         <p className="text-sm text-destructive">{errors.name}</p>
+                      )}
+                    </motion.div>
+                  )}
+                  {!isLogin && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="space-y-2"
+                    >
+                      <Label htmlFor="branch">Branch</Label>
+                      <div className="relative">
+                        <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
+                        <Select value={branch} onValueChange={setBranch}>
+                          <SelectTrigger className="pl-10">
+                            <SelectValue placeholder="Select your branch" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="CSE">CSE - Computer Science & Engineering</SelectItem>
+                            <SelectItem value="IT">IT - Information Technology</SelectItem>
+                            <SelectItem value="DS">DS - Data Science</SelectItem>
+                            <SelectItem value="ECE">ECE - Electronics & Communication</SelectItem>
+                            <SelectItem value="EEE">EEE - Electrical & Electronics</SelectItem>
+                            <SelectItem value="MECH">MECH - Mechanical Engineering</SelectItem>
+                            <SelectItem value="CIVIL">CIVIL - Civil Engineering</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      {errors.branch && (
+                        <p className="text-sm text-destructive">{errors.branch}</p>
                       )}
                     </motion.div>
                   )}
