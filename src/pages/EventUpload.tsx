@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -23,18 +23,22 @@ import {
   Loader2,
   CheckCircle2
 } from "lucide-react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import { useCreateEvent } from "@/hooks/useEvents";
+import { useCreateEvent, useUpdateEvent, useEvent } from "@/hooks/useEvents";
 import { getBackendClient } from "@/integrations/backend/client";
 import { EventType, EventStatus, ScheduleItem, EVENT_TYPE_LABELS, EVENT_STATUS_LABELS } from "@/types/events";
 
 const EventUpload = () => {
   const navigate = useNavigate();
+  const { id: eventId } = useParams<{ id: string }>();
+  const isEditMode = !!eventId;
   const { toast } = useToast();
   const createEvent = useCreateEvent();
+  const updateEvent = useUpdateEvent();
+  const { data: existingEvent, isLoading: isLoadingEvent } = useEvent(eventId || '');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
   const attachmentInputRef = useRef<HTMLInputElement>(null);
@@ -72,6 +76,49 @@ const EventUpload = () => {
   const [attachmentFiles, setAttachmentFiles] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
 
+  // Existing URLs (for edit mode)
+  const [existingPosterUrl, setExistingPosterUrl] = useState<string>("");
+  const [existingGalleryUrls, setExistingGalleryUrls] = useState<string[]>([]);
+  const [existingAttachmentUrls, setExistingAttachmentUrls] = useState<string[]>([]);
+
+  // Populate form when editing
+  useEffect(() => {
+    if (isEditMode && existingEvent) {
+      setTitle(existingEvent.title);
+      setDescription(existingEvent.description);
+      setShortDescription(existingEvent.short_description || "");
+      setEventType(existingEvent.event_type);
+      setStatus(existingEvent.status);
+      setStartDate(new Date(existingEvent.start_date));
+      setEndDate(existingEvent.end_date ? new Date(existingEvent.end_date) : undefined);
+      setStartTime(existingEvent.start_time || "");
+      setEndTime(existingEvent.end_time || "");
+      setVenue(existingEvent.venue);
+      setOrganizedBy(existingEvent.organized_by);
+      setDepartment(existingEvent.department || "");
+      setWhoCanAttend(existingEvent.who_can_attend || "Open to all");
+      setSchedule(existingEvent.schedule || []);
+      setRegistrationRequired(existingEvent.registration_required || false);
+      setRegistrationLink(existingEvent.registration_link || "");
+      setRegistrationDeadline(existingEvent.registration_deadline ? new Date(existingEvent.registration_deadline) : undefined);
+      setFacultyCoordinator(existingEvent.faculty_coordinator || "");
+      setFacultyEmail(existingEvent.faculty_email || "");
+      setFacultyPhone(existingEvent.faculty_phone || "");
+      setStudentCoordinator(existingEvent.student_coordinator || "");
+      setStudentEmail(existingEvent.student_email || "");
+      setStudentPhone(existingEvent.student_phone || "");
+      setIsPublished(existingEvent.is_published ?? true);
+      
+      // Set existing media URLs
+      if (existingEvent.poster_url) {
+        setExistingPosterUrl(existingEvent.poster_url);
+        setPosterPreview(existingEvent.poster_url);
+      }
+      setExistingGalleryUrls(existingEvent.gallery_urls || []);
+      setExistingAttachmentUrls(existingEvent.attachment_urls || []);
+    }
+  }, [isEditMode, existingEvent]);
+
   const handlePosterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -81,6 +128,7 @@ const EventUpload = () => {
       }
       setPosterFile(file);
       setPosterPreview(URL.createObjectURL(file));
+      setExistingPosterUrl(""); // Clear existing poster when new one is selected
     }
   };
 
@@ -151,26 +199,25 @@ const EventUpload = () => {
     setIsUploading(true);
 
     try {
-      // Upload files
-      let posterUrl = "";
+      // Upload new files
+      let posterUrl = existingPosterUrl;
       if (posterFile) {
         posterUrl = await uploadFile(posterFile, "posters");
       }
 
-      const galleryUrls: string[] = [];
+      const galleryUrls: string[] = [...existingGalleryUrls];
       for (const file of galleryFiles) {
         const url = await uploadFile(file, "gallery");
         galleryUrls.push(url);
       }
 
-      const attachmentUrls: string[] = [];
+      const attachmentUrls: string[] = [...existingAttachmentUrls];
       for (const file of attachmentFiles) {
         const url = await uploadFile(file, "attachments");
         attachmentUrls.push(url);
       }
 
-      // Create event
-      await createEvent.mutateAsync({
+      const eventData = {
         title,
         description,
         short_description: shortDescription || undefined,
@@ -198,18 +245,27 @@ const EventUpload = () => {
         gallery_urls: galleryUrls.length > 0 ? galleryUrls : undefined,
         attachment_urls: attachmentUrls.length > 0 ? attachmentUrls : undefined,
         is_published: isPublished,
-      });
+      };
 
-      toast({
-        title: "Event created successfully!",
-        description: isPublished ? "Your event is now visible to everyone." : "Your event has been saved as a draft.",
-      });
+      if (isEditMode && eventId) {
+        await updateEvent.mutateAsync({ id: eventId, ...eventData });
+        toast({
+          title: "Event updated successfully!",
+          description: "Your changes have been saved.",
+        });
+      } else {
+        await createEvent.mutateAsync(eventData);
+        toast({
+          title: "Event created successfully!",
+          description: isPublished ? "Your event is now visible to everyone." : "Your event has been saved as a draft.",
+        });
+      }
 
       navigate("/events");
     } catch (error) {
-      console.error("Error creating event:", error);
+      console.error("Error saving event:", error);
       toast({
-        title: "Failed to create event",
+        title: isEditMode ? "Failed to update event" : "Failed to create event",
         description: "Something went wrong. Please try again.",
         variant: "destructive",
       });
@@ -217,6 +273,22 @@ const EventUpload = () => {
       setIsUploading(false);
     }
   };
+
+  if (isEditMode && isLoadingEvent) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="pt-16 pb-20">
+          <div className="container mx-auto px-4 py-8 max-w-4xl">
+            <div className="flex items-center justify-center h-64">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -234,10 +306,10 @@ const EventUpload = () => {
               Back to Events
             </Button>
             <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-              Add New Event
+              {isEditMode ? "Edit Event" : "Add New Event"}
             </h1>
             <p className="text-muted-foreground">
-              Fill in the details to create a new event
+              {isEditMode ? "Update the event details below" : "Fill in the details to create a new event"}
             </p>
           </div>
 
@@ -664,6 +736,7 @@ const EventUpload = () => {
                           onClick={() => {
                             setPosterFile(null);
                             setPosterPreview("");
+                            setExistingPosterUrl("");
                           }}
                         >
                           <X className="h-3 w-3" />
@@ -697,8 +770,28 @@ const EventUpload = () => {
                 <div className="space-y-2">
                   <Label>Gallery Images</Label>
                   <div className="flex flex-wrap gap-3">
+                    {/* Existing gallery images */}
+                    {existingGalleryUrls.map((url, index) => (
+                      <div key={`existing-${index}`} className="relative">
+                        <img
+                          src={url}
+                          alt={`Gallery ${index + 1}`}
+                          className="w-20 h-20 object-cover rounded-lg border"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="absolute -top-2 -right-2 h-5 w-5"
+                          onClick={() => setExistingGalleryUrls(existingGalleryUrls.filter((_, i) => i !== index))}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ))}
+                    {/* New gallery files */}
                     {galleryFiles.map((file, index) => (
-                      <div key={index} className="relative">
+                      <div key={`new-${index}`} className="relative">
                         <img
                           src={URL.createObjectURL(file)}
                           alt={`Gallery ${index + 1}`}
@@ -741,8 +834,24 @@ const EventUpload = () => {
                 <div className="space-y-2">
                   <Label>Attachments (PDFs, Documents)</Label>
                   <div className="space-y-2">
+                    {/* Existing attachments */}
+                    {existingAttachmentUrls.map((url, index) => (
+                      <div key={`existing-${index}`} className="flex items-center gap-3 p-2 bg-muted/50 rounded-lg">
+                        <span className="text-sm truncate flex-1">Attachment {index + 1}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 text-destructive"
+                          onClick={() => setExistingAttachmentUrls(existingAttachmentUrls.filter((_, i) => i !== index))}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ))}
+                    {/* New attachment files */}
                     {attachmentFiles.map((file, index) => (
-                      <div key={index} className="flex items-center gap-3 p-2 bg-muted/50 rounded-lg">
+                      <div key={`new-${index}`} className="flex items-center gap-3 p-2 bg-muted/50 rounded-lg">
                         <span className="text-sm truncate flex-1">{file.name}</span>
                         <Button
                           type="button"
@@ -811,12 +920,15 @@ const EventUpload = () => {
                     {isUploading ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        Creating Event...
+                        {isEditMode ? "Updating Event..." : "Creating Event..."}
                       </>
                     ) : (
                       <>
                         <CheckCircle2 className="h-4 w-4" />
-                        {isPublished ? "Publish Event" : "Save as Draft"}
+                        {isEditMode 
+                          ? "Save Changes" 
+                          : isPublished ? "Publish Event" : "Save as Draft"
+                        }
                       </>
                     )}
                   </Button>

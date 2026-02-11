@@ -27,6 +27,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useNavigate } from 'react-router-dom';
 import { 
   Search, 
   Trash2, 
@@ -36,7 +37,8 @@ import {
   Loader2,
   AlertTriangle,
   CheckCircle,
-  Archive
+  Archive,
+  Pencil
 } from 'lucide-react';
 import { Event, EVENT_STATUS_LABELS, EVENT_STATUS_COLORS, EVENT_TYPE_LABELS, ScheduleItem } from '@/types/events';
 
@@ -65,6 +67,7 @@ const EventManageDialog = ({ open, onOpenChange }: EventManageDialogProps) => {
   const { user, isAdmin } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -372,16 +375,31 @@ const EventManageDialog = ({ open, onOpenChange }: EventManageDialogProps) => {
                                   )}
                                 </>
                               ) : (
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => setEventToDelete(event)}
-                                  disabled={isProcessing}
-                                  className="gap-1.5 text-destructive hover:text-destructive hover:bg-destructive/10"
-                                >
-                                  <Trash2 className="h-3.5 w-3.5" />
-                                  Remove
-                                </Button>
+                                <div className="flex items-center gap-2">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      onOpenChange(false);
+                                      navigate(`/events/edit/${event.id}`);
+                                    }}
+                                    disabled={isProcessing}
+                                    className="gap-1.5"
+                                  >
+                                    <Pencil className="h-3.5 w-3.5" />
+                                    Edit
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => setEventToDelete(event)}
+                                    disabled={isProcessing}
+                                    className="gap-1.5 text-destructive hover:text-destructive hover:bg-destructive/10"
+                                  >
+                                    <Trash2 className="h-3.5 w-3.5" />
+                                    Remove
+                                  </Button>
+                                </div>
                               )}
                             </div>
                           </div>

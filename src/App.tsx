@@ -50,6 +50,11 @@ const App = () => (
               <EventUpload />
             </ProtectedRoute>
           } />
+          <Route path="/events/edit/:id" element={
+            <ProtectedRoute requireAdminOrFaculty>
+              <EventUpload />
+            </ProtectedRoute>
+          } />
           <Route path="/events/:id" element={<EventDetail />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/department/:deptId" element={<Department />} />
