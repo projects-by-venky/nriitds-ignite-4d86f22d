@@ -98,7 +98,9 @@ const EventManageDialog = ({ open, onOpenChange }: EventManageDialogProps) => {
       
       setEvents(parsedEvents);
     } catch (error) {
-      console.error('Error fetching events:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error fetching events:', error);
+      }
       toast({
         title: 'Failed to load events',
         description: 'Please try again.',
@@ -166,7 +168,9 @@ const EventManageDialog = ({ open, onOpenChange }: EventManageDialogProps) => {
       queryClient.invalidateQueries({ queryKey: ['events'] });
       setEventToDelete(null);
     } catch (error) {
-      console.error('Error deleting event:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error deleting event:', error);
+      }
       toast({
         title: 'Failed to remove event',
         description: 'Please try again.',
@@ -202,7 +206,9 @@ const EventManageDialog = ({ open, onOpenChange }: EventManageDialogProps) => {
       await fetchEvents();
       queryClient.invalidateQueries({ queryKey: ['events'] });
     } catch (error) {
-      console.error('Error restoring event:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error restoring event:', error);
+      }
       toast({
         title: 'Failed to restore event',
         description: 'Please try again.',
@@ -237,7 +243,9 @@ const EventManageDialog = ({ open, onOpenChange }: EventManageDialogProps) => {
       queryClient.invalidateQueries({ queryKey: ['events'] });
       setEventToDelete(null);
     } catch (error) {
-      console.error('Error permanently deleting event:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error permanently deleting event:', error);
+      }
       toast({
         title: 'Failed to delete event',
         description: 'Please try again.',

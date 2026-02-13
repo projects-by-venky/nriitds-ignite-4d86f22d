@@ -189,7 +189,9 @@ const ResearchUpload = () => {
       
       navigate('/research');
     } catch (error) {
-      console.error('Error submitting project:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error submitting project:', error);
+      }
       toast({
         title: "Submission Failed",
         description: "There was an error submitting your project. Please try again.",
