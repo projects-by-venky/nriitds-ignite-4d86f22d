@@ -112,7 +112,9 @@ const SyllabusReviewFormFields = ({ branch, semester, section }: SyllabusReviewF
         description: "Your syllabus review has been recorded.",
       });
     } catch (error) {
-      console.error("Error submitting form:", error);
+      if (import.meta.env.DEV) {
+        console.error("Error submitting form:", error);
+      }
       toast({
         title: "Submission Failed",
         description: "Please try again later.",
