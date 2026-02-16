@@ -267,7 +267,7 @@ const StudentPortal = () => {
 
             {/* 7. Mid Examinations */}
             <PortalSection 
-              title="Mid Examinations" 
+              title="Mid Marks" 
               icon={<FileText className="w-5 h-5" />}
             >
               <div className="space-y-6">
