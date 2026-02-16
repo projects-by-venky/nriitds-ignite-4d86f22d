@@ -10,34 +10,6 @@ const branches = [
     description: "Software & Technology"
   },
   {
-    id: "ece",
-    name: "Electronics & Communication",
-    short: "ECE",
-    icon: "📡",
-    description: "Communication Tech"
-  },
-  {
-    id: "eee",
-    name: "Electrical & Electronics",
-    short: "EEE",
-    icon: "⚡",
-    description: "Power & Energy"
-  },
-  {
-    id: "mech",
-    name: "Mechanical Engineering",
-    short: "MECH",
-    icon: "⚙️",
-    description: "Design & Manufacturing"
-  },
-  {
-    id: "civil",
-    name: "Civil Engineering",
-    short: "CIVIL",
-    icon: "🏗️",
-    description: "Infrastructure & Construction"
-  },
-  {
     id: "aids",
     name: "AI & Data Science",
     short: "AI & DS",
@@ -45,18 +17,11 @@ const branches = [
     description: "Intelligent Systems"
   },
   {
-    id: "mba",
-    name: "Business Administration",
-    short: "MBA",
-    icon: "💼",
-    description: "Management & Leadership"
-  },
-  {
-    id: "mca",
-    name: "Computer Applications",
-    short: "MCA",
-    icon: "🖥️",
-    description: "Advanced Computing"
+    id: "it",
+    name: "Information Technology",
+    short: "IT",
+    icon: "🌐",
+    description: "Digital Solutions"
   }
 ];
 
