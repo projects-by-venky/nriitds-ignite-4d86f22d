@@ -2,7 +2,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { 
   FileText, BookOpen, Calendar, ClipboardList, Award, 
   GraduationCap, Beaker, FolderOpen, ArrowLeft, Users,
-  FileCheck, Clock, BookMarked, Leaf
+  FileCheck, Clock, BookMarked, Leaf, MessageSquare, ShieldCheck, BarChart3
 } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -239,6 +239,32 @@ const StudentPortal = () => {
                   />
                 </PortalSection>
 
+                {/* Student Guidelines */}
+                <PortalSection 
+                  title="Student Guidelines" 
+                  icon={<ShieldCheck className="w-5 h-5" />}
+                >
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Click here to access the student guidelines
+                  </p>
+                  <PortalButton 
+                    label="View Student Guidelines" 
+                    href="/documents/Guidelines_Student_DS.pdf"
+                    variant="primary"
+                  />
+                </PortalSection>
+
+                {/* Mid Exams Time Tables & QBank */}
+                <PortalSection 
+                  title="Mid Exams-Time Tables & QBank" 
+                  icon={<BarChart3 className="w-5 h-5" />}
+                >
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Mid exam time tables and question bank
+                  </p>
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/mid-tt-qb`)} />
+                </PortalSection>
+
                 {/* 8. ST Marks - CSE Only */}
                 <PortalSection 
                   title="ST Marks" 
@@ -248,6 +274,17 @@ const StudentPortal = () => {
                     Subject-wise, section-wise, semester-wise ST marks
                   </p>
                   <YearAccordion years={generateSectionData(`/department/${deptId}/st-marks`)} />
+                </PortalSection>
+
+                {/* Feedback */}
+                <PortalSection 
+                  title="Feedback" 
+                  icon={<MessageSquare className="w-5 h-5" />}
+                >
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Submit your feedback for courses
+                  </p>
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/feedback`)} />
                 </PortalSection>
               </>
             )}
@@ -342,6 +379,17 @@ const StudentPortal = () => {
                 View daily attendance records by section
               </p>
               <YearAccordion years={generateSectionData(attendancePath)} />
+            </PortalSection>
+
+            {/* Monthly Cumulative Attendance */}
+            <PortalSection 
+              title="Monthly Cumulative Attendance" 
+              icon={<ClipboardList className="w-5 h-5" />}
+            >
+              <p className="text-sm text-muted-foreground mb-4">
+                View monthly cumulative attendance by section
+              </p>
+              <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
             </PortalSection>
 
             {/* Time Tables */}

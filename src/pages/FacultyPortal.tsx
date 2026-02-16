@@ -3,13 +3,15 @@ import { motion } from "framer-motion";
 import { 
   ArrowLeft, BookOpen, FileText, ClipboardList, Upload, Calendar, 
   Users, GraduationCap, Award, Clock, BarChart3, FileCheck, 
-  Briefcase, ChevronDown, ChevronUp, ExternalLink
+  Briefcase, ChevronDown, ChevronUp, ExternalLink, Bell, FileQuestion,
+  CheckSquare
 } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import MobileBottomNav from "@/components/layout/MobileBottomNav";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { SectionGrid } from "@/components/portal/SectionGrid";
 
 const departments = {
   cse: { name: "Computer Science & Engineering", code: "CSE" },
@@ -169,6 +171,11 @@ const FacultyPortal = () => {
           </motion.div>
 
           <div className="space-y-3 md:space-y-4">
+            {/* Staff Notice Board */}
+            <SectionCard title="Staff Notice Board" icon={Bell}>
+              <ActionButton label="View Staff Notice Board" href="#" />
+            </SectionCard>
+
             {/* Guidelines for Teachers */}
             <SectionCard title="Guidelines for Teachers" icon={BookOpen}>
               <a 
@@ -178,6 +185,20 @@ const FacultyPortal = () => {
               >
                 Download Teacher Guidelines
               </a>
+            </SectionCard>
+
+            {/* Upload Model Question Papers */}
+            <SectionCard title="Upload Model Question Papers" icon={FileQuestion}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                {["4-1", "3-1", "2-1"].map((sem) => (
+                  <ActionButton 
+                    key={`model-${sem}`}
+                    label={`${sem} Model Papers`}
+                    href="#"
+                    variant="secondary"
+                  />
+                ))}
+              </div>
             </SectionCard>
 
             {/* Syllabus Review Forms */}
@@ -280,26 +301,30 @@ const FacultyPortal = () => {
               </div>
             </SectionCard>
 
-            {/* Daily Activities */}
-            <SectionCard title="Daily Activities" icon={Clock}>
-              <SubSection title="Hourly Attendance">
-                {["4-1", "3-1", "2-1"].map((sem) => (
+            {/* Syllabus Coverage */}
+            <SectionCard title="Syllabus Coverage" icon={CheckSquare}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                {["3-2", "2-2"].map((sem) => (
                   sections.map((section) => (
                     <ActionButton 
-                      key={`hourly-${sem}-${section}`}
-                      label={`Post ${sem} ${dept.code}-${section} Attendance`}
+                      key={`syllabus-cov-${sem}-${section}`}
+                      label={`${sem} ${dept.code}-${section} Syllabus Coverage`}
                       href="#"
                       variant="secondary"
                     />
                   ))
                 ))}
-              </SubSection>
-              <SubSection title="Monthly Attendance">
-                {["2-2", "3-2"].map((sem) => (
+              </div>
+            </SectionCard>
+
+            {/* Upload Hourly Attendance */}
+            <SectionCard title="Hourly Attendance" icon={Clock}>
+              <SubSection title="Hourly Attendance">
+                {["4-2", "3-2", "2-2"].map((sem) => (
                   sections.map((section) => (
                     <ActionButton 
-                      key={`monthly-${sem}-${section}`}
-                      label={`Post ${sem} ${dept.code}-${section} Monthly`}
+                      key={`hourly-${sem}-${section}`}
+                      label={`${sem} ${dept.code}-${section} H-att`}
                       href="#"
                       variant="secondary"
                     />
@@ -308,35 +333,77 @@ const FacultyPortal = () => {
               </SubSection>
             </SectionCard>
 
-            {/* Nominal Rolls & Mentors Data */}
-            <SectionCard title="Nominal Rolls & Mentors" icon={Users}>
-              <SubSection title="Nominal Rolls">
-                {["2-1", "3-1", "4-1"].map((sem) => (
+            {/* Upload Monthly Attendance */}
+            <SectionCard title="Monthly Attendance" icon={Calendar}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                {["3-2", "2-2"].map((sem) => (
+                  sections.map((section) => (
+                    <ActionButton 
+                      key={`monthly-${sem}-${section}`}
+                      label={`${sem} ${dept.code}-${section} M-att`}
+                      href="#"
+                      variant="secondary"
+                    />
+                  ))
+                ))}
+              </div>
+            </SectionCard>
+
+            {/* Time Tables */}
+            <SectionCard title="Time Tables" icon={Calendar}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+                {["2-2", "3-2"].map((sem) => (
                   <ActionButton 
-                    key={`nominal-${sem}`}
-                    label={`23NP-${sem.replace("-", "_")}${dept.code}_Nominal_Rolls`}
+                    key={`tt-${sem}`}
+                    label={`${sem} ${dept.code} - TT`}
                     href="#"
                     variant="secondary"
                   />
                 ))}
-              </SubSection>
-              <SubSection title="Mentors Data">
-                <ActionButton label={`1st, 2nd & 3rd Year ${dept.code} Mentors`} href="#" variant="secondary" />
-              </SubSection>
+              </div>
+            </SectionCard>
+
+            {/* Mentors */}
+            <SectionCard title="Mentors" icon={Users}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                {["4-2", "3-2", "2-2"].map((sem) => (
+                  <ActionButton 
+                    key={`mentors-${sem}`}
+                    label={`${sem} ${dept.code} Mentors`}
+                    href="#"
+                    variant="secondary"
+                  />
+                ))}
+              </div>
+            </SectionCard>
+
+            {/* Nominal Rolls & Mentors Data */}
+            <SectionCard title="Nominal Rolls" icon={Users}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                {["4-2", "3-2", "2-2"].map((sem) => (
+                  <ActionButton 
+                    key={`nominal-${sem}`}
+                    label={`${sem} ${dept.code} Rolls`}
+                    href="#"
+                    variant="secondary"
+                  />
+                ))}
+              </div>
             </SectionCard>
 
             {/* Academic Calendars */}
             <SectionCard title="Academic Calendars" icon={Calendar}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
-                <ActionButton label="1-1 & 1-2 Calendar" href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" variant="secondary" />
-                <ActionButton label="2-1 & 2-2 Calendar" href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" variant="secondary" />
-                <ActionButton label="3-1 & 3-2 Calendar" href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" variant="secondary" />
+                <ActionButton label="Academic Calendars" href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" variant="secondary" />
               </div>
             </SectionCard>
 
             {/* Syllabus */}
             <SectionCard title={`Syllabus ${dept.code}`} icon={BookOpen}>
-              <ActionButton label={`${dept.code} Syllabus (R20)`} href="/documents/CSE-DS-Syllabus.pdf" />
+              <SectionGrid items={[
+                { label: `R23-Autonomous-${dept.code}-Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf", variant: "secondary" as const },
+                { label: `R20-JNTUK-${dept.code}-Syllabus`, href: "/documents/CSE-DS-3rd-Year-Syllabus.pdf", variant: "secondary" as const },
+              ]} columns={2} />
             </SectionCard>
 
             {/* Summer Internship Attendance */}
