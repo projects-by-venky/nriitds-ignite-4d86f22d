@@ -12,7 +12,7 @@ const branches = [
   {
     id: "aids",
     name: "AI & Data Science",
-    short: "AI & DS",
+    short: "DS",
     icon: "🤖",
     description: "Intelligent Systems"
   },
