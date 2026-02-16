@@ -14,7 +14,7 @@ const branches = [
     name: "AI & Data Science",
     short: "DS",
     icon: "🤖",
-    description: "Intelligent Systems"
+    description: "Data Science"
   },
   {
     id: "it",
