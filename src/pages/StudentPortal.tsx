@@ -123,14 +123,11 @@ const StudentPortal = () => {
             {/* ============ CSE ONLY SECTIONS ============ */}
             {isFullFeatureBranch && (
               <>
-                {/* 1. Achievers & Improvers Batch */}
+                {/* 1. Achievers and Improvers Batches */}
                 <PortalSection 
-                  title="Achievers & Improvers Batch" 
+                  title="Achievers and Improvers Batches" 
                   icon={<Award className="w-5 h-5" />}
                 >
-                  <p className="text-sm text-muted-foreground mb-4">
-                    View batch-wise academic performance information
-                  </p>
                   <SectionGrid 
                     items={[
                       { label: "Achievers Batch", variant: "primary" },
@@ -140,41 +137,31 @@ const StudentPortal = () => {
                   />
                 </PortalSection>
 
-                {/* 2. ES Notes */}
+                {/* 2. ES-Notes */}
                 <PortalSection 
-                  title="ES – Environmental Science Notes" 
+                  title="ES-Notes" 
                   icon={<Leaf className="w-5 h-5" />}
                 >
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Access Environmental Science study materials
-                  </p>
                   <PortalButton 
-                    label="Download ES Notes" 
+                    label="ES-Notes" 
                     variant="primary"
                   />
                 </PortalSection>
 
-                {/* 3. Community Service Project (CSP) */}
+                {/* 3. Community Service Project */}
                 <PortalSection 
-                  title="Community Service Project (CSP)" 
+                  title="Community Service Project" 
                   icon={<Users className="w-5 h-5" />}
                 >
-                  <p className="text-sm text-muted-foreground mb-4">
-                    CSP reports, PPT references, and guidelines
-                  </p>
-                  <SectionGrid 
-                    items={[
-                      { label: "Sample Reports", variant: "secondary" },
-                      { label: "PPT References", variant: "secondary" },
-                      { label: "CSP Guidelines", variant: "primary" },
-                    ]}
-                    columns={3}
+                  <PortalButton 
+                    label="CSP- Sample Reports and PPT" 
+                    variant="primary"
                   />
                 </PortalSection>
 
-                {/* 4. Self-Learning (ST) & Assignment Questions */}
+                {/* 4. Self-Learning ST & Assignment-Questions */}
                 <PortalSection 
-                  title="Self-Learning (ST) & Assignment Questions" 
+                  title="Self-Learning ST & Assignment-Questions" 
                   icon={<BookMarked className="w-5 h-5" />}
                 >
                   <p className="text-sm text-muted-foreground mb-4">
@@ -196,22 +183,27 @@ const StudentPortal = () => {
                         { 
                           semester: "3-2 Semester", 
                           items: [
-                            { label: "CS601 - CN" },
-                            { label: "CS602 - CD" },
-                            { label: "CS603 - AI" },
+                            { label: "3-2-CC" },
+                            { label: "3-2-CD" },
+                            { label: "3-2-CNS" },
+                            { label: "3-2-ML" },
+                            { label: "3-2-MPMC" },
+                            { label: "3-2-SPM" },
                           ] 
                         },
                       ]
                     },
                     {
-                      year: "4th Year",
+                      year: "2nd Year",
                       semesters: [
                         { 
-                          semester: "4-1 Semester", 
+                          semester: "2-2 Semester", 
                           items: [
-                            { label: "CS701 - ML" },
-                            { label: "CS702 - CC" },
-                            { label: "Elective I" },
+                            { label: "2-2-DBMS" },
+                            { label: "2-2-MEFA" },
+                            { label: "2-2-OS" },
+                            { label: "2-2-P&S" },
+                            { label: "2-2-SE" },
                           ] 
                         },
                       ]
@@ -219,90 +211,66 @@ const StudentPortal = () => {
                   ]} />
                 </PortalSection>
 
-                {/* 5. Major Project */}
+                {/* 5. Lecture - Notes */}
                 <PortalSection 
-                  title="Major Project" 
-                  icon={<GraduationCap className="w-5 h-5" />}
+                  title="Lecture - Notes" 
+                  icon={<BookOpen className="w-5 h-5" />}
                 >
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Project review schedules, submissions, and status tracking
-                  </p>
-                  <SectionGrid 
-                    items={[
-                      { label: "Project Review Schedules", variant: "primary" },
-                      { label: "PPT Upload Links", variant: "secondary" },
-                      { label: "Abstract Submission", variant: "secondary" },
-                      { label: "Title Submission", variant: "secondary" },
-                      { label: "Project Status Check", variant: "secondary" },
-                    ]}
-                    columns={3}
+                  <PortalButton 
+                    label="Click here to access Lecture Notes" 
+                    variant="primary"
                   />
                 </PortalSection>
 
-                {/* Student Guidelines */}
+                {/* 6. Student Guidelines */}
                 <PortalSection 
                   title="Student Guidelines" 
                   icon={<ShieldCheck className="w-5 h-5" />}
                 >
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Click here to access the student guidelines
-                  </p>
                   <PortalButton 
-                    label="View Student Guidelines" 
+                    label="Click here to access the student guidelines" 
                     href="/documents/Guidelines_Student_DS.pdf"
                     variant="primary"
                   />
                 </PortalSection>
 
-                {/* Mid Exams Time Tables & QBank */}
+                {/* 7. Major Project */}
                 <PortalSection 
-                  title="Mid Exams-Time Tables & QBank" 
+                  title="Major Project" 
+                  icon={<GraduationCap className="w-5 h-5" />}
+                >
+                  <SectionGrid 
+                    items={[
+                      { label: "Project-Reviews Schedule", variant: "secondary" },
+                      { label: "Upload Review PPT", variant: "secondary" },
+                      { label: "Check your details", variant: "secondary" },
+                      { label: "Titles", variant: "secondary" },
+                      { label: "Abstracts", variant: "secondary" },
+                      { label: "Post - Mini Project details", variant: "secondary" },
+                    ]}
+                    columns={3}
+                  />
+                </PortalSection>
+
+                {/* 8. Mid-Marks */}
+                <PortalSection 
+                  title="Mid-Marks" 
+                  icon={<FileText className="w-5 h-5" />}
+                >
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/mid-marks`)} />
+                </PortalSection>
+
+                {/* 9. Mid exams-Time Tables & QBank */}
+                <PortalSection 
+                  title="Mid exams-Time Tables & QBank" 
                   icon={<BarChart3 className="w-5 h-5" />}
                 >
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Mid exam time tables and question bank
-                  </p>
                   <YearAccordion years={generateSectionData(`/department/${deptId}/mid-tt-qb`)} />
-                </PortalSection>
-
-                {/* 8. ST Marks - CSE Only */}
-                <PortalSection 
-                  title="ST Marks" 
-                  icon={<FileCheck className="w-5 h-5" />}
-                >
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Subject-wise, section-wise, semester-wise ST marks
-                  </p>
-                  <YearAccordion years={generateSectionData(`/department/${deptId}/st-marks`)} />
-                </PortalSection>
-
-                {/* Feedback */}
-                <PortalSection 
-                  title="Feedback" 
-                  icon={<MessageSquare className="w-5 h-5" />}
-                >
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Submit your feedback for courses
-                  </p>
-                  <YearAccordion years={generateSectionData(`/department/${deptId}/feedback`)} />
                 </PortalSection>
               </>
             )}
 
-            {/* Lecturer Notes - CSE Only */}
-            {isFullFeatureBranch && (
-              <PortalSection 
-                title="Lecturer Notes" 
-                icon={<BookOpen className="w-5 h-5" />}
-              >
-                <p className="text-sm text-muted-foreground mb-4">
-                  Access lecturer notes by semester and section
-                </p>
-                <YearAccordion years={generateSectionData(`/department/${deptId}/lecturer-notes`)} />
-              </PortalSection>
-            )}
-
-            {/* ============ COMMON SECTIONS FOR ALL (CSE, IT, DS) ============ */}
+            {/* ============ COMMON SECTIONS FOR ALL BRANCHES ============ */}
 
             {/* Results - All Branches */}
             <PortalSection 
@@ -314,94 +282,12 @@ const StudentPortal = () => {
               </p>
               <YearAccordion years={generateSectionData(`/department/${deptId}/results`)} />
             </PortalSection>
-            
-            {/* 6. Assignment Marks */}
-            <PortalSection 
-              title="Assignment Marks" 
-              icon={<ClipboardList className="w-5 h-5" />}
-            >
-              <p className="text-sm text-muted-foreground mb-4">
-                Semester-wise and section-wise assignment marks
-              </p>
-              <YearAccordion years={generateSectionData(`/department/${deptId}/assignment-marks`)} />
-            </PortalSection>
-
-            {/* 7. Mid Examinations */}
-            <PortalSection 
-              title="Mid Marks" 
-              icon={<FileText className="w-5 h-5" />}
-            >
-              <div className="space-y-6">
-                {/* Mid Exam Time Tables */}
-                <div>
-                  <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-primary" />
-                    Mid Exam Time Tables
-                  </h4>
-                  <YearAccordion years={generateSectionData(`/department/${deptId}/mid-timetable`)} />
-                </div>
-
-                {/* Mid Marks */}
-                <div className="pt-4 border-t border-border">
-                  <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-                    <FileCheck className="w-4 h-4 text-primary" />
-                    Mid Marks
-                  </h4>
-                  <YearAccordion years={generateSectionData(`/department/${deptId}/mid-marks`)} />
-                </div>
-              </div>
-            </PortalSection>
-
-            {/* ============ ADDITIONAL SECTIONS (ALL BRANCHES) ============ */}
-            
-            {/* Subject Notes */}
-            <PortalSection 
-              title="Subject Notes & Materials" 
-              icon={<FolderOpen className="w-5 h-5" />}
-            >
-              <p className="text-sm text-muted-foreground mb-4">
-                Access lecture notes and study materials
-              </p>
-              <YearAccordion years={[
-                {
-                  year: "1st Year",
-                  semesters: [
-                    { semester: "1-1 Semester", items: [{ label: `1-1 ${deptCode} Notes`, to: `/department/${deptId}/notes/1-1` }] },
-                    { semester: "1-2 Semester", items: [{ label: `1-2 ${deptCode} Notes`, to: `/department/${deptId}/notes/1-2` }] },
-                  ]
-                },
-                {
-                  year: "2nd Year",
-                  semesters: [
-                    { semester: "2-1 Semester", items: [{ label: `2-1 ${deptCode} Notes`, to: `/department/${deptId}/notes/2-1` }] },
-                    { semester: "2-2 Semester", items: [{ label: `2-2 ${deptCode} Notes`, to: `/department/${deptId}/notes/2-2` }] },
-                  ]
-                },
-                {
-                  year: "3rd Year",
-                  semesters: [
-                    { semester: "3-1 Semester", items: [{ label: `3-1 ${deptCode} Notes`, to: `/department/${deptId}/notes/3-1` }] },
-                    { semester: "3-2 Semester", items: [{ label: `3-2 ${deptCode} Notes`, to: `/department/${deptId}/notes/3-2` }] },
-                  ]
-                },
-                {
-                  year: "4th Year",
-                  semesters: [
-                    { semester: "4-1 Semester", items: [{ label: `4-1 ${deptCode} Notes`, to: `/department/${deptId}/notes/4-1` }] },
-                    { semester: "4-2 Semester", items: [{ label: `4-2 ${deptCode} Notes`, to: `/department/${deptId}/notes/4-2` }] },
-                  ]
-                },
-              ]} />
-            </PortalSection>
 
             {/* Hourly Attendance */}
             <PortalSection 
               title="Hourly Attendance" 
               icon={<Calendar className="w-5 h-5" />}
             >
-              <p className="text-sm text-muted-foreground mb-4">
-                View daily attendance records by section
-              </p>
               <YearAccordion years={generateSectionData(attendancePath)} />
             </PortalSection>
 
@@ -410,35 +296,47 @@ const StudentPortal = () => {
               title="Monthly Cumulative Attendance" 
               icon={<ClipboardList className="w-5 h-5" />}
             >
-              <p className="text-sm text-muted-foreground mb-4">
-                View monthly cumulative attendance by section
-              </p>
               <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
             </PortalSection>
 
             {/* Time Tables */}
             <PortalSection 
-              title="Class Time Tables" 
+              title="Time Tables" 
               icon={<Clock className="w-5 h-5" />}
             >
-              <p className="text-sm text-muted-foreground mb-4">
-                Section-wise class schedules
-              </p>
               <YearAccordion years={generateSectionData(timetablePath)} />
             </PortalSection>
 
-            {/* Syllabus */}
+            {/* ============ CSE ONLY - BOTTOM SECTIONS ============ */}
+            {isFullFeatureBranch && (
+              <>
+                {/* ST Marks */}
+                <PortalSection 
+                  title="ST Marks" 
+                  icon={<FileCheck className="w-5 h-5" />}
+                >
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/st-marks`)} />
+                </PortalSection>
+
+                {/* Feedback */}
+                <PortalSection 
+                  title="Feedback" 
+                  icon={<MessageSquare className="w-5 h-5" />}
+                >
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/feedback`)} />
+                </PortalSection>
+              </>
+            )}
+
+            {/* Syllabus - All Branches */}
             <PortalSection 
               title="Syllabus" 
               icon={<BookOpen className="w-5 h-5" />}
             >
-              <p className="text-sm text-muted-foreground mb-4">
-                R20 Regulation syllabus documents
-              </p>
               <SectionGrid 
                 items={[
-                  { label: `${deptCode} Syllabus (1st & 2nd Year)`, href: "/documents/CSE-DS-Syllabus.pdf", variant: "secondary" },
-                  { label: `${deptCode} Syllabus (3rd & 4th Year)`, href: "/documents/CSE-DS-3rd-Year-Syllabus.pdf", variant: "secondary" },
+                  { label: `R23 Autonomous B.Tech ${deptCode} Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf", variant: "secondary" },
+                  { label: `R20 JNTUK B.Tech ${deptCode} Syllabus`, href: "/documents/CSE-DS-3rd-Year-Syllabus.pdf", variant: "secondary" },
                 ]}
                 columns={2}
               />

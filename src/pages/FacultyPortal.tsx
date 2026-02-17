@@ -171,26 +171,20 @@ const FacultyPortal = () => {
           </motion.div>
 
           <div className="space-y-3 md:space-y-4">
-            {/* Staff Notice Board */}
+            {/* 1. Staff Notice Board */}
             <SectionCard title="Staff Notice Board" icon={Bell}>
-              <ActionButton label="View Staff Notice Board" href="#" />
+              <ActionButton label="Staff Notice Board" href="#" />
             </SectionCard>
 
-            {/* Guidelines for Teachers */}
-            <SectionCard title="Guidelines for Teachers" icon={BookOpen}>
-              <a 
-                href="/documents/Guidelines_All_Teachers.pdf"
-                download
-                className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors cursor-pointer"
-              >
-                Download Teacher Guidelines
-              </a>
+            {/* 2. Faculty - Guidelines */}
+            <SectionCard title="Faculty - Guidelines" icon={BookOpen}>
+              <ActionButton label="Faculty - Guidelines" href="/documents/Guidelines_All_Teachers.pdf" download />
             </SectionCard>
 
-            {/* Upload Model Question Papers */}
-            <SectionCard title="Upload Model Question Papers" icon={FileQuestion}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
-                {["4-1", "3-1", "2-1"].map((sem) => (
+            {/* 3. Upload Model question Papers */}
+            <SectionCard title="Upload Model question Papers" icon={FileQuestion}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+                {["3-1", "2-1"].map((sem) => (
                   <ActionButton 
                     key={`model-${sem}`}
                     label={`${sem} Model Papers`}
@@ -201,46 +195,13 @@ const FacultyPortal = () => {
               </div>
             </SectionCard>
 
-            {/* Syllabus Review Forms */}
-            <SectionCard title="Syllabus Review Forms" icon={FileText}>
-              <div className="space-y-3">
-                <p className="text-sm text-muted-foreground mb-4">
-                  Access syllabus review forms for all branches, semesters, and sections.
-                </p>
-                <Link 
-                  to={`/faculty/syllabus-review/${deptId}`}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#0EA5E9] to-[#1E3A8A] 
-                           text-white font-medium hover:shadow-lg hover:shadow-primary/30 transition-all duration-300"
-                >
-                  <FileText className="w-5 h-5" />
-                  Open Syllabus Review Forms
-                </Link>
-              </div>
-            </SectionCard>
-
-            {/* Slip Test Marks */}
-            <SectionCard title="Slip Test Marks" icon={ClipboardList}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
-                {["2-2", "3-2"].map((sem) => (
-                  sections.map((section) => (
-                    <ActionButton 
-                      key={`${sem}-${section}`}
-                      label={`Post ${sem} ${dept.code}-${section} ST Marks`}
-                      href="#"
-                      variant="secondary"
-                    />
-                  ))
-                ))}
-              </div>
-            </SectionCard>
-
-            {/* Submit Mid Papers */}
-            <SectionCard title="Submit Mid Papers" icon={Upload}>
+            {/* 4. Upload Mid Papers */}
+            <SectionCard title="Upload Mid Papers" icon={Upload}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
-                {["2-2", "3-2"].map((sem) => (
+                {["3-2", "2-2"].map((sem) => (
                   <ActionButton 
-                    key={sem}
-                    label={`Submit ${sem} ${dept.code} mid papers`}
+                    key={`mid-${sem}`}
+                    label={`${sem} Mid Papers`}
                     href="#"
                     variant="secondary"
                   />
@@ -248,35 +209,42 @@ const FacultyPortal = () => {
               </div>
             </SectionCard>
 
-            {/* Submit Lesson Plan */}
-            <SectionCard title="Submit Your Lesson Plan" icon={FileCheck}>
-              <ActionButton label={`Submit 4-1 ${dept.code} lesson Plan`} href="#" variant="secondary" />
+            {/* 5. Upload your Lesson Plan */}
+            <SectionCard title="Upload your Lesson Plan" icon={FileCheck}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                {["4-1", "3-1", "2-1"].map((sem) => (
+                  <ActionButton 
+                    key={`lesson-${sem}`}
+                    label={`${sem} ${dept.code} Lesson Plans`}
+                    href="#"
+                    variant="secondary"
+                  />
+                ))}
+              </div>
             </SectionCard>
 
-            {/* Lab Internal Marks */}
-            <SectionCard title="Lab Internal Marks" icon={Award}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+            {/* 6. Internal (MID & Assignment) Marks */}
+            <SectionCard title="Internal (MID & Assignment) Marks" icon={BarChart3}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
                 {["2-2", "3-2"].map((sem) => (
-                  sections.map((section) => (
-                    <ActionButton 
-                      key={`${sem}-${section}`}
-                      label={`Post ${sem} ${dept.code}-${section} lab marks`}
-                      href="#"
-                      variant="secondary"
-                    />
-                  ))
+                  <ActionButton 
+                    key={`internal-${sem}`}
+                    label={`Post ${sem}-${dept.code} Internal Marks`}
+                    href="#"
+                    variant="secondary"
+                  />
                 ))}
               </div>
             </SectionCard>
 
-            {/* Mid Marks */}
-            <SectionCard title="Mid Marks" icon={BarChart3}>
+            {/* 7. Slip Test Marks */}
+            <SectionCard title="Slip Test Marks" icon={ClipboardList}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
-                {["2-2", "3-2"].map((sem) => (
+                {["4-1", "3-1", "2-1"].map((sem) => (
                   sections.map((section) => (
                     <ActionButton 
-                      key={`mid-${sem}-${section}`}
-                      label={`Post ${sem} ${dept.code}-${section} Mid marks`}
+                      key={`st-${sem}-${section}`}
+                      label={`${sem} ${dept.code}-${section} ST Marks`}
                       href="#"
                       variant="secondary"
                     />
@@ -285,23 +253,7 @@ const FacultyPortal = () => {
               </div>
             </SectionCard>
 
-            {/* Assignment Marks */}
-            <SectionCard title="Assignment Marks" icon={FileText}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
-                {["2-1", "3-1", "4-1"].map((sem) => (
-                  sections.map((section) => (
-                    <ActionButton 
-                      key={`${sem}-${section}`}
-                      label={`Post ${sem} ${dept.code}-${section} Assignment`}
-                      href="#"
-                      variant="secondary"
-                    />
-                  ))
-                ))}
-              </div>
-            </SectionCard>
-
-            {/* Syllabus Coverage */}
+            {/* 8. Syllabus Coverage */}
             <SectionCard title="Syllabus Coverage" icon={CheckSquare}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
                 {["3-2", "2-2"].map((sem) => (
@@ -317,9 +269,9 @@ const FacultyPortal = () => {
               </div>
             </SectionCard>
 
-            {/* Upload Hourly Attendance */}
+            {/* 9. Hourly Attendance */}
             <SectionCard title="Hourly Attendance" icon={Clock}>
-              <SubSection title="Hourly Attendance">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
                 {["4-2", "3-2", "2-2"].map((sem) => (
                   sections.map((section) => (
                     <ActionButton 
@@ -330,10 +282,10 @@ const FacultyPortal = () => {
                     />
                   ))
                 ))}
-              </SubSection>
+              </div>
             </SectionCard>
 
-            {/* Upload Monthly Attendance */}
+            {/* 10. Monthly Attendance */}
             <SectionCard title="Monthly Attendance" icon={Calendar}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
                 {["3-2", "2-2"].map((sem) => (
@@ -349,7 +301,7 @@ const FacultyPortal = () => {
               </div>
             </SectionCard>
 
-            {/* Time Tables */}
+            {/* 11. Time Tables */}
             <SectionCard title="Time Tables" icon={Calendar}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
                 {["2-2", "3-2"].map((sem) => (
@@ -363,7 +315,7 @@ const FacultyPortal = () => {
               </div>
             </SectionCard>
 
-            {/* Mentors */}
+            {/* 12. Mentors */}
             <SectionCard title="Mentors" icon={Users}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
                 {["4-2", "3-2", "2-2"].map((sem) => (
@@ -377,23 +329,7 @@ const FacultyPortal = () => {
               </div>
             </SectionCard>
 
-            {/* Lesson Plans */}
-            <SectionCard title="Lesson Plans" icon={BookOpen}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
-                {["4-2", "3-2", "2-2"].map((sem) => (
-                  sections.map((section) => (
-                    <ActionButton 
-                      key={`lesson-${sem}-${section}`}
-                      label={`${sem} ${dept.code}-${section} Lesson Plan`}
-                      href="#"
-                      variant="secondary"
-                    />
-                  ))
-                ))}
-              </div>
-            </SectionCard>
-
-            {/* Nominal Rolls & Mentors Data */}
+            {/* 13. Nominal Rolls */}
             <SectionCard title="Nominal Rolls" icon={Users}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
                 {["4-2", "3-2", "2-2"].map((sem) => (
@@ -407,33 +343,17 @@ const FacultyPortal = () => {
               </div>
             </SectionCard>
 
-            {/* Academic Calendars */}
+            {/* 14. Academic Calendars */}
             <SectionCard title="Academic Calendars" icon={Calendar}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
-                <ActionButton label="Academic Calendars" href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" variant="secondary" />
-              </div>
+              <ActionButton label="Academic Calendars" href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" variant="secondary" />
             </SectionCard>
 
-            {/* Syllabus */}
-            <SectionCard title={`Syllabus ${dept.code}`} icon={BookOpen}>
+            {/* 15. Syllabus */}
+            <SectionCard title={`Syllabus`} icon={BookOpen}>
               <SectionGrid items={[
                 { label: `R23-Autonomous-${dept.code}-Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf", variant: "secondary" as const },
                 { label: `R20-JNTUK-${dept.code}-Syllabus`, href: "/documents/CSE-DS-3rd-Year-Syllabus.pdf", variant: "secondary" as const },
               ]} columns={2} />
-            </SectionCard>
-
-            {/* Summer Internship Attendance */}
-            <SectionCard title="Summer Internship" icon={Briefcase}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
-                {sections.map((section) => (
-                  <ActionButton 
-                    key={`internship-${section}`}
-                    label={`Post 22NP-3rd ${dept.code}-${section} Attendance`}
-                    href="#"
-                    variant="secondary"
-                  />
-                ))}
-              </div>
             </SectionCard>
           </div>
         </div>
