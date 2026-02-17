@@ -17,7 +17,7 @@ const departments: Record<string, { name: string; code: string; fullName: string
   cse: { name: "Computer Science & Engineering", code: "CSE", fullName: "Department of Computer Science & Engineering" },
   it: { name: "Information Technology", code: "IT", fullName: "Department of Information Technology" },
   ds: { name: "Data Science", code: "DS", fullName: "Department of Data Science" },
-  aids: { name: "AI & Data Science", code: "DS", fullName: "Department of Artificial Intelligence & Data Science" },
+  aids: { name: "AI & Data Science", code: "DS", fullName: "Department of Data Science" },
   ece: { name: "Electronics & Communication", code: "ECE", fullName: "Department of Electronics & Communication Engineering" },
   eee: { name: "Electrical & Electronics", code: "EEE", fullName: "Department of Electrical & Electronics Engineering" },
   mech: { name: "Mechanical Engineering", code: "MECH", fullName: "Department of Mechanical Engineering" },
