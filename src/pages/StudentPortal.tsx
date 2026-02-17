@@ -342,6 +342,19 @@ const StudentPortal = () => {
               />
             </PortalSection>
 
+            {/* Student Noticeboard - CSE Only */}
+            {isFullFeatureBranch && (
+              <PortalSection 
+                title="Student Noticeboard" 
+                icon={<ClipboardList className="w-5 h-5" />}
+              >
+                <PortalButton 
+                  label="Click here to access the Student Noticeboard" 
+                  variant="primary"
+                />
+              </PortalSection>
+            )}
+
           </div>
         </div>
       </main>
