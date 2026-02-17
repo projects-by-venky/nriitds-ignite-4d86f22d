@@ -377,6 +377,22 @@ const FacultyPortal = () => {
               </div>
             </SectionCard>
 
+            {/* Lesson Plans */}
+            <SectionCard title="Lesson Plans" icon={BookOpen}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                {["4-2", "3-2", "2-2"].map((sem) => (
+                  sections.map((section) => (
+                    <ActionButton 
+                      key={`lesson-${sem}-${section}`}
+                      label={`${sem} ${dept.code}-${section} Lesson Plan`}
+                      href="#"
+                      variant="secondary"
+                    />
+                  ))
+                ))}
+              </div>
+            </SectionCard>
+
             {/* Nominal Rolls & Mentors Data */}
             <SectionCard title="Nominal Rolls" icon={Users}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">

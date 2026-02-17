@@ -289,7 +289,31 @@ const StudentPortal = () => {
               </>
             )}
 
+            {/* Lecturer Notes - CSE Only */}
+            {isFullFeatureBranch && (
+              <PortalSection 
+                title="Lecturer Notes" 
+                icon={<BookOpen className="w-5 h-5" />}
+              >
+                <p className="text-sm text-muted-foreground mb-4">
+                  Access lecturer notes by semester and section
+                </p>
+                <YearAccordion years={generateSectionData(`/department/${deptId}/lecturer-notes`)} />
+              </PortalSection>
+            )}
+
             {/* ============ COMMON SECTIONS FOR ALL (CSE, IT, DS) ============ */}
+
+            {/* Results - All Branches */}
+            <PortalSection 
+              title="Results" 
+              icon={<Award className="w-5 h-5" />}
+            >
+              <p className="text-sm text-muted-foreground mb-4">
+                View semester-wise examination results
+              </p>
+              <YearAccordion years={generateSectionData(`/department/${deptId}/results`)} />
+            </PortalSection>
             
             {/* 6. Assignment Marks */}
             <PortalSection 
