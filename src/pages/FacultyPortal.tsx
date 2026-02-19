@@ -4,7 +4,7 @@ import {
   ArrowLeft, BookOpen, FileText, ClipboardList, Upload, Calendar, 
   Users, GraduationCap, Award, Clock, BarChart3, FileCheck, 
   Briefcase, ChevronDown, ChevronUp, ExternalLink, Bell, FileQuestion,
-  CheckSquare
+  CheckSquare, BookMarked, Sun, FlaskConical
 } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -20,6 +20,7 @@ const departments = {
   mech: { name: "Mechanical Engineering", code: "MECH" },
   civil: { name: "Civil Engineering", code: "CIVIL" },
   aids: { name: "AI & Data Science", code: "DS" },
+  ds: { name: "Data Science", code: "DS" },
   mba: { name: "Business Administration", code: "MBA" },
   mca: { name: "Computer Applications", code: "MCA" }
 };
@@ -123,6 +124,8 @@ const SubSection = ({ title, children }: SubSectionProps) => (
   </div>
 );
 
+const dsBranches = ["aids", "ds"];
+
 const FacultyPortal = () => {
   const { deptId } = useParams<{ deptId: string }>();
   const dept = deptId ? departments[deptId as keyof typeof departments] : null;
@@ -138,8 +141,235 @@ const FacultyPortal = () => {
     );
   }
 
+  const isDSBranch = dsBranches.includes(deptId || "");
   const sections = ["A", "B", "C"];
 
+  // ============ DS FACULTY PORTAL ============
+  if (isDSBranch) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background">
+        <Header />
+        
+        <main className="pt-16 md:pt-20 pb-24 md:pb-20">
+          <div className="container mx-auto px-4 md:px-6 lg:px-8">
+            <Link to={`/department/${deptId}`}>
+              <motion.button
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-4 touch-target justify-start"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span className="text-sm">Back to Department</span>
+              </motion.button>
+            </Link>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 md:mb-8"
+            >
+              <h1 className="text-2xl md:text-4xl lg:text-5xl font-black mb-2 bg-clip-text text-transparent"
+                  style={{ backgroundImage: "linear-gradient(135deg, #0EA5E9, #1E3A8A)" }}>
+                Faculty Portal
+              </h1>
+              <p className="text-sm md:text-lg text-muted-foreground">{dept.name}</p>
+            </motion.div>
+
+            <div className="space-y-3 md:space-y-4">
+
+              {/* 1. Guidelines for the teachers */}
+              <SectionCard title="Guidelines for the teachers" icon={BookOpen}>
+                <ActionButton label="Click here to access guidelines for the teachers" href="/documents/Guidelines_All_Teachers.pdf" download />
+              </SectionCard>
+
+              {/* 2. Syllabus Review forms */}
+              <SectionCard title="Syllabus Review forms" icon={FileCheck}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {[
+                    "3-1 DS-A Syllabus review form",
+                    "3-1 DS-B Syllabus review form",
+                    "2-1 DS Syllabus review form",
+                    "3-2 DS-A Syllabus review forms",
+                    "3-2 DS-B Syllabus review forms",
+                    "3-2 DS-C Syllabus review forms",
+                  ].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 3. Slip Test Marks */}
+              <SectionCard title="Slip Test Marks" icon={ClipboardList}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {[
+                    "Post 2-2 DS-A ST Marks",
+                    "Post 2-2 DS-B ST Marks",
+                    "Post 2-2 DS-C ST Marks",
+                    "Post 3-2 DS-A ST Marks",
+                    "Post 3-2 DS-B ST Marks",
+                  ].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 4. Submit mid papers */}
+              <SectionCard title="Submit mid papers" icon={Upload}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+                  {[
+                    "Submit 2-2 DS mid papers",
+                    "Submit 3-2 DS mid papers",
+                  ].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 5. Submit your Lesson Plan */}
+              <SectionCard title="Submit your Lesson Plan" icon={FileCheck}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+                  <ActionButton label="Submit 4-1 DS Lesson Plan" href="#" variant="secondary" />
+                </div>
+              </SectionCard>
+
+              {/* 6. 2-2 & 3-2 Lab Internal marks */}
+              <SectionCard title="2-2 & 3-2 Lab Internal marks" icon={FlaskConical}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {[
+                    "Post 2-2 DS-A lab internal marks",
+                    "Post 2-2 DS-B lab internal marks",
+                    "Post 2-2 DS-C lab internal marks",
+                    "Post 3-2 DS-A lab internal marks",
+                    "Post 3-2 DS-B lab internal marks",
+                  ].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 7. 2-2 & 3-2 Mid & Quiz marks */}
+              <SectionCard title="2-2 & 3-2 Mid & Quiz marks" icon={BarChart3}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {[
+                    "Post 2-2 DS-A Mid marks",
+                    "Post 2-2 DS-B Mid marks",
+                    "Post 2-2 DS-C Mid marks",
+                    "Post 3-2 DS-A Mid marks",
+                    "Post 3-2 DS-B Mid marks",
+                    "Quiz-1 marks",
+                  ].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 8. 2-1, 3-1 & 4-1 Assignment marks */}
+              <SectionCard title="2-1, 3-1 & 4-1 Assignment marks" icon={FileText}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {[
+                    "Post 2-1 DS-A Assignment marks",
+                    "Post 2-1 DS-B Assignment marks",
+                    "Post 2-1 DS-C Assignment marks",
+                    "Post 3-1 DS-A Assignment marks",
+                    "Post 3-1 DS-B Assignment marks",
+                    "Post 4-1 DS-A Assignment marks",
+                    "Post 4-1 DS-B Assignment marks",
+                  ].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 9. Daily activities - Hourly & Monthly Attendance */}
+              <SectionCard title="Daily activities" icon={Clock}>
+                <SubSection title="Hourly attendance">
+                  {[
+                    "Post the 4-1 DS-A Attendance",
+                    "Post the 4-1 DS-B Attendance",
+                    "Post the 5-1 DS-A Attendance",
+                    "Post the 5-1 DS-B Attendance",
+                    "Post the 5-1 DS-C Attendance",
+                    "Post the 3-1 DS-A Attendance",
+                    "Post the 3-1 DS-B Attendance",
+                    "Post the 3-1 DS-C Attendance",
+                  ].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="Monthly attendance">
+                  {[
+                    "Post the 3-1 DS-A Monthly attendance",
+                    "Post the 3-2 DS-B Monthly attendance",
+                    "Post the 2-2 DS-A Monthly attendance",
+                    "Post the 2-2 DS-B Monthly attendance",
+                    "Post the 2-2 DS-C Monthly attendance",
+                  ].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+              </SectionCard>
+
+              {/* 10. Nominal Rolls & Mentors data */}
+              <SectionCard title="Nominal Rolls & Mentors data" icon={Users}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {[
+                    "22RP-1_DS_Nominal_Rolls",
+                    "22RP-3_2S_Nominal_Rolls",
+                    "20RP-2_1S_Nominal_Rolls",
+                    "4th, 3rd & 2nd Each_DS_Mentors",
+                  ].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 11. Academic calendars */}
+              <SectionCard title="Academic calendars" icon={Calendar}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {[
+                    "4-1 & 4-2 Academic Calendar",
+                    "3-1 & 3-2 Academic Calendar",
+                    "2-1 & 2-2 Academic Calendar",
+                  ].map((label) => (
+                    <ActionButton key={label} label={label} href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 12. Teaching Guidelines */}
+              <SectionCard title="Teaching Guidelines" icon={BookMarked}>
+                <ActionButton label="Click here to access the guidelines for Teaching Staff" href="/documents/Guidelines_All_Teachers.pdf" download />
+              </SectionCard>
+
+              {/* 13. Syllabus DS */}
+              <SectionCard title="Syllabus DS" icon={BookOpen}>
+                <ActionButton label="Click here to access the Syllabus DS 2023" href="/documents/CSE-DS-Syllabus.pdf" variant="secondary" />
+              </SectionCard>
+
+              {/* 14. Summer Internship Attendance */}
+              <SectionCard title="Summer Internship Attendance" icon={Sun}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {[
+                    "Post 22RP- 3rd IT- Attendance",
+                    "Post 22RP- 3rd DS-A Attendance",
+                    "Post 22RP- 3rd DS-B Attendance",
+                  ].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+            </div>
+          </div>
+        </main>
+
+        <Footer />
+        <MobileBottomNav />
+      </div>
+    );
+  }
+
+  // ============ DEFAULT (CSE etc.) FACULTY PORTAL ============
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background">
       <Header />
