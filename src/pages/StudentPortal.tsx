@@ -29,6 +29,9 @@ const departments: Record<string, { name: string; code: string; fullName: string
 // Branches with full sections (CSE-specific)
 const fullFeatureBranches = ["cse"];
 
+// Branches with DS/AIDS sections
+const dsBranches = ["ds", "aids"];
+
 // Branches with limited sections (IT, DS)
 const limitedFeatureBranches = ["it", "ds", "aids"];
 
@@ -39,6 +42,7 @@ const StudentPortal = () => {
   const deptCode = dept?.code || "CSE";
 
   const isFullFeatureBranch = fullFeatureBranches.includes(deptId || "");
+  const isDSBranch = dsBranches.includes(deptId || "");
   const isLimitedBranch = limitedFeatureBranches.includes(deptId || "");
 
   if (!dept) {
@@ -324,6 +328,54 @@ const StudentPortal = () => {
                   icon={<MessageSquare className="w-5 h-5" />}
                 >
                   <YearAccordion years={generateSectionData(`/department/${deptId}/feedback`)} />
+                </PortalSection>
+              </>
+            )}
+
+            {/* ============ DS/AIDS EXTRA SECTIONS ============ */}
+            {isDSBranch && (
+              <>
+                {/* Student Guidelines */}
+                <PortalSection 
+                  title="Student Guidelines" 
+                  icon={<ShieldCheck className="w-5 h-5" />}
+                >
+                  <PortalButton 
+                    label="Click here to access the Student Guidelines" 
+                    href="/documents/Guidelines_Student_DS.pdf"
+                    variant="primary"
+                  />
+                </PortalSection>
+
+                {/* Mid Timetables & Imp Questions */}
+                <PortalSection 
+                  title="Mid exams-Time Tables & Imp Questions" 
+                  icon={<BarChart3 className="w-5 h-5" />}
+                >
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/mid-tt-qb`)} />
+                </PortalSection>
+
+                {/* Feedback */}
+                <PortalSection 
+                  title="Feedback" 
+                  icon={<MessageSquare className="w-5 h-5" />}
+                >
+                  <PortalButton 
+                    label="Click here to submit Feedback" 
+                    variant="primary"
+                  />
+                </PortalSection>
+
+                {/* Academic Calendars */}
+                <PortalSection 
+                  title="Academic Calendars" 
+                  icon={<Calendar className="w-5 h-5" />}
+                >
+                  <PortalButton 
+                    label="Academic Calendar 2024-25" 
+                    href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf"
+                    variant="primary"
+                  />
                 </PortalSection>
               </>
             )}
