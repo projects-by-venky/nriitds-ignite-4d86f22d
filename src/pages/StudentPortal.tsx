@@ -274,68 +274,10 @@ const StudentPortal = () => {
               </>
             )}
 
-            {/* ============ COMMON SECTIONS FOR ALL BRANCHES ============ */}
-
-            {/* Results - All Branches */}
-            <PortalSection 
-              title="Results" 
-              icon={<Award className="w-5 h-5" />}
-            >
-              <p className="text-sm text-muted-foreground mb-4">
-                View semester-wise examination results
-              </p>
-              <YearAccordion years={generateSectionData(`/department/${deptId}/results`)} />
-            </PortalSection>
-
-            {/* Hourly Attendance */}
-            <PortalSection 
-              title="Hourly Attendance" 
-              icon={<Calendar className="w-5 h-5" />}
-            >
-              <YearAccordion years={generateSectionData(attendancePath)} />
-            </PortalSection>
-
-            {/* Monthly Cumulative Attendance */}
-            <PortalSection 
-              title="Monthly Cumulative Attendance" 
-              icon={<ClipboardList className="w-5 h-5" />}
-            >
-              <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
-            </PortalSection>
-
-            {/* Time Tables */}
-            <PortalSection 
-              title="Time Tables" 
-              icon={<Clock className="w-5 h-5" />}
-            >
-              <YearAccordion years={generateSectionData(timetablePath)} />
-            </PortalSection>
-
-            {/* ============ CSE ONLY - BOTTOM SECTIONS ============ */}
-            {isFullFeatureBranch && (
-              <>
-                {/* ST Marks */}
-                <PortalSection 
-                  title="ST Marks" 
-                  icon={<FileCheck className="w-5 h-5" />}
-                >
-                  <YearAccordion years={generateSectionData(`/department/${deptId}/st-marks`)} />
-                </PortalSection>
-
-                {/* Feedback */}
-                <PortalSection 
-                  title="Feedback" 
-                  icon={<MessageSquare className="w-5 h-5" />}
-                >
-                  <YearAccordion years={generateSectionData(`/department/${deptId}/feedback`)} />
-                </PortalSection>
-              </>
-            )}
-
-            {/* ============ DS/AIDS EXTRA SECTIONS ============ */}
+            {/* ============ DS/AIDS BRANCH - ORDERED SECTIONS ============ */}
             {isDSBranch && (
               <>
-                {/* Student Guidelines */}
+                {/* 1. Student Guidelines */}
                 <PortalSection 
                   title="Student Guidelines" 
                   icon={<ShieldCheck className="w-5 h-5" />}
@@ -347,7 +289,23 @@ const StudentPortal = () => {
                   />
                 </PortalSection>
 
-                {/* Mid Timetables & Imp Questions */}
+                {/* 2. Hourly Attendance */}
+                <PortalSection 
+                  title="Hourly Attendance" 
+                  icon={<Calendar className="w-5 h-5" />}
+                >
+                  <YearAccordion years={generateSectionData(attendancePath)} />
+                </PortalSection>
+
+                {/* 3. Monthly Cumulative Attendance */}
+                <PortalSection 
+                  title="Monthly Cumulative Attendance" 
+                  icon={<ClipboardList className="w-5 h-5" />}
+                >
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
+                </PortalSection>
+
+                {/* 4. Mid exams-Time Tables & Imp Questions */}
                 <PortalSection 
                   title="Mid exams-Time Tables & Imp Questions" 
                   icon={<BarChart3 className="w-5 h-5" />}
@@ -355,7 +313,37 @@ const StudentPortal = () => {
                   <YearAccordion years={generateSectionData(`/department/${deptId}/mid-tt-qb`)} />
                 </PortalSection>
 
-                {/* Feedback */}
+                {/* 5. Time Tables */}
+                <PortalSection 
+                  title="Time Tables" 
+                  icon={<Clock className="w-5 h-5" />}
+                >
+                  <YearAccordion years={generateSectionData(timetablePath)} />
+                </PortalSection>
+
+                {/* 6. Results */}
+                <PortalSection 
+                  title="Results" 
+                  icon={<Award className="w-5 h-5" />}
+                >
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/results`)} />
+                </PortalSection>
+
+                {/* 7. Syllabus */}
+                <PortalSection 
+                  title="Syllabus" 
+                  icon={<BookOpen className="w-5 h-5" />}
+                >
+                  <SectionGrid 
+                    items={[
+                      { label: `R23 Autonomous B.Tech ${deptCode} Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf", variant: "secondary" },
+                      { label: `R20 JNTUK B.Tech ${deptCode} Syllabus`, href: "/documents/CSE-DS-3rd-Year-Syllabus.pdf", variant: "secondary" },
+                    ]}
+                    columns={2}
+                  />
+                </PortalSection>
+
+                {/* 8. Feedback */}
                 <PortalSection 
                   title="Feedback" 
                   icon={<MessageSquare className="w-5 h-5" />}
@@ -365,34 +353,57 @@ const StudentPortal = () => {
                     variant="primary"
                   />
                 </PortalSection>
+              </>
+            )}
 
-                {/* Academic Calendars */}
+            {/* ============ COMMON SECTIONS FOR NON-DS, NON-CSE BRANCHES ============ */}
+            {!isFullFeatureBranch && !isDSBranch && (
+              <>
                 <PortalSection 
-                  title="Academic Calendars" 
+                  title="Results" 
+                  icon={<Award className="w-5 h-5" />}
+                >
+                  <p className="text-sm text-muted-foreground mb-4">
+                    View semester-wise examination results
+                  </p>
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/results`)} />
+                </PortalSection>
+
+                <PortalSection 
+                  title="Hourly Attendance" 
                   icon={<Calendar className="w-5 h-5" />}
                 >
-                  <PortalButton 
-                    label="Academic Calendar 2024-25" 
-                    href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf"
-                    variant="primary"
+                  <YearAccordion years={generateSectionData(attendancePath)} />
+                </PortalSection>
+
+                <PortalSection 
+                  title="Monthly Cumulative Attendance" 
+                  icon={<ClipboardList className="w-5 h-5" />}
+                >
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
+                </PortalSection>
+
+                <PortalSection 
+                  title="Time Tables" 
+                  icon={<Clock className="w-5 h-5" />}
+                >
+                  <YearAccordion years={generateSectionData(timetablePath)} />
+                </PortalSection>
+
+                <PortalSection 
+                  title="Syllabus" 
+                  icon={<BookOpen className="w-5 h-5" />}
+                >
+                  <SectionGrid 
+                    items={[
+                      { label: `R23 Autonomous B.Tech ${deptCode} Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf", variant: "secondary" },
+                      { label: `R20 JNTUK B.Tech ${deptCode} Syllabus`, href: "/documents/CSE-DS-3rd-Year-Syllabus.pdf", variant: "secondary" },
+                    ]}
+                    columns={2}
                   />
                 </PortalSection>
               </>
             )}
-
-            {/* Syllabus - All Branches */}
-            <PortalSection 
-              title="Syllabus" 
-              icon={<BookOpen className="w-5 h-5" />}
-            >
-              <SectionGrid 
-                items={[
-                  { label: `R23 Autonomous B.Tech ${deptCode} Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf", variant: "secondary" },
-                  { label: `R20 JNTUK B.Tech ${deptCode} Syllabus`, href: "/documents/CSE-DS-3rd-Year-Syllabus.pdf", variant: "secondary" },
-                ]}
-                columns={2}
-              />
-            </PortalSection>
 
             {/* Student Noticeboard - CSE Only */}
             {isFullFeatureBranch && (
