@@ -235,10 +235,14 @@ const FacultyPortal = () => {
               {/* 6. Lab Internal marks */}
               <SectionCard title="Lab Internal marks" icon={FlaskConical}>
                 <SubSection title="1st Year - Semester 1 (1-1)">
-                  <ActionButton label="Post 1-1 DS Lab Internal marks" href="#" variant="secondary" />
+                  {["Post 1-1 DS-A Lab Internal marks", "Post 1-1 DS-B Lab Internal marks", "Post 1-1 DS-C Lab Internal marks"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
                 </SubSection>
                 <SubSection title="1st Year - Semester 2 (1-2)">
-                  <ActionButton label="Post 1-2 DS Lab Internal marks" href="#" variant="secondary" />
+                  {["Post 1-2 DS-A Lab Internal marks", "Post 1-2 DS-B Lab Internal marks", "Post 1-2 DS-C Lab Internal marks"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
                 </SubSection>
                 <SubSection title="2nd Year - Semester 1 (2-1)">
                   {["Post 2-1 DS-A Lab Internal marks", "Post 2-1 DS-B Lab Internal marks", "Post 2-1 DS-C Lab Internal marks"].map((label) => (
@@ -251,22 +255,22 @@ const FacultyPortal = () => {
                   ))}
                 </SubSection>
                 <SubSection title="3rd Year - Semester 1 (3-1)">
-                  {["Post 3-1 DS-A Lab Internal marks", "Post 3-1 DS-B Lab Internal marks"].map((label) => (
+                  {["Post 3-1 DS-A Lab Internal marks", "Post 3-1 DS-B Lab Internal marks", "Post 3-1 DS-C Lab Internal marks"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
                 <SubSection title="3rd Year - Semester 2 (3-2)">
-                  {["Post 3-2 DS-A Lab Internal marks", "Post 3-2 DS-B Lab Internal marks"].map((label) => (
+                  {["Post 3-2 DS-A Lab Internal marks", "Post 3-2 DS-B Lab Internal marks", "Post 3-2 DS-C Lab Internal marks"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
                 <SubSection title="4th Year - Semester 1 (4-1)">
-                  {["Post 4-1 DS-A Lab Internal marks", "Post 4-1 DS-B Lab Internal marks"].map((label) => (
+                  {["Post 4-1 DS-A Lab Internal marks", "Post 4-1 DS-B Lab Internal marks", "Post 4-1 DS-C Lab Internal marks"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
                 <SubSection title="4th Year - Semester 2 (4-2)">
-                  {["Post 4-2 DS-A Lab Internal marks", "Post 4-2 DS-B Lab Internal marks"].map((label) => (
+                  {["Post 4-2 DS-A Lab Internal marks", "Post 4-2 DS-B Lab Internal marks", "Post 4-2 DS-C Lab Internal marks"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
@@ -275,10 +279,14 @@ const FacultyPortal = () => {
               {/* 7. Mid marks */}
               <SectionCard title="Mid marks" icon={BarChart3}>
                 <SubSection title="1st Year - Semester 1 (1-1)">
-                  <ActionButton label="Post 1-1 DS Mid marks" href="#" variant="secondary" />
+                  {["Post 1-1 DS-A Mid marks", "Post 1-1 DS-B Mid marks", "Post 1-1 DS-C Mid marks"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
                 </SubSection>
                 <SubSection title="1st Year - Semester 2 (1-2)">
-                  <ActionButton label="Post 1-2 DS Mid marks" href="#" variant="secondary" />
+                  {["Post 1-2 DS-A Mid marks", "Post 1-2 DS-B Mid marks", "Post 1-2 DS-C Mid marks"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
                 </SubSection>
                 <SubSection title="2nd Year - Semester 1 (2-1)">
                   {["Post 2-1 DS-A Mid marks", "Post 2-1 DS-B Mid marks", "Post 2-1 DS-C Mid marks"].map((label) => (
@@ -291,22 +299,22 @@ const FacultyPortal = () => {
                   ))}
                 </SubSection>
                 <SubSection title="3rd Year - Semester 1 (3-1)">
-                  {["Post 3-1 DS-A Mid marks", "Post 3-1 DS-B Mid marks"].map((label) => (
+                  {["Post 3-1 DS-A Mid marks", "Post 3-1 DS-B Mid marks", "Post 3-1 DS-C Mid marks"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
                 <SubSection title="3rd Year - Semester 2 (3-2)">
-                  {["Post 3-2 DS-A Mid marks", "Post 3-2 DS-B Mid marks"].map((label) => (
+                  {["Post 3-2 DS-A Mid marks", "Post 3-2 DS-B Mid marks", "Post 3-2 DS-C Mid marks"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
                 <SubSection title="4th Year - Semester 1 (4-1)">
-                  {["Post 4-1 DS-A Mid marks", "Post 4-1 DS-B Mid marks"].map((label) => (
+                  {["Post 4-1 DS-A Mid marks", "Post 4-1 DS-B Mid marks", "Post 4-1 DS-C Mid marks"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
                 <SubSection title="4th Year - Semester 2 (4-2)">
-                  {["Post 4-2 DS-A Mid marks", "Post 4-2 DS-B Mid marks"].map((label) => (
+                  {["Post 4-2 DS-A Mid marks", "Post 4-2 DS-B Mid marks", "Post 4-2 DS-C Mid marks"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
@@ -315,10 +323,14 @@ const FacultyPortal = () => {
               {/* 8. Assignment marks */}
               <SectionCard title="Assignment marks" icon={FileText}>
                 <SubSection title="1st Year - Semester 1 (1-1)">
-                  <ActionButton label="Post 1-1 DS Assignment marks" href="#" variant="secondary" />
+                  {["Post 1-1 DS-A Assignment marks", "Post 1-1 DS-B Assignment marks", "Post 1-1 DS-C Assignment marks"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
                 </SubSection>
                 <SubSection title="1st Year - Semester 2 (1-2)">
-                  <ActionButton label="Post 1-2 DS Assignment marks" href="#" variant="secondary" />
+                  {["Post 1-2 DS-A Assignment marks", "Post 1-2 DS-B Assignment marks", "Post 1-2 DS-C Assignment marks"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
                 </SubSection>
                 <SubSection title="2nd Year - Semester 1 (2-1)">
                   {["Post 2-1 DS-A Assignment marks", "Post 2-1 DS-B Assignment marks", "Post 2-1 DS-C Assignment marks"].map((label) => (
@@ -331,22 +343,22 @@ const FacultyPortal = () => {
                   ))}
                 </SubSection>
                 <SubSection title="3rd Year - Semester 1 (3-1)">
-                  {["Post 3-1 DS-A Assignment marks", "Post 3-1 DS-B Assignment marks"].map((label) => (
+                  {["Post 3-1 DS-A Assignment marks", "Post 3-1 DS-B Assignment marks", "Post 3-1 DS-C Assignment marks"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
                 <SubSection title="3rd Year - Semester 2 (3-2)">
-                  {["Post 3-2 DS-A Assignment marks", "Post 3-2 DS-B Assignment marks"].map((label) => (
+                  {["Post 3-2 DS-A Assignment marks", "Post 3-2 DS-B Assignment marks", "Post 3-2 DS-C Assignment marks"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
                 <SubSection title="4th Year - Semester 1 (4-1)">
-                  {["Post 4-1 DS-A Assignment marks", "Post 4-1 DS-B Assignment marks"].map((label) => (
+                  {["Post 4-1 DS-A Assignment marks", "Post 4-1 DS-B Assignment marks", "Post 4-1 DS-C Assignment marks"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
                 <SubSection title="4th Year - Semester 2 (4-2)">
-                  {["Post 4-2 DS-A Assignment marks", "Post 4-2 DS-B Assignment marks"].map((label) => (
+                  {["Post 4-2 DS-A Assignment marks", "Post 4-2 DS-B Assignment marks", "Post 4-2 DS-C Assignment marks"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
