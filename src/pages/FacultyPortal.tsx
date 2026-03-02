@@ -15,6 +15,7 @@ import { SectionGrid } from "@/components/portal/SectionGrid";
 
 const departments = {
   cse: { name: "Computer Science & Engineering", code: "CSE" },
+  it: { name: "Information Technology", code: "IT" },
   ece: { name: "Electronics & Communication", code: "ECE" },
   eee: { name: "Electrical & Electronics", code: "EEE" },
   mech: { name: "Mechanical Engineering", code: "MECH" },
@@ -125,6 +126,7 @@ const SubSection = ({ title, children }: SubSectionProps) => (
 );
 
 const dsBranches = ["aids", "ds"];
+const itBranches = ["it"];
 
 const FacultyPortal = () => {
   const { deptId } = useParams<{ deptId: string }>();
@@ -142,6 +144,7 @@ const FacultyPortal = () => {
   }
 
   const isDSBranch = dsBranches.includes(deptId || "");
+  const isITBranch = itBranches.includes(deptId || "");
   const sections = ["A", "B", "C"];
 
   // ============ DS FACULTY PORTAL ============
@@ -506,6 +509,140 @@ const FacultyPortal = () => {
           </div>
         </main>
 
+        <Footer />
+        <MobileBottomNav />
+      </div>
+    );
+  }
+
+  // ============ IT FACULTY PORTAL ============
+  if (isITBranch) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background">
+        <Header />
+        <main className="pt-16 md:pt-20 pb-24 md:pb-20">
+          <div className="container mx-auto px-4 md:px-6 lg:px-8">
+            <Link to={`/department/${deptId}`}>
+              <motion.button
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-4 touch-target justify-start"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span className="text-sm">Back to Department</span>
+              </motion.button>
+            </Link>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6 md:mb-8">
+              <h1 className="text-2xl md:text-4xl lg:text-5xl font-black mb-2 bg-clip-text text-transparent"
+                  style={{ backgroundImage: "linear-gradient(135deg, #0EA5E9, #1E3A8A)" }}>
+                Faculty Portal
+              </h1>
+              <p className="text-sm md:text-lg text-muted-foreground">{dept.name}</p>
+            </motion.div>
+
+            <div className="space-y-3 md:space-y-4">
+              {/* 1. Submit your Lesson plan */}
+              <SectionCard title="Submit your Lesson plan" icon={FileCheck}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {["Submit 2-2 IT Lesson plan", "Submit 3-2 IT Lesson plan", "Submit 4-1 IT Lesson plan"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 2. Hourly attendance */}
+              <SectionCard title="Hourly attendance" icon={Clock}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+                  {["24KP_IT(A)_Daily Attendance", "24KP_IT(B)_Daily Attendance", "23KP_IT_Daily Attendance", "22KP_IT_Daily Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 3. Monthly attendance */}
+              <SectionCard title="Monthly attendance" icon={Calendar}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+                  {["24KP_IT(A)_Monthly Attendance", "24KP_IT(B)_Monthly Attendance", "23KP_IT_Monthly Attendance", "22KP_IT_Monthly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 4. Syllabus Review Form */}
+              <SectionCard title="Syllabus Review Form" icon={FileCheck}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+                  {["Syllabus review form of 2-2_IT", "Syllabus review form of 3-2_IT"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 5. Mid Marks */}
+              <SectionCard title="Mid Marks" icon={BarChart3}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+                  {["24KP_IT(A)_Mid Marks", "24KP_IT(B)_Mid Marks", "23KP_IT_Mid Marks", "22KP_IT_Mid Marks"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 6. Assignment Marks */}
+              <SectionCard title="Assignment Marks" icon={FileText}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+                  {["24KP_IT(A)_Assignment Marks", "24KP_IT(B)_Assignment Marks", "23KP_IT_Assignment Marks", "22KP_IT_Assignment Marks"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 7. Slip Tests Marks */}
+              <SectionCard title="Slip Tests Marks" icon={ClipboardList}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {["post the Slip Test marks of 2-2_IT", "post the Slip Test marks of 3-1_IT", "post the Slip Test marks of 4-1_IT"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 8. Nominal Rolls */}
+              <SectionCard title="Nominal Rolls" icon={Users}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {["Nominal rolls of 2-1 IT", "Nominal rolls of 3-1 IT", "Nominal rolls of 4-1 IT"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 9. Academic calendars */}
+              <SectionCard title="Academic calendars" icon={Calendar}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {["2-IT Academic Calender", "3-IT Academic Calender", "4-IT Academic Calender"].map((label) => (
+                    <ActionButton key={label} label={label} href="/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 10. Syllabus */}
+              <SectionCard title="Syllabus" icon={BookOpen}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {["click here to access 2-IT syllabus", "click here to access 3-IT Syllabus", "click here to access 4-IT syllabus"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+
+              {/* 11. Submit mid papers */}
+              <SectionCard title="Submit mid papers" icon={Upload}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+                  {["post the 2-1_IT mid paper", "post the 3-1_IT mid paper", "post the 4-1_IT mid paper"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </div>
+              </SectionCard>
+            </div>
+          </div>
+        </main>
         <Footer />
         <MobileBottomNav />
       </div>

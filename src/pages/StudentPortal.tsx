@@ -32,8 +32,11 @@ const fullFeatureBranches = ["cse"];
 // Branches with DS/AIDS sections
 const dsBranches = ["ds", "aids"];
 
-// Branches with limited sections (IT, DS)
-const limitedFeatureBranches = ["it", "ds", "aids"];
+// IT branch
+const itBranches = ["it"];
+
+// Branches with limited sections
+const limitedFeatureBranches = ["ds", "aids"];
 
 const StudentPortal = () => {
   const { deptId } = useParams<{ deptId: string }>();
@@ -43,6 +46,7 @@ const StudentPortal = () => {
 
   const isFullFeatureBranch = fullFeatureBranches.includes(deptId || "");
   const isDSBranch = dsBranches.includes(deptId || "");
+  const isITBranch = itBranches.includes(deptId || "");
   const isLimitedBranch = limitedFeatureBranches.includes(deptId || "");
 
   if (!dept) {
@@ -356,51 +360,215 @@ const StudentPortal = () => {
               </>
             )}
 
-            {/* ============ COMMON SECTIONS FOR NON-DS, NON-CSE BRANCHES ============ */}
-            {!isFullFeatureBranch && !isDSBranch && (
+            {/* ============ IT BRANCH SECTIONS ============ */}
+            {isITBranch && (
               <>
-                <PortalSection 
-                  title="Results" 
-                  icon={<Award className="w-5 h-5" />}
-                >
-                  <p className="text-sm text-muted-foreground mb-4">
-                    View semester-wise examination results
-                  </p>
+                {/* 1. Notice Board */}
+                <PortalSection title="Notice Board" icon={<ClipboardList className="w-5 h-5" />}>
+                  <PortalButton label="Find your monthly Co-Curriculars" variant="primary" />
+                </PortalSection>
+
+                {/* 2. Roadmap for IT Student */}
+                <PortalSection title="Roadmap for IT Student" icon={<BookOpen className="w-5 h-5" />}>
+                  <PortalButton label="Click here to access" variant="primary" />
+                </PortalSection>
+
+                {/* 3. Student Guidelines */}
+                <PortalSection title="Student Guidelines" icon={<ShieldCheck className="w-5 h-5" />}>
+                  <PortalButton label="IT Click here to access the student guidelines" href="/documents/Guidelines_Student_DS.pdf" variant="primary" />
+                </PortalSection>
+
+                {/* 4. Time Tables */}
+                <PortalSection title="Time Tables" icon={<Clock className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "2 S(R23)_IT_Time table", variant: "secondary" },
+                    { label: "3 S(R23)_IT_Time table", variant: "secondary" },
+                    { label: "3-1_IT_Class table", variant: "secondary" },
+                    { label: "4-1_IT_Class table", variant: "secondary" },
+                  ]} columns={2} />
+                </PortalSection>
+
+                {/* 5. Academic Calendars */}
+                <PortalSection title="Academic Calendars" icon={<Calendar className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "3-1_IT Academic Calendar", href: "/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf", variant: "secondary" },
+                    { label: "2-1 IT Academic Calendar", href: "/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf", variant: "secondary" },
+                    { label: "4-1 IT Academic Calendar", href: "/documents/II_Year_Academic_calendar_24-25_NRIIT.pdf", variant: "secondary" },
+                  ]} columns={3} />
+                </PortalSection>
+
+                {/* 6. Syllabus */}
+                <PortalSection title="Syllabus" icon={<BookOpen className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "R23(2-II) B.Tech_Syllabus", variant: "secondary" },
+                    { label: "R20 B.Tech Syllabus", variant: "secondary" },
+                    { label: "4(R) Yr B.Tech Syllabus", variant: "secondary" },
+                  ]} columns={2} />
+                </PortalSection>
+
+                {/* 7. Daily Attendance */}
+                <PortalSection title="Daily Attendance" icon={<Calendar className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "24KP_IT(A)_Daily Attendance", variant: "secondary" },
+                    { label: "24KP_IT(B)_Daily Attendance", variant: "secondary" },
+                    { label: "23KP_IT_Daily Attendance", variant: "secondary" },
+                    { label: "22KP_IT_Daily Attendance", variant: "secondary" },
+                  ]} columns={2} />
+                </PortalSection>
+
+                {/* 8. Monthly Attendance */}
+                <PortalSection title="Monthly Attendance" icon={<ClipboardList className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "24KP_IT(A)_Monthly Attendance", variant: "secondary" },
+                    { label: "24KP_IT(B)_Monthly Attendance", variant: "secondary" },
+                    { label: "23KP_IT_Monthly Attendance", variant: "secondary" },
+                    { label: "22KP_IT_Monthly Attendance", variant: "secondary" },
+                  ]} columns={2} />
+                </PortalSection>
+
+                {/* 9. Mid Marks */}
+                <PortalSection title="Mid Marks" icon={<FileText className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "24KP_IT(A)_Mid Marks", variant: "secondary" },
+                    { label: "24KP_IT(B)_Mid Marks", variant: "secondary" },
+                    { label: "23KP_IT_Mid Marks", variant: "secondary" },
+                    { label: "22KP_IT_Mid Marks", variant: "secondary" },
+                  ]} columns={2} />
+                </PortalSection>
+
+                {/* 10. Assignment Marks */}
+                <PortalSection title="Assignment Marks" icon={<FileText className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "24KP_IT(A)_Assignment Marks", variant: "secondary" },
+                    { label: "24KP_IT(B)_IT_Assignment Marks", variant: "secondary" },
+                    { label: "23KP_IT_Assignment Marks", variant: "secondary" },
+                    { label: "22KP_IT_Assignment Marks", variant: "secondary" },
+                  ]} columns={2} />
+                </PortalSection>
+
+                {/* 11. Slip Test Marks */}
+                <PortalSection title="Slip Test Marks" icon={<Award className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "24KP_IT(A)_Slip Test Marks", variant: "secondary" },
+                    { label: "24KP_IT(B)_Slip Test Marks", variant: "secondary" },
+                    { label: "22KP_IT_Slip Test Marks", variant: "secondary" },
+                    { label: "23KP_IT_Slip Test Marks", variant: "secondary" },
+                  ]} columns={2} />
+                </PortalSection>
+
+                {/* 12. Student Clubs */}
+                <PortalSection title="Student Clubs" icon={<Users className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "Technical Club", variant: "primary" },
+                    { label: "Culture Club", variant: "primary" },
+                  ]} columns={2} />
+                </PortalSection>
+
+                {/* 13. Mentor List */}
+                <PortalSection title="Mentor List" icon={<Users className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "24KP_IT(A)_Mentor List", variant: "secondary" },
+                    { label: "24KP_IT(B)_Mentor List", variant: "secondary" },
+                    { label: "23KP_IT_Mentor List", variant: "secondary" },
+                    { label: "22KP(R)_Mentor List", variant: "secondary" },
+                  ]} columns={2} />
+                </PortalSection>
+
+                {/* 14. Results */}
+                <PortalSection title="Results" icon={<Award className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "24KP_IT_Results", variant: "secondary" },
+                    { label: "23KP_IT_Results", variant: "secondary" },
+                    { label: "22KP_IT_Results", variant: "secondary" },
+                  ]} columns={3} />
+                </PortalSection>
+
+                {/* 15. Feedback */}
+                <PortalSection title="Feedback" icon={<MessageSquare className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "24KP_IT_Feedback", variant: "secondary" },
+                    { label: "23KP_IT_Feedback", variant: "secondary" },
+                    { label: "22KP_IT_Feedback", variant: "secondary" },
+                    { label: "E_DTP_Feedback", variant: "secondary" },
+                  ]} columns={3} />
+                </PortalSection>
+
+                {/* 16. Technical Events */}
+                <PortalSection title="Technical Events" icon={<GraduationCap className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "Technical event videos", variant: "secondary" },
+                    { label: "Technical Events Calendar", variant: "secondary" },
+                  ]} columns={2} />
+                </PortalSection>
+
+                {/* 17. 3-2(R20) Materials (JNTUK) */}
+                <PortalSection title="3-2(R20) Materials (JNTUK)" icon={<FolderOpen className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "ML", variant: "secondary" },
+                    { label: "DDA", variant: "secondary" },
+                    { label: "CNS", variant: "secondary" },
+                    { label: "SP", variant: "secondary" },
+                    { label: "ICT Applications", variant: "secondary" },
+                    { label: "ADMS", variant: "secondary" },
+                  ]} columns={3} />
+                </PortalSection>
+
+                {/* 18. 2-2(R23) Materials (Autonomous) */}
+                <PortalSection title="2-2(R23) Materials (Autonomous)" icon={<FolderOpen className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: "OS", variant: "secondary" },
+                    { label: "P&S", variant: "secondary" },
+                    { label: "ADS", variant: "secondary" },
+                    { label: "DBMS", variant: "secondary" },
+                    { label: "SE", variant: "secondary" },
+                    { label: "EBS", variant: "secondary" },
+                  ]} columns={3} />
+                </PortalSection>
+
+                {/* 19. JNTUK Previous Question Papers */}
+                <PortalSection title="JNTUK Previous Question Papers" icon={<FileText className="w-5 h-5" />}>
+                  <p className="text-sm text-muted-foreground mb-3 font-semibold">III -B.Tech-I_Sem</p>
+                  <SectionGrid items={[
+                    { label: "CN", variant: "secondary" },
+                    { label: "NVA", variant: "secondary" },
+                  ]} columns={3} />
+                  <p className="text-sm text-muted-foreground mb-3 mt-4 font-semibold">III B.Tech-II_Sem</p>
+                  <SectionGrid items={[
+                    { label: "ML", variant: "secondary" },
+                    { label: "DDA", variant: "secondary" },
+                    { label: "CNS", variant: "secondary" },
+                    { label: "SP", variant: "secondary" },
+                    { label: "ICT Applications", variant: "secondary" },
+                  ]} columns={3} />
+                </PortalSection>
+              </>
+            )}
+
+            {/* ============ COMMON SECTIONS FOR OTHER BRANCHES ============ */}
+            {!isFullFeatureBranch && !isDSBranch && !isITBranch && (
+              <>
+                <PortalSection title="Results" icon={<Award className="w-5 h-5" />}>
+                  <p className="text-sm text-muted-foreground mb-4">View semester-wise examination results</p>
                   <YearAccordion years={generateSectionData(`/department/${deptId}/results`)} />
                 </PortalSection>
 
-                <PortalSection 
-                  title="Hourly Attendance" 
-                  icon={<Calendar className="w-5 h-5" />}
-                >
+                <PortalSection title="Hourly Attendance" icon={<Calendar className="w-5 h-5" />}>
                   <YearAccordion years={generateSectionData(attendancePath)} />
                 </PortalSection>
 
-                <PortalSection 
-                  title="Monthly Cumulative Attendance" 
-                  icon={<ClipboardList className="w-5 h-5" />}
-                >
+                <PortalSection title="Monthly Cumulative Attendance" icon={<ClipboardList className="w-5 h-5" />}>
                   <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
                 </PortalSection>
 
-                <PortalSection 
-                  title="Time Tables" 
-                  icon={<Clock className="w-5 h-5" />}
-                >
+                <PortalSection title="Time Tables" icon={<Clock className="w-5 h-5" />}>
                   <YearAccordion years={generateSectionData(timetablePath)} />
                 </PortalSection>
 
-                <PortalSection 
-                  title="Syllabus" 
-                  icon={<BookOpen className="w-5 h-5" />}
-                >
-                  <SectionGrid 
-                    items={[
-                      { label: `R23 Autonomous B.Tech ${deptCode} Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf", variant: "secondary" },
-                      { label: `R20 JNTUK B.Tech ${deptCode} Syllabus`, href: "/documents/CSE-DS-3rd-Year-Syllabus.pdf", variant: "secondary" },
-                    ]}
-                    columns={2}
-                  />
+                <PortalSection title="Syllabus" icon={<BookOpen className="w-5 h-5" />}>
+                  <SectionGrid items={[
+                    { label: `R23 Autonomous B.Tech ${deptCode} Syllabus`, href: "/documents/CSE-DS-Syllabus.pdf", variant: "secondary" },
+                    { label: `R20 JNTUK B.Tech ${deptCode} Syllabus`, href: "/documents/CSE-DS-3rd-Year-Syllabus.pdf", variant: "secondary" },
+                  ]} columns={2} />
                 </PortalSection>
               </>
             )}
