@@ -364,30 +364,89 @@ const FacultyPortal = () => {
                 </SubSection>
               </SectionCard>
 
-              {/* 9. Daily activities - Hourly & Monthly Attendance */}
-              <SectionCard title="Daily activities" icon={Clock}>
-                <SubSection title="Hourly attendance">
-                  {[
-                    "Post the 4-1 DS-A Attendance",
-                    "Post the 4-1 DS-B Attendance",
-                    "Post the 5-1 DS-A Attendance",
-                    "Post the 5-1 DS-B Attendance",
-                    "Post the 5-1 DS-C Attendance",
-                    "Post the 3-1 DS-A Attendance",
-                    "Post the 3-1 DS-B Attendance",
-                    "Post the 3-1 DS-C Attendance",
-                  ].map((label) => (
+              {/* 9. Upload Hourly Attendance */}
+              <SectionCard title="Upload Hourly Attendance" icon={Clock}>
+                <SubSection title="1st Year - Semester 1 (1-1)">
+                  {["Upload 1-1 DS-A Hourly Attendance", "Upload 1-1 DS-B Hourly Attendance", "Upload 1-1 DS-C Hourly Attendance"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
-                <SubSection title="Monthly attendance">
-                  {[
-                    "Post the 3-1 DS-A Monthly attendance",
-                    "Post the 3-2 DS-B Monthly attendance",
-                    "Post the 2-2 DS-A Monthly attendance",
-                    "Post the 2-2 DS-B Monthly attendance",
-                    "Post the 2-2 DS-C Monthly attendance",
-                  ].map((label) => (
+                <SubSection title="1st Year - Semester 2 (1-2)">
+                  {["Upload 1-2 DS-A Hourly Attendance", "Upload 1-2 DS-B Hourly Attendance", "Upload 1-2 DS-C Hourly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="2nd Year - Semester 1 (2-1)">
+                  {["Upload 2-1 DS-A Hourly Attendance", "Upload 2-1 DS-B Hourly Attendance", "Upload 2-1 DS-C Hourly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="2nd Year - Semester 2 (2-2)">
+                  {["Upload 2-2 DS-A Hourly Attendance", "Upload 2-2 DS-B Hourly Attendance", "Upload 2-2 DS-C Hourly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="3rd Year - Semester 1 (3-1)">
+                  {["Upload 3-1 DS-A Hourly Attendance", "Upload 3-1 DS-B Hourly Attendance", "Upload 3-1 DS-C Hourly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="3rd Year - Semester 2 (3-2)">
+                  {["Upload 3-2 DS-A Hourly Attendance", "Upload 3-2 DS-B Hourly Attendance", "Upload 3-2 DS-C Hourly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="4th Year - Semester 1 (4-1)">
+                  {["Upload 4-1 DS-A Hourly Attendance", "Upload 4-1 DS-B Hourly Attendance", "Upload 4-1 DS-C Hourly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="4th Year - Semester 2 (4-2)">
+                  {["Upload 4-2 DS-A Hourly Attendance", "Upload 4-2 DS-B Hourly Attendance", "Upload 4-2 DS-C Hourly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+              </SectionCard>
+
+              {/* 10. Upload Monthly Attendance */}
+              <SectionCard title="Upload Monthly Attendance" icon={Calendar}>
+                <SubSection title="1st Year - Semester 1 (1-1)">
+                  {["Upload 1-1 DS-A Monthly Attendance", "Upload 1-1 DS-B Monthly Attendance", "Upload 1-1 DS-C Monthly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="1st Year - Semester 2 (1-2)">
+                  {["Upload 1-2 DS-A Monthly Attendance", "Upload 1-2 DS-B Monthly Attendance", "Upload 1-2 DS-C Monthly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="2nd Year - Semester 1 (2-1)">
+                  {["Upload 2-1 DS-A Monthly Attendance", "Upload 2-1 DS-B Monthly Attendance", "Upload 2-1 DS-C Monthly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="2nd Year - Semester 2 (2-2)">
+                  {["Upload 2-2 DS-A Monthly Attendance", "Upload 2-2 DS-B Monthly Attendance", "Upload 2-2 DS-C Monthly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="3rd Year - Semester 1 (3-1)">
+                  {["Upload 3-1 DS-A Monthly Attendance", "Upload 3-1 DS-B Monthly Attendance", "Upload 3-1 DS-C Monthly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="3rd Year - Semester 2 (3-2)">
+                  {["Upload 3-2 DS-A Monthly Attendance", "Upload 3-2 DS-B Monthly Attendance", "Upload 3-2 DS-C Monthly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="4th Year - Semester 1 (4-1)">
+                  {["Upload 4-1 DS-A Monthly Attendance", "Upload 4-1 DS-B Monthly Attendance", "Upload 4-1 DS-C Monthly Attendance"].map((label) => (
+                    <ActionButton key={label} label={label} href="#" variant="secondary" />
+                  ))}
+                </SubSection>
+                <SubSection title="4th Year - Semester 2 (4-2)">
+                  {["Upload 4-2 DS-A Monthly Attendance", "Upload 4-2 DS-B Monthly Attendance", "Upload 4-2 DS-C Monthly Attendance"].map((label) => (
                     <ActionButton key={label} label={label} href="#" variant="secondary" />
                   ))}
                 </SubSection>
