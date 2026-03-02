@@ -44,6 +44,11 @@ const departments = {
     name: "Master of Computer Applications",
     icon: "🖥️",
     description: "Advanced computing excellence"
+  },
+  it: {
+    name: "Information Technology",
+    icon: "🌐",
+    description: "Building digital solutions for tomorrow"
   }
 };
 
