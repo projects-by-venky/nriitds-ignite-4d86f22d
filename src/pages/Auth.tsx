@@ -23,7 +23,7 @@ const nameSchema = z.string().trim().min(2, { message: "Name must be at least 2 
 const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { user, signIn, signUp, isLoading: authLoading } = useAuth();
+  const { user, userRole, signIn, signUp, isLoading: authLoading } = useAuth();
   
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
@@ -34,12 +34,19 @@ const Auth = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string; branch?: string }>({});
 
-  // Redirect if already logged in
+  const getRedirectPath = () => {
+    if (userRole === 'admin') return '/admin';
+    if (userRole === 'hod') return '/hod-dashboard';
+    if (userRole === 'faculty') return '/faculty-dashboard';
+    if (userRole === 'student') return '/student-dashboard';
+    return '/';
+  };
+
   useEffect(() => {
     if (user && !authLoading) {
-      navigate('/');
+      navigate(getRedirectPath());
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, userRole, navigate]);
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string; name?: string; branch?: string } = {};
@@ -98,7 +105,7 @@ const Auth = () => {
             title: 'Welcome back!',
             description: 'You have successfully logged in.',
           });
-          navigate('/');
+          // Role-based redirect handled by useEffect
         }
       } else {
         const { error } = await signUp(email, password, fullName, branch);
@@ -122,7 +129,6 @@ const Auth = () => {
             title: 'Account created!',
             description: 'You can now access the portal.',
           });
-          navigate('/');
         }
       }
     } catch (error) {
