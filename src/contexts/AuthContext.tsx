@@ -2,14 +2,16 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { User, Session } from '@supabase/supabase-js';
 import { getBackendClient } from '@/integrations/backend/client';
 
-export type AppRole = 'admin' | 'faculty' | 'student';
+export type AppRole = 'admin' | 'hod' | 'faculty' | 'student';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   userRole: AppRole | null;
+  userBranch: string | null;
   isLoading: boolean;
   isAdmin: boolean;
+  isHOD: boolean;
   isFaculty: boolean;
   isAdminOrFaculty: boolean;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
@@ -24,6 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [userRole, setUserRole] = useState<AppRole | null>(null);
+  const [userBranch, setUserBranch] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchUserRole = async (userId: string) => {
@@ -43,42 +46,60 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const fetchUserBranch = async (userId: string) => {
+    try {
+      const supabase = getBackendClient();
+      const { data, error } = await supabase
+        .rpc('get_user_branch', { _user_id: userId });
+      if (error) {
+        console.error('Error fetching branch:', error);
+        return null;
+      }
+      return data as string | null;
+    } catch (error) {
+      console.error('Error fetching branch:', error);
+      return null;
+    }
+  };
+
   const refreshRole = async () => {
     if (user) {
       const role = await fetchUserRole(user.id);
       setUserRole(role);
+      const branch = await fetchUserBranch(user.id);
+      setUserBranch(branch);
     }
   };
 
   useEffect(() => {
     const supabase = getBackendClient();
     
-    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         
-        // Defer role fetch with setTimeout to prevent deadlock
         if (session?.user) {
           setTimeout(() => {
             fetchUserRole(session.user.id).then(setUserRole);
+            fetchUserBranch(session.user.id).then(setUserBranch);
           }, 0);
         } else {
           setUserRole(null);
+          setUserBranch(null);
         }
         
         setIsLoading(false);
       }
     );
 
-    // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       
       if (session?.user) {
         fetchUserRole(session.user.id).then(setUserRole);
+        fetchUserBranch(session.user.id).then(setUserBranch);
       }
       
       setIsLoading(false);
@@ -120,11 +141,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setSession(null);
     setUserRole(null);
+    setUserBranch(null);
   };
 
   const isAdmin = userRole === 'admin';
+  const isHOD = userRole === 'hod';
   const isFaculty = userRole === 'faculty';
-  const isAdminOrFaculty = isAdmin || isFaculty;
+  const isAdminOrFaculty = isAdmin || isHOD || isFaculty;
 
   return (
     <AuthContext.Provider
@@ -132,8 +155,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         session,
         userRole,
+        userBranch,
         isLoading,
         isAdmin,
+        isHOD,
         isFaculty,
         isAdminOrFaculty,
         signIn,

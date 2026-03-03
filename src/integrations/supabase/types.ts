@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      announcements: {
+        Row: {
+          branch: string
+          content: string
+          created_at: string
+          created_by: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean
+          priority: string
+          target_audience: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          branch: string
+          content: string
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          priority?: string
+          target_audience?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          branch?: string
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          priority?: string
+          target_audience?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           attachment_urls: string[] | null
@@ -119,6 +161,57 @@ export type Database = {
           updated_at?: string
           venue?: string
           who_can_attend?: string | null
+        }
+        Relationships: []
+      }
+      notes: {
+        Row: {
+          branch: string
+          created_at: string
+          description: string | null
+          file_name: string
+          file_size: number | null
+          file_url: string
+          id: string
+          is_active: boolean
+          semester: string
+          subject: string
+          title: string
+          updated_at: string
+          uploaded_by: string | null
+          uploaded_by_name: string | null
+        }
+        Insert: {
+          branch: string
+          created_at?: string
+          description?: string | null
+          file_name: string
+          file_size?: number | null
+          file_url: string
+          id?: string
+          is_active?: boolean
+          semester: string
+          subject: string
+          title: string
+          updated_at?: string
+          uploaded_by?: string | null
+          uploaded_by_name?: string | null
+        }
+        Update: {
+          branch?: string
+          created_at?: string
+          description?: string | null
+          file_name?: string
+          file_size?: number | null
+          file_url?: string
+          id?: string
+          is_active?: boolean
+          semester?: string
+          subject?: string
+          title?: string
+          updated_at?: string
+          uploaded_by?: string | null
+          uploaded_by_name?: string | null
         }
         Relationships: []
       }
@@ -522,6 +615,7 @@ export type Database = {
       }
     }
     Functions: {
+      get_user_branch: { Args: { _user_id: string }; Returns: string }
       get_user_role: { Args: { _user_id: string }; Returns: string }
       has_role: {
         Args: {
@@ -531,9 +625,10 @@ export type Database = {
         Returns: boolean
       }
       is_admin_or_faculty: { Args: { _user_id: string }; Returns: boolean }
+      is_hod: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "faculty" | "student"
+      app_role: "admin" | "faculty" | "student" | "hod"
       approval_status: "pending" | "approved" | "rejected"
       contributor_type: "student" | "faculty"
       event_status: "draft" | "upcoming" | "ongoing" | "completed" | "cancelled"
@@ -673,7 +768,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "faculty", "student"],
+      app_role: ["admin", "faculty", "student", "hod"],
       approval_status: ["pending", "approved", "rejected"],
       contributor_type: ["student", "faculty"],
       event_status: ["draft", "upcoming", "ongoing", "completed", "cancelled"],

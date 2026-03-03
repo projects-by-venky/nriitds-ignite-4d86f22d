@@ -25,6 +25,10 @@ import Timetable from "./pages/Timetable";
 import YearNotes from "./pages/YearNotes";
 import SyllabusReviewSelect from "./pages/SyllabusReviewSelect";
 import SyllabusReviewForm from "./pages/SyllabusReviewForm";
+import AdminDashboard from "./pages/AdminDashboard";
+import HODDashboard from "./pages/HODDashboard";
+import FacultyDashboard from "./pages/FacultyDashboard";
+import StudentDashboard from "./pages/StudentDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -57,6 +61,29 @@ const App = () => (
           } />
           <Route path="/events/:id" element={<EventDetail />} />
           <Route path="/auth" element={<Auth />} />
+          
+          {/* Role-based dashboards */}
+          <Route path="/admin" element={
+            <ProtectedRoute requireAdmin>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/hod-dashboard" element={
+            <ProtectedRoute requireAdminOrHOD>
+              <HODDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/faculty-dashboard" element={
+            <ProtectedRoute requireAdminOrFaculty>
+              <FacultyDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/student-dashboard" element={
+            <ProtectedRoute>
+              <StudentDashboard />
+            </ProtectedRoute>
+          } />
+
           <Route path="/department/:deptId" element={<Department />} />
           <Route path="/department/:deptId/student-portal" element={<StudentPortal />} />
           <Route path="/department/:deptId/faculty-portal" element={<FacultyPortal />} />
@@ -65,12 +92,10 @@ const App = () => (
           <Route path="/department/:deptId/monthly-attendance/:section" element={<MonthlyAttendance />} />
           <Route path="/department/:deptId/timetable/:section" element={<Timetable />} />
           <Route path="/department/:deptId/notes/:year" element={<YearNotes />} />
-          {/* Syllabus Review Forms Routes */}
           <Route path="/faculty/syllabus-review" element={<SyllabusReviewSelect />} />
           <Route path="/faculty/syllabus-review/:branch" element={<SyllabusReviewSelect />} />
           <Route path="/faculty/syllabus-review/:branch/:semester" element={<SyllabusReviewSelect />} />
           <Route path="/faculty/syllabus-review/:branch/:semester/:section" element={<SyllabusReviewForm />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

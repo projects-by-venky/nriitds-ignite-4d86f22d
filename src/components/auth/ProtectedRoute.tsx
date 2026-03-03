@@ -6,27 +6,23 @@ import { Loader2 } from 'lucide-react';
 interface ProtectedRouteProps {
   children: ReactNode;
   requireAdmin?: boolean;
+  requireHOD?: boolean;
   requireFaculty?: boolean;
   requireAdminOrFaculty?: boolean;
+  requireAdminOrHOD?: boolean;
 }
 
-/**
- * Protected route wrapper that enforces authentication and role-based access.
- * 
- * @param requireAdmin - Only admins can access
- * @param requireFaculty - Only faculty can access
- * @param requireAdminOrFaculty - Either admin or faculty can access
- */
 const ProtectedRoute = ({ 
   children, 
   requireAdmin = false,
+  requireHOD = false,
   requireFaculty = false,
-  requireAdminOrFaculty = false 
+  requireAdminOrFaculty = false,
+  requireAdminOrHOD = false,
 }: ProtectedRouteProps) => {
-  const { user, isLoading, isAdmin, isFaculty, isAdminOrFaculty } = useAuth();
+  const { user, isLoading, isAdmin, isHOD, isFaculty, isAdminOrFaculty } = useAuth();
   const location = useLocation();
 
-  // Show loading spinner while checking auth state
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -38,21 +34,27 @@ const ProtectedRoute = ({
     );
   }
 
-  // Not logged in - redirect to auth page
   if (!user) {
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
-  // Check role requirements
   if (requireAdmin && !isAdmin) {
     return <Navigate to="/" replace />;
   }
 
-  if (requireFaculty && !isFaculty) {
+  if (requireHOD && !isHOD && !isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (requireFaculty && !isFaculty && !isAdmin) {
     return <Navigate to="/" replace />;
   }
 
   if (requireAdminOrFaculty && !isAdminOrFaculty) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (requireAdminOrHOD && !isAdmin && !isHOD) {
     return <Navigate to="/" replace />;
   }
 
