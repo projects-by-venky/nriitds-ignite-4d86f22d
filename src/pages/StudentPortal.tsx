@@ -275,6 +275,22 @@ const StudentPortal = () => {
                 >
                   <YearAccordion years={generateSectionData(`/department/${deptId}/mid-tt-qb`)} />
                 </PortalSection>
+
+                {/* 10. Hourly Attendance */}
+                <PortalSection 
+                  title="Hourly Attendance" 
+                  icon={<Calendar className="w-5 h-5" />}
+                >
+                  <YearAccordion years={generateSectionData(attendancePath)} />
+                </PortalSection>
+
+                {/* 11. Monthly Cumulative Attendance */}
+                <PortalSection 
+                  title="Monthly Cumulative Attendance" 
+                  icon={<ClipboardList className="w-5 h-5" />}
+                >
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
+                </PortalSection>
               </>
             )}
 
