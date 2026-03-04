@@ -341,6 +341,45 @@ export type Database = {
         }
         Relationships: []
       }
+      student_analytics: {
+        Row: {
+          branch: string
+          created_at: string
+          id: string
+          monthly_attendance: Json
+          monthly_results: Json
+          name: string
+          roll_number: string
+          section: string
+          semester: string
+          updated_at: string
+        }
+        Insert: {
+          branch: string
+          created_at?: string
+          id?: string
+          monthly_attendance?: Json
+          monthly_results?: Json
+          name: string
+          roll_number: string
+          section?: string
+          semester?: string
+          updated_at?: string
+        }
+        Update: {
+          branch?: string
+          created_at?: string
+          id?: string
+          monthly_attendance?: Json
+          monthly_results?: Json
+          name?: string
+          roll_number?: string
+          section?: string
+          semester?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       syllabus_reviews: {
         Row: {
           branch: string
