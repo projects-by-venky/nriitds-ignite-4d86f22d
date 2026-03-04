@@ -29,6 +29,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import HODDashboard from "./pages/HODDashboard";
 import FacultyDashboard from "./pages/FacultyDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
+import StudentAnalytics from "./pages/StudentAnalytics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -86,6 +87,7 @@ const App = () => (
 
           <Route path="/department/:deptId" element={<Department />} />
           <Route path="/department/:deptId/student-portal" element={<StudentPortal />} />
+          <Route path="/department/:deptId/student-analytics" element={<StudentAnalytics />} />
           <Route path="/department/:deptId/faculty-portal" element={<FacultyPortal />} />
           <Route path="/attendance" element={<Attendance />} />
           <Route path="/department/:deptId/attendance/:section" element={<Attendance />} />

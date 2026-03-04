@@ -2,7 +2,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { 
   FileText, BookOpen, Calendar, ClipboardList, Award, 
   GraduationCap, Beaker, FolderOpen, ArrowLeft, Users,
-  FileCheck, Clock, BookMarked, Leaf, MessageSquare, ShieldCheck, BarChart3
+  FileCheck, Clock, BookMarked, Leaf, MessageSquare, ShieldCheck, BarChart3, TrendingUp
 } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -588,6 +588,21 @@ const StudentPortal = () => {
                 </PortalSection>
               </>
             )}
+
+            {/* ============ STUDENT ANALYTICS - ALL BRANCHES ============ */}
+            <PortalSection 
+              title="Student Analytics" 
+              icon={<TrendingUp className="w-5 h-5" />}
+            >
+              <p className="text-sm text-muted-foreground mb-4">
+                View attendance trends, results visualization, and personalized performance insights.
+              </p>
+              <PortalButton 
+                label="Open Student Analytics Dashboard"
+                to={`/department/${deptId}/student-analytics`}
+                variant="primary"
+              />
+            </PortalSection>
 
             {/* Student Noticeboard - CSE Only */}
             {isFullFeatureBranch && (
