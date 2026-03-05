@@ -290,6 +290,13 @@ const StudentPortal = () => {
                   icon={<ClipboardList className="w-5 h-5" />}
                 >
                   <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <PortalButton 
+                      label="📊 View Attendance Analytics & Graphs"
+                      to={`/department/${deptId}/student-analytics`}
+                      variant="primary"
+                    />
+                  </div>
                 </PortalSection>
               </>
             )}
@@ -323,6 +330,13 @@ const StudentPortal = () => {
                   icon={<ClipboardList className="w-5 h-5" />}
                 >
                   <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <PortalButton 
+                      label="📊 View Attendance Analytics & Graphs"
+                      to={`/department/${deptId}/student-analytics`}
+                      variant="primary"
+                    />
+                  </div>
                 </PortalSection>
 
                 {/* 4. Mid exams-Time Tables & Imp Questions */}
@@ -347,6 +361,13 @@ const StudentPortal = () => {
                   icon={<Award className="w-5 h-5" />}
                 >
                   <YearAccordion years={generateSectionData(`/department/${deptId}/results`)} />
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <PortalButton 
+                      label="📈 View Results Analytics & Graphs"
+                      to={`/department/${deptId}/student-analytics`}
+                      variant="primary"
+                    />
+                  </div>
                 </PortalSection>
 
                 {/* 7. Syllabus */}
@@ -440,6 +461,13 @@ const StudentPortal = () => {
                     { label: "23KP_IT_Monthly Attendance", variant: "secondary" },
                     { label: "22KP_IT_Monthly Attendance", variant: "secondary" },
                   ]} columns={2} />
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <PortalButton 
+                      label="📊 View Attendance Analytics & Graphs"
+                      to={`/department/${deptId}/student-analytics`}
+                      variant="primary"
+                    />
+                  </div>
                 </PortalSection>
 
                 {/* 9. Mid Marks */}
@@ -497,6 +525,13 @@ const StudentPortal = () => {
                     { label: "23KP_IT_Results", variant: "secondary" },
                     { label: "22KP_IT_Results", variant: "secondary" },
                   ]} columns={3} />
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <PortalButton 
+                      label="📈 View Results Analytics & Graphs"
+                      to={`/department/${deptId}/student-analytics`}
+                      variant="primary"
+                    />
+                  </div>
                 </PortalSection>
 
                 {/* 15. Feedback */}
@@ -566,6 +601,13 @@ const StudentPortal = () => {
                 <PortalSection title="Results" icon={<Award className="w-5 h-5" />}>
                   <p className="text-sm text-muted-foreground mb-4">View semester-wise examination results</p>
                   <YearAccordion years={generateSectionData(`/department/${deptId}/results`)} />
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <PortalButton 
+                      label="📈 View Results Analytics & Graphs"
+                      to={`/department/${deptId}/student-analytics`}
+                      variant="primary"
+                    />
+                  </div>
                 </PortalSection>
 
                 <PortalSection title="Hourly Attendance" icon={<Calendar className="w-5 h-5" />}>
@@ -574,6 +616,13 @@ const StudentPortal = () => {
 
                 <PortalSection title="Monthly Cumulative Attendance" icon={<ClipboardList className="w-5 h-5" />}>
                   <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <PortalButton 
+                      label="📊 View Attendance Analytics & Graphs"
+                      to={`/department/${deptId}/student-analytics`}
+                      variant="primary"
+                    />
+                  </div>
                 </PortalSection>
 
                 <PortalSection title="Time Tables" icon={<Clock className="w-5 h-5" />}>
