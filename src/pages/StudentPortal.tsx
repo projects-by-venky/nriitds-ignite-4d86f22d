@@ -97,6 +97,7 @@ const StudentPortal = () => {
   // Data paths
   const attendancePath = `/department/${deptId}/attendance`;
   const timetablePath = `/department/${deptId}/timetable`;
+  const sectionAnalyticsPath = `/department/${deptId}/section-analytics`;
 
   return (
     <div className="min-h-screen bg-background">
@@ -289,13 +290,11 @@ const StudentPortal = () => {
                   title="Monthly Cumulative Attendance" 
                   icon={<ClipboardList className="w-5 h-5" />}
                 >
+                  <p className="text-xs text-muted-foreground mb-3">Click a section to view attendance data. Use "Analytics & Graphs" for visual charts.</p>
                   <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
                   <div className="mt-4 pt-4 border-t border-border">
-                    <PortalButton 
-                      label="📊 View Attendance Analytics & Graphs"
-                      to={`/department/${deptId}/student-analytics`}
-                      variant="primary"
-                    />
+                    <p className="text-xs font-medium text-muted-foreground mb-2">📊 Section-wise Analytics & Graphs</p>
+                    <YearAccordion years={generateSectionData(sectionAnalyticsPath)} />
                   </div>
                 </PortalSection>
               </>
@@ -331,11 +330,8 @@ const StudentPortal = () => {
                 >
                   <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
                   <div className="mt-4 pt-4 border-t border-border">
-                    <PortalButton 
-                      label="📊 View Attendance Analytics & Graphs"
-                      to={`/department/${deptId}/student-analytics`}
-                      variant="primary"
-                    />
+                    <p className="text-xs font-medium text-muted-foreground mb-2">📊 Section-wise Analytics & Graphs</p>
+                    <YearAccordion years={generateSectionData(sectionAnalyticsPath)} />
                   </div>
                 </PortalSection>
 
@@ -362,11 +358,8 @@ const StudentPortal = () => {
                 >
                   <YearAccordion years={generateSectionData(`/department/${deptId}/results`)} />
                   <div className="mt-4 pt-4 border-t border-border">
-                    <PortalButton 
-                      label="📈 View Results Analytics & Graphs"
-                      to={`/department/${deptId}/student-analytics`}
-                      variant="primary"
-                    />
+                    <p className="text-xs font-medium text-muted-foreground mb-2">📈 Section-wise Results Analytics & Graphs</p>
+                    <YearAccordion years={generateSectionData(sectionAnalyticsPath)} />
                   </div>
                 </PortalSection>
 
@@ -462,11 +455,8 @@ const StudentPortal = () => {
                     { label: "22KP_IT_Monthly Attendance", variant: "secondary" },
                   ]} columns={2} />
                   <div className="mt-4 pt-4 border-t border-border">
-                    <PortalButton 
-                      label="📊 View Attendance Analytics & Graphs"
-                      to={`/department/${deptId}/student-analytics`}
-                      variant="primary"
-                    />
+                    <p className="text-xs font-medium text-muted-foreground mb-2">📊 Section-wise Analytics & Graphs</p>
+                    <YearAccordion years={generateSectionData(sectionAnalyticsPath)} />
                   </div>
                 </PortalSection>
 
@@ -526,11 +516,8 @@ const StudentPortal = () => {
                     { label: "22KP_IT_Results", variant: "secondary" },
                   ]} columns={3} />
                   <div className="mt-4 pt-4 border-t border-border">
-                    <PortalButton 
-                      label="📈 View Results Analytics & Graphs"
-                      to={`/department/${deptId}/student-analytics`}
-                      variant="primary"
-                    />
+                    <p className="text-xs font-medium text-muted-foreground mb-2">📈 Section-wise Results Analytics & Graphs</p>
+                    <YearAccordion years={generateSectionData(sectionAnalyticsPath)} />
                   </div>
                 </PortalSection>
 
@@ -602,11 +589,8 @@ const StudentPortal = () => {
                   <p className="text-sm text-muted-foreground mb-4">View semester-wise examination results</p>
                   <YearAccordion years={generateSectionData(`/department/${deptId}/results`)} />
                   <div className="mt-4 pt-4 border-t border-border">
-                    <PortalButton 
-                      label="📈 View Results Analytics & Graphs"
-                      to={`/department/${deptId}/student-analytics`}
-                      variant="primary"
-                    />
+                    <p className="text-xs font-medium text-muted-foreground mb-2">📈 Section-wise Results Analytics & Graphs</p>
+                    <YearAccordion years={generateSectionData(sectionAnalyticsPath)} />
                   </div>
                 </PortalSection>
 
@@ -617,11 +601,8 @@ const StudentPortal = () => {
                 <PortalSection title="Monthly Cumulative Attendance" icon={<ClipboardList className="w-5 h-5" />}>
                   <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
                   <div className="mt-4 pt-4 border-t border-border">
-                    <PortalButton 
-                      label="📊 View Attendance Analytics & Graphs"
-                      to={`/department/${deptId}/student-analytics`}
-                      variant="primary"
-                    />
+                    <p className="text-xs font-medium text-muted-foreground mb-2">📊 Section-wise Analytics & Graphs</p>
+                    <YearAccordion years={generateSectionData(sectionAnalyticsPath)} />
                   </div>
                 </PortalSection>
 
