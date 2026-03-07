@@ -572,12 +572,8 @@ const StudentPortal = () => {
             {!isFullFeatureBranch && !isDSBranch && !isITBranch && (
               <>
                 <PortalSection title="Results" icon={<Award className="w-5 h-5" />}>
-                  <p className="text-sm text-muted-foreground mb-4">View semester-wise examination results</p>
-                  <YearAccordion years={generateSectionData(`/department/${deptId}/results`)} />
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <p className="text-xs font-medium text-muted-foreground mb-2">📈 Section-wise Results Analytics & Graphs</p>
-                    <YearAccordion years={generateSectionData(sectionAnalyticsPath)} />
-                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">View semester-wise examination results. Click 📊 for analytics.</p>
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/results`, { withAnalytics: true })} />
                 </PortalSection>
 
                 <PortalSection title="Hourly Attendance" icon={<Calendar className="w-5 h-5" />}>
@@ -585,11 +581,8 @@ const StudentPortal = () => {
                 </PortalSection>
 
                 <PortalSection title="Monthly Cumulative Attendance" icon={<ClipboardList className="w-5 h-5" />}>
-                  <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <p className="text-xs font-medium text-muted-foreground mb-2">📊 Section-wise Analytics & Graphs</p>
-                    <YearAccordion years={generateSectionData(sectionAnalyticsPath)} />
-                  </div>
+                  <p className="text-xs text-muted-foreground mb-3">Click 📊 beside any section to view performance analytics & graphs.</p>
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`, { withAnalytics: true })} />
                 </PortalSection>
 
                 <PortalSection title="Time Tables" icon={<Clock className="w-5 h-5" />}>
