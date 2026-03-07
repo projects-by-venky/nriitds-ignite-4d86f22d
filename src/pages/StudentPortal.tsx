@@ -346,11 +346,7 @@ const StudentPortal = () => {
                   title="Results" 
                   icon={<Award className="w-5 h-5" />}
                 >
-                  <YearAccordion years={generateSectionData(`/department/${deptId}/results`)} />
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <p className="text-xs font-medium text-muted-foreground mb-2">📈 Section-wise Results Analytics & Graphs</p>
-                    <YearAccordion years={generateSectionData(sectionAnalyticsPath)} />
-                  </div>
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/results`, { withAnalytics: true })} />
                 </PortalSection>
 
                 {/* 7. Syllabus */}
