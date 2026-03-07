@@ -63,36 +63,34 @@ const StudentPortal = () => {
   const sections = ["A", "B", "C"];
 
   // Generate section-wise data for different years
-  const generateSectionData = (basePath: string, prefix: string = "") => [
-    {
-      year: "1st Year",
+  // Generate section-wise data with optional inline analytics links
+  const generateSectionData = (basePath: string, options?: { withAnalytics?: boolean }) => {
+    const withAnalytics = options?.withAnalytics || false;
+    const sems = ["1-1","1-2","2-1","2-2","3-1","3-2","4-1","4-2"];
+    const years = ["1st Year","2nd Year","3rd Year","4th Year"];
+    
+    return years.map((year, yi) => ({
+      year,
       semesters: [
-        { semester: "1-1 Semester", items: sections.map(sec => ({ label: `1-1 ${deptCode}-${sec}`, to: `${basePath}/1-1-${deptCode}-${sec}` })) },
-        { semester: "1-2 Semester", items: sections.map(sec => ({ label: `1-2 ${deptCode}-${sec}`, to: `${basePath}/1-2-${deptCode}-${sec}` })) },
-      ]
-    },
-    {
-      year: "2nd Year",
-      semesters: [
-        { semester: "2-1 Semester", items: sections.map(sec => ({ label: `2-1 ${deptCode}-${sec}`, to: `${basePath}/2-1-${deptCode}-${sec}` })) },
-        { semester: "2-2 Semester", items: sections.map(sec => ({ label: `2-2 ${deptCode}-${sec}`, to: `${basePath}/2-2-${deptCode}-${sec}` })) },
-      ]
-    },
-    {
-      year: "3rd Year",
-      semesters: [
-        { semester: "3-1 Semester", items: sections.map(sec => ({ label: `3-1 ${deptCode}-${sec}`, to: `${basePath}/3-1-${deptCode}-${sec}` })) },
-        { semester: "3-2 Semester", items: sections.map(sec => ({ label: `3-2 ${deptCode}-${sec}`, to: `${basePath}/3-2-${deptCode}-${sec}` })) },
-      ]
-    },
-    {
-      year: "4th Year",
-      semesters: [
-        { semester: "4-1 Semester", items: sections.map(sec => ({ label: `4-1 ${deptCode}-${sec}`, to: `${basePath}/4-1-${deptCode}-${sec}` })) },
-        { semester: "4-2 Semester", items: sections.map(sec => ({ label: `4-2 ${deptCode}-${sec}`, to: `${basePath}/4-2-${deptCode}-${sec}` })) },
-      ]
-    },
-  ];
+        {
+          semester: `${sems[yi*2]} Semester`,
+          items: sections.map(sec => ({
+            label: `${sems[yi*2]} ${deptCode}-${sec}`,
+            to: `${basePath}/${sems[yi*2]}-${deptCode}-${sec}`,
+            ...(withAnalytics ? { analyticsTo: `${sectionAnalyticsPath}/${sems[yi*2]}-${deptCode}-${sec}` } : {}),
+          })),
+        },
+        {
+          semester: `${sems[yi*2+1]} Semester`,
+          items: sections.map(sec => ({
+            label: `${sems[yi*2+1]} ${deptCode}-${sec}`,
+            to: `${basePath}/${sems[yi*2+1]}-${deptCode}-${sec}`,
+            ...(withAnalytics ? { analyticsTo: `${sectionAnalyticsPath}/${sems[yi*2+1]}-${deptCode}-${sec}` } : {}),
+          })),
+        },
+      ],
+    }));
+  };
 
   // Data paths
   const attendancePath = `/department/${deptId}/attendance`;
