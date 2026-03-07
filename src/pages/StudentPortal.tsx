@@ -288,12 +288,8 @@ const StudentPortal = () => {
                   title="Monthly Cumulative Attendance" 
                   icon={<ClipboardList className="w-5 h-5" />}
                 >
-                  <p className="text-xs text-muted-foreground mb-3">Click a section to view attendance data. Use "Analytics & Graphs" for visual charts.</p>
-                  <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`)} />
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <p className="text-xs font-medium text-muted-foreground mb-2">📊 Section-wise Analytics & Graphs</p>
-                    <YearAccordion years={generateSectionData(sectionAnalyticsPath)} />
-                  </div>
+                  <p className="text-xs text-muted-foreground mb-3">Click a section to view attendance data. Click 📊 for visual charts & analytics.</p>
+                  <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`, { withAnalytics: true })} />
                 </PortalSection>
               </>
             )}
