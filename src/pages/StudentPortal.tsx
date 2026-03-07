@@ -441,8 +441,8 @@ const StudentPortal = () => {
                     { label: "22KP_IT_Monthly Attendance", variant: "secondary" },
                   ]} columns={2} />
                   <div className="mt-4 pt-4 border-t border-border">
-                    <p className="text-xs font-medium text-muted-foreground mb-2">📊 Section-wise Analytics & Graphs</p>
-                    <YearAccordion years={generateSectionData(sectionAnalyticsPath)} />
+                    <p className="text-xs font-medium text-muted-foreground mb-2">📊 Section-wise Performance Analytics & Graphs</p>
+                    <YearAccordion years={generateSectionData(`/department/${deptId}/monthly-attendance`, { withAnalytics: true })} />
                   </div>
                 </PortalSection>
 
