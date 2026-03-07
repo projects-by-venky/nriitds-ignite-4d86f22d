@@ -503,7 +503,7 @@ const StudentPortal = () => {
                   ]} columns={3} />
                   <div className="mt-4 pt-4 border-t border-border">
                     <p className="text-xs font-medium text-muted-foreground mb-2">📈 Section-wise Results Analytics & Graphs</p>
-                    <YearAccordion years={generateSectionData(sectionAnalyticsPath)} />
+                    <YearAccordion years={generateSectionData(`/department/${deptId}/results`, { withAnalytics: true })} />
                   </div>
                 </PortalSection>
 
