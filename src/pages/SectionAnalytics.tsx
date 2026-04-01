@@ -148,11 +148,14 @@ const SectionAnalytics = () => {
     return { semester: "", sectionLetter: "", label: section };
   })() : null;
 
+  const [useDemoData, setUseDemoData] = useState(false);
+
   useEffect(() => {
     const fetchStudents = async () => {
       if (!dept || !parsedSection) return;
       setIsLoading(true);
       setError("");
+      setUseDemoData(false);
 
       try {
         const supabase = getBackendClient();
@@ -166,11 +169,24 @@ const SectionAnalytics = () => {
 
         if (dbError) throw dbError;
         const studentData = (data || []) as StudentData[];
-        setStudents(studentData);
-        setFilteredStudents(studentData);
+        
+        if (studentData.length === 0) {
+          // Use demo data when no real data exists
+          const demoData = generateDemoStudents(dept.code, parsedSection.semester, parsedSection.sectionLetter);
+          setStudents(demoData);
+          setFilteredStudents(demoData);
+          setUseDemoData(true);
+        } else {
+          setStudents(studentData);
+          setFilteredStudents(studentData);
+        }
       } catch (err: any) {
         console.error(err);
-        setError("Failed to load student data.");
+        // Fallback to demo data on error too
+        const demoData = generateDemoStudents(dept?.code || "CSE", parsedSection?.semester || "2-2", parsedSection?.sectionLetter || "A");
+        setStudents(demoData);
+        setFilteredStudents(demoData);
+        setUseDemoData(true);
       } finally {
         setIsLoading(false);
       }
