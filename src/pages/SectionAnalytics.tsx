@@ -304,6 +304,24 @@ const SectionAnalytics = () => {
             </div>
           </motion.div>
 
+          {/* Demo Data Banner */}
+          {useDemoData && !isLoading && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4"
+            >
+              <Card className="border-primary/30 bg-primary/5">
+                <CardContent className="p-3 flex items-center gap-3">
+                  <Sparkles className="w-4 h-4 text-primary shrink-0" />
+                  <p className="text-xs text-muted-foreground">
+                    <span className="font-semibold text-foreground">Demo Mode:</span> Showing sample student data for demonstration. Real data will appear automatically once faculty uploads attendance and results.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+
           {/* Search */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
