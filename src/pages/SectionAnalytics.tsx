@@ -22,6 +22,68 @@ const departments: Record<string, { name: string; code: string }> = {
   it: { name: "Information Technology", code: "IT" },
   ds: { name: "Data Science", code: "DS" },
   aids: { name: "AI & Data Science", code: "DS" },
+  ece: { name: "Electronics & Communication", code: "ECE" },
+  eee: { name: "Electrical & Electronics", code: "EEE" },
+  mech: { name: "Mechanical Engineering", code: "MECH" },
+  civil: { name: "Civil Engineering", code: "CIVIL" },
+  mba: { name: "Business Administration", code: "MBA" },
+  mca: { name: "Computer Applications", code: "MCA" },
+};
+
+// Demo sample data for demonstration when no real data exists
+const generateDemoStudents = (branchCode: string, semester: string, sectionLetter: string): StudentData[] => {
+  const names = [
+    "Rahul Kumar", "Priya Sharma", "Arjun Reddy", "Sneha Patel", "Vikram Singh",
+    "Anjali Gupta", "Karthik Nair", "Divya Krishnan", "Rohit Verma", "Meera Joshi",
+    "Aditya Rao", "Kavya Menon", "Sai Prasad", "Lakshmi Devi", "Naveen Babu",
+  ];
+
+  const demoAttendanceProfiles = [
+    { Jan: 92, Feb: 88, Mar: 94, Apr: 91, May: 87 },
+    { Jan: 78, Feb: 82, Mar: 76, Apr: 80, May: 85 },
+    { Jan: 95, Feb: 97, Mar: 93, Apr: 96, May: 98 },
+    { Jan: 65, Feb: 70, Mar: 72, Apr: 68, May: 74 },
+    { Jan: 88, Feb: 85, Mar: 90, Apr: 87, May: 92 },
+    { Jan: 91, Feb: 89, Mar: 93, Apr: 90, May: 88 },
+    { Jan: 72, Feb: 75, Mar: 78, Apr: 80, May: 82 },
+    { Jan: 96, Feb: 94, Mar: 98, Apr: 95, May: 97 },
+    { Jan: 83, Feb: 80, Mar: 85, Apr: 82, May: 86 },
+    { Jan: 60, Feb: 65, Mar: 68, Apr: 72, May: 70 },
+    { Jan: 90, Feb: 92, Mar: 88, Apr: 91, May: 93 },
+    { Jan: 85, Feb: 87, Mar: 83, Apr: 86, May: 89 },
+    { Jan: 77, Feb: 74, Mar: 79, Apr: 81, May: 76 },
+    { Jan: 93, Feb: 91, Mar: 95, Apr: 92, May: 94 },
+    { Jan: 69, Feb: 73, Mar: 71, Apr: 75, May: 78 },
+  ];
+
+  const demoResultsProfiles = [
+    { Jan: 78, Feb: 82, Mar: 85, Apr: 80, May: 88 },
+    { Jan: 65, Feb: 70, Mar: 72, Apr: 68, May: 75 },
+    { Jan: 92, Feb: 88, Mar: 95, Apr: 90, May: 93 },
+    { Jan: 55, Feb: 60, Mar: 58, Apr: 62, May: 65 },
+    { Jan: 75, Feb: 78, Mar: 80, Apr: 82, May: 85 },
+    { Jan: 88, Feb: 85, Mar: 90, Apr: 87, May: 91 },
+    { Jan: 62, Feb: 65, Mar: 68, Apr: 70, May: 72 },
+    { Jan: 95, Feb: 92, Mar: 97, Apr: 94, May: 96 },
+    { Jan: 72, Feb: 75, Mar: 70, Apr: 78, May: 80 },
+    { Jan: 50, Feb: 55, Mar: 58, Apr: 52, May: 60 },
+    { Jan: 82, Feb: 85, Mar: 80, Apr: 87, May: 89 },
+    { Jan: 70, Feb: 73, Mar: 75, Apr: 78, May: 76 },
+    { Jan: 68, Feb: 64, Mar: 70, Apr: 72, May: 67 },
+    { Jan: 90, Feb: 87, Mar: 92, Apr: 89, May: 94 },
+    { Jan: 58, Feb: 62, Mar: 60, Apr: 65, May: 68 },
+  ];
+
+  return names.map((name, i) => ({
+    id: `demo-${i + 1}`,
+    roll_number: `21${branchCode}${String(i + 1).padStart(3, "0")}`,
+    name,
+    branch: branchCode,
+    semester,
+    section: sectionLetter,
+    monthly_attendance: demoAttendanceProfiles[i],
+    monthly_results: demoResultsProfiles[i],
+  }));
 };
 
 interface StudentData {
@@ -86,11 +148,14 @@ const SectionAnalytics = () => {
     return { semester: "", sectionLetter: "", label: section };
   })() : null;
 
+  const [useDemoData, setUseDemoData] = useState(false);
+
   useEffect(() => {
     const fetchStudents = async () => {
       if (!dept || !parsedSection) return;
       setIsLoading(true);
       setError("");
+      setUseDemoData(false);
 
       try {
         const supabase = getBackendClient();
@@ -104,11 +169,24 @@ const SectionAnalytics = () => {
 
         if (dbError) throw dbError;
         const studentData = (data || []) as StudentData[];
-        setStudents(studentData);
-        setFilteredStudents(studentData);
+        
+        if (studentData.length === 0) {
+          // Use demo data when no real data exists
+          const demoData = generateDemoStudents(dept.code, parsedSection.semester, parsedSection.sectionLetter);
+          setStudents(demoData);
+          setFilteredStudents(demoData);
+          setUseDemoData(true);
+        } else {
+          setStudents(studentData);
+          setFilteredStudents(studentData);
+        }
       } catch (err: any) {
         console.error(err);
-        setError("Failed to load student data.");
+        // Fallback to demo data on error too
+        const demoData = generateDemoStudents(dept?.code || "CSE", parsedSection?.semester || "2-2", parsedSection?.sectionLetter || "A");
+        setStudents(demoData);
+        setFilteredStudents(demoData);
+        setUseDemoData(true);
       } finally {
         setIsLoading(false);
       }
@@ -225,6 +303,24 @@ const SectionAnalytics = () => {
               )}
             </div>
           </motion.div>
+
+          {/* Demo Data Banner */}
+          {useDemoData && !isLoading && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4"
+            >
+              <Card className="border-primary/30 bg-primary/5">
+                <CardContent className="p-3 flex items-center gap-3">
+                  <Sparkles className="w-4 h-4 text-primary shrink-0" />
+                  <p className="text-xs text-muted-foreground">
+                    <span className="font-semibold text-foreground">Demo Mode:</span> Showing sample student data for demonstration. Real data will appear automatically once faculty uploads attendance and results.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
 
           {/* Search */}
           <motion.div
