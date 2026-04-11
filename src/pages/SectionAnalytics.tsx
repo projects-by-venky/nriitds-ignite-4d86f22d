@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import MobileBottomNav from "@/components/layout/MobileBottomNav";
-import { getBackendClient } from "@/integrations/backend/client";
+import { fetchStudentsBySection, type StudentData } from "@/lib/firebase-helpers";
 
 const AttendanceCharts = lazy(() => import("@/components/analytics/AttendanceCharts"));
 const ResultsCharts = lazy(() => import("@/components/analytics/ResultsCharts"));
@@ -86,16 +86,7 @@ const generateDemoStudents = (branchCode: string, semester: string, sectionLette
   }));
 };
 
-interface StudentData {
-  id: string;
-  roll_number: string;
-  name: string;
-  branch: string;
-  semester: string;
-  section: string;
-  monthly_attendance: Record<string, number>;
-  monthly_results: Record<string, number>;
-}
+// StudentData type imported from firebase-helpers
 
 const getAvg = (data: Record<string, number>) => {
   const vals = Object.values(data || {});
@@ -158,17 +149,11 @@ const SectionAnalytics = () => {
       setUseDemoData(false);
 
       try {
-        const supabase = getBackendClient();
-        const { data, error: dbError } = await supabase
-          .from("student_analytics")
-          .select("*")
-          .eq("branch", dept.code)
-          .eq("semester", parsedSection.semester)
-          .eq("section", parsedSection.sectionLetter)
-          .order("roll_number", { ascending: true });
-
-        if (dbError) throw dbError;
-        const studentData = (data || []) as StudentData[];
+        const studentData = await fetchStudentsBySection(
+          dept.code,
+          parsedSection.semester,
+          parsedSection.sectionLetter
+        );
         
         if (studentData.length === 0) {
           // Use demo data when no real data exists

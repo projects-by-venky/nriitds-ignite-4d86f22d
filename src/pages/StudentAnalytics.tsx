@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import MobileBottomNav from "@/components/layout/MobileBottomNav";
-import { getBackendClient } from "@/integrations/backend/client";
+import { searchStudentByRoll, type StudentData } from "@/lib/firebase-helpers";
 
 const AttendanceCharts = lazy(() => import("@/components/analytics/AttendanceCharts"));
 const ResultsCharts = lazy(() => import("@/components/analytics/ResultsCharts"));
