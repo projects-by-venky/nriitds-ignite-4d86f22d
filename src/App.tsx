@@ -31,6 +31,7 @@ import FacultyDashboard from "./pages/FacultyDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
 import StudentAnalytics from "./pages/StudentAnalytics";
 import SectionAnalytics from "./pages/SectionAnalytics";
+import FirebaseUpload from "./pages/FirebaseUpload";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -100,6 +101,11 @@ const App = () => (
           <Route path="/faculty/syllabus-review/:branch" element={<SyllabusReviewSelect />} />
           <Route path="/faculty/syllabus-review/:branch/:semester" element={<SyllabusReviewSelect />} />
           <Route path="/faculty/syllabus-review/:branch/:semester/:section" element={<SyllabusReviewForm />} />
+          <Route path="/admin/firebase-upload" element={
+            <ProtectedRoute requireAdmin>
+              <FirebaseUpload />
+            </ProtectedRoute>
+          } />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
