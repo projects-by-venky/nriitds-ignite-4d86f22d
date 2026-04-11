@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import MobileBottomNav from "@/components/layout/MobileBottomNav";
-import { getBackendClient } from "@/integrations/backend/client";
+import { searchStudentByRoll, type StudentData } from "@/lib/firebase-helpers";
 
 const AttendanceCharts = lazy(() => import("@/components/analytics/AttendanceCharts"));
 const ResultsCharts = lazy(() => import("@/components/analytics/ResultsCharts"));
@@ -23,16 +23,7 @@ const departments: Record<string, { name: string; code: string }> = {
   aids: { name: "AI & Data Science", code: "DS" },
 };
 
-interface StudentData {
-  id: string;
-  roll_number: string;
-  name: string;
-  branch: string;
-  semester: string;
-  section: string;
-  monthly_attendance: Record<string, number>;
-  monthly_results: Record<string, number>;
-}
+// StudentData type imported from firebase-helpers
 
 const StudentAnalytics = () => {
   const { deptId } = useParams<{ deptId: string }>();
@@ -54,21 +45,11 @@ const StudentAnalytics = () => {
     setSearched(true);
 
     try {
-      const supabase = getBackendClient();
       const branchCode = dept?.code || "CSE";
+      const result = await searchStudentByRoll(branchCode, q);
 
-      const { data, error: dbError } = await supabase
-        .from("student_analytics")
-        .select("*")
-        .eq("branch", branchCode)
-        .or(`roll_number.eq.${q},roll_number.ilike.%${q}`)
-        .limit(1)
-        .maybeSingle();
-
-      if (dbError) throw dbError;
-
-      if (data) {
-        setStudent(data as StudentData);
+      if (result) {
+        setStudent(result);
       } else {
         setError("No student found with that roll number.");
       }
