@@ -20,6 +20,7 @@ import Department from "./pages/Department";
 import StudentPortal from "./pages/StudentPortal";
 import FacultyPortal from "./pages/FacultyPortal";
 import Attendance from "./pages/Attendance";
+import HourlyAttendanceDashboard from "./pages/HourlyAttendanceDashboard";
 import MonthlyAttendance from "./pages/MonthlyAttendance";
 import Timetable from "./pages/Timetable";
 import YearNotes from "./pages/YearNotes";
@@ -95,6 +96,8 @@ const App = () => (
           <Route path="/attendance" element={<Attendance />} />
           <Route path="/department/:deptId/attendance/:section" element={<Attendance />} />
           <Route path="/department/:deptId/monthly-attendance/:section" element={<MonthlyAttendance />} />
+          <Route path="/department/:deptId/hourly-attendance" element={<HourlyAttendanceDashboard />} />
+          <Route path="/department/:deptId/hourly-attendance/:section" element={<HourlyAttendanceDashboard />} />
           <Route path="/department/:deptId/timetable/:section" element={<Timetable />} />
           <Route path="/department/:deptId/notes/:year" element={<YearNotes />} />
           <Route path="/faculty/syllabus-review" element={<SyllabusReviewSelect />} />
