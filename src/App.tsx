@@ -96,6 +96,8 @@ const App = () => (
           <Route path="/attendance" element={<Attendance />} />
           <Route path="/department/:deptId/attendance/:section" element={<Attendance />} />
           <Route path="/department/:deptId/monthly-attendance/:section" element={<MonthlyAttendance />} />
+          <Route path="/department/:deptId/hourly-attendance" element={<HourlyAttendanceDashboard />} />
+          <Route path="/department/:deptId/hourly-attendance/:section" element={<HourlyAttendanceDashboard />} />
           <Route path="/department/:deptId/timetable/:section" element={<Timetable />} />
           <Route path="/department/:deptId/notes/:year" element={<YearNotes />} />
           <Route path="/faculty/syllabus-review" element={<SyllabusReviewSelect />} />
