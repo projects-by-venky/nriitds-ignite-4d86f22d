@@ -189,6 +189,134 @@ export function subscribeToStudent(
   );
 }
 
+// ===== HOURLY ATTENDANCE SYSTEM =====
+
+export interface HourlyAttendanceRecord {
+  id: string;
+  roll_number: string;
+  name: string;
+  branch: string;
+  section: string;
+  subject: string;
+  hour: string;
+  date: string;
+  status: string;
+  timestamp?: any;
+}
+
+/**
+ * Fetch hourly attendance for a student by roll number.
+ */
+export async function fetchHourlyAttendance(
+  rollNumber: string
+): Promise<HourlyAttendanceRecord[]> {
+  const ref = collection(db, "hourly_attendance");
+  const q = query(
+    ref,
+    where("roll_number", "==", rollNumber.toUpperCase()),
+    orderBy("date", "desc")
+  );
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => ({
+    id: d.id,
+    ...d.data(),
+  })) as HourlyAttendanceRecord[];
+}
+
+/**
+ * Fetch hourly attendance for an entire section.
+ */
+export async function fetchSectionHourlyAttendance(
+  branch: string,
+  section: string
+): Promise<HourlyAttendanceRecord[]> {
+  const ref = collection(db, "hourly_attendance");
+  const q = query(
+    ref,
+    where("branch", "==", branch.toUpperCase()),
+    where("section", "==", section.toUpperCase()),
+    orderBy("date", "desc")
+  );
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => ({
+    id: d.id,
+    ...d.data(),
+  })) as HourlyAttendanceRecord[];
+}
+
+/**
+ * Subscribe to real-time hourly attendance updates for a roll number.
+ */
+export function subscribeToHourlyAttendance(
+  rollNumber: string,
+  onData: (records: HourlyAttendanceRecord[]) => void,
+  onError?: (error: Error) => void
+): Unsubscribe {
+  const ref = collection(db, "hourly_attendance");
+  const q = query(
+    ref,
+    where("roll_number", "==", rollNumber.toUpperCase()),
+    orderBy("date", "desc")
+  );
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const records = snapshot.docs.map((d) => ({
+        id: d.id,
+        ...d.data(),
+      })) as HourlyAttendanceRecord[];
+      onData(records);
+    },
+    (err) => onError?.(err)
+  );
+}
+
+/**
+ * Seed demo hourly attendance data for testing.
+ */
+export async function seedDemoHourlyAttendance(
+  branch: string,
+  section: string
+): Promise<number> {
+  const subjects = ["DBMS", "OS", "CN", "SE", "DAA"];
+  const hours = ["1", "2", "3", "4", "5", "6"];
+  const dates = [
+    "2026-04-07", "2026-04-08", "2026-04-09",
+    "2026-04-10", "2026-04-11", "2026-04-12",
+  ];
+  const names = [
+    "Rahul Kumar", "Priya Sharma", "Arjun Reddy", "Sneha Patel", "Vikram Singh",
+  ];
+
+  const ref = collection(db, "hourly_attendance");
+  const batch = writeBatch(db);
+  let count = 0;
+
+  for (let s = 0; s < names.length; s++) {
+    const rollNum = `23KP1A44${String(s + 1).padStart(2, "0")}`;
+    for (const date of dates) {
+      for (let h = 0; h < 5; h++) {
+        const docId = `${rollNum}_${date}_${hours[h]}`;
+        const docRef = doc(ref, docId);
+        batch.set(docRef, {
+          roll_number: rollNum,
+          name: names[s],
+          branch: branch.toUpperCase(),
+          section: section.toUpperCase(),
+          subject: subjects[h % subjects.length],
+          hour: hours[h],
+          date,
+          status: Math.random() > 0.2 ? "Present" : "Absent",
+        });
+        count++;
+      }
+    }
+  }
+
+  await batch.commit();
+  return count;
+}
+
 export function parseCSVToStudents(
   csvText: string,
   dataType: "attendance" | "results"

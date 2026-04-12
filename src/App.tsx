@@ -20,6 +20,7 @@ import Department from "./pages/Department";
 import StudentPortal from "./pages/StudentPortal";
 import FacultyPortal from "./pages/FacultyPortal";
 import Attendance from "./pages/Attendance";
+import HourlyAttendanceDashboard from "./pages/HourlyAttendanceDashboard";
 import MonthlyAttendance from "./pages/MonthlyAttendance";
 import Timetable from "./pages/Timetable";
 import YearNotes from "./pages/YearNotes";
