@@ -8,7 +8,9 @@ import {
   setDoc,
   writeBatch,
   orderBy,
+  onSnapshot,
   type DocumentData,
+  type Unsubscribe,
 } from "firebase/firestore";
 
 export interface StudentData {
@@ -165,6 +167,28 @@ export async function seedDemoData(
  * Parse CSV text into student records.
  * Expected columns: roll_number, name, branch, semester, section, then month columns for attendance/results.
  */
+/**
+ * Subscribe to real-time updates for a specific student document by roll_number.
+ */
+export function subscribeToStudent(
+  rollNumber: string,
+  onData: (student: StudentData | null) => void,
+  onError?: (error: Error) => void
+): Unsubscribe {
+  const docRef = doc(db, "student_analytics", rollNumber.toUpperCase());
+  return onSnapshot(
+    docRef,
+    (snapshot) => {
+      if (snapshot.exists()) {
+        onData({ id: snapshot.id, ...snapshot.data() } as StudentData);
+      } else {
+        onData(null);
+      }
+    },
+    (err) => onError?.(err)
+  );
+}
+
 export function parseCSVToStudents(
   csvText: string,
   dataType: "attendance" | "results"

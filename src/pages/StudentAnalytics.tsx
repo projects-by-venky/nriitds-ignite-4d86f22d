@@ -1,4 +1,4 @@
-import { useState, useCallback, lazy, Suspense } from "react";
+import { useState, useCallback, useEffect, useRef, lazy, Suspense } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Search, X, TrendingUp, UserSearch } from "lucide-react";
@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import MobileBottomNav from "@/components/layout/MobileBottomNav";
-import { searchStudentByRoll, type StudentData } from "@/lib/firebase-helpers";
+import { searchStudentByRoll, subscribeToStudent, type StudentData } from "@/lib/firebase-helpers";
 
 const AttendanceCharts = lazy(() => import("@/components/analytics/AttendanceCharts"));
 const ResultsCharts = lazy(() => import("@/components/analytics/ResultsCharts"));
@@ -34,10 +34,22 @@ const StudentAnalytics = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState("");
+  const unsubRef = useRef<(() => void) | null>(null);
+
+  // Clean up real-time listener on unmount
+  useEffect(() => {
+    return () => {
+      unsubRef.current?.();
+    };
+  }, []);
 
   const handleSearch = useCallback(async () => {
     const q = searchQuery.trim();
     if (!q) return;
+
+    // Unsubscribe previous listener
+    unsubRef.current?.();
+    unsubRef.current = null;
 
     setIsSearching(true);
     setError("");
@@ -50,6 +62,14 @@ const StudentAnalytics = () => {
 
       if (result) {
         setStudent(result);
+        // Subscribe to real-time updates for this student
+        unsubRef.current = subscribeToStudent(
+          result.roll_number,
+          (updated) => {
+            if (updated) setStudent(updated);
+          },
+          (err) => console.error("Realtime error:", err)
+        );
       } else {
         setError("No student found with that roll number.");
       }
@@ -62,6 +82,8 @@ const StudentAnalytics = () => {
   }, [searchQuery, dept]);
 
   const clearSearch = () => {
+    unsubRef.current?.();
+    unsubRef.current = null;
     setSearchQuery("");
     setStudent(null);
     setSearched(false);
