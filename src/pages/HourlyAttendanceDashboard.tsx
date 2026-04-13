@@ -365,6 +365,37 @@ const HourlyAttendanceDashboard = () => {
                 </div>
               </div>
 
+              {/* Download Buttons */}
+              <div className="bg-card border border-border rounded-xl p-4">
+                <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <FileDown className="w-5 h-5 text-primary" />
+                    <h3 className="font-semibold text-foreground text-sm">Download Reports</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      size="sm"
+                      onClick={handleDownloadStudent}
+                      disabled={pdfLoading !== null}
+                      className="gap-2 bg-gradient-cyber hover:opacity-90"
+                    >
+                      {pdfLoading === "student" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+                      My Report
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={handleDownloadClass}
+                      disabled={pdfLoading !== null}
+                      className="gap-2"
+                    >
+                      {pdfLoading === "class" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Users className="w-3.5 h-3.5" />}
+                      Class Report
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
               {/* Stats Cards */}
               <div className="grid grid-cols-3 gap-3 md:gap-4">
                 {[
