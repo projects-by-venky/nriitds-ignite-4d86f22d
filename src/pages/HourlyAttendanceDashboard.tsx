@@ -120,6 +120,43 @@ const HourlyAttendanceDashboard = () => {
     setSeeding(false);
   };
 
+  const handleDownloadStudent = async () => {
+    if (records.length === 0 || !studentInfo) return;
+    setPdfLoading("student");
+    try {
+      generateStudentAttendancePDF(records, {
+        title: "Hourly Attendance Report",
+        studentName: studentInfo.name,
+        rollNumber: studentInfo.roll_number,
+        branch: studentInfo.branch,
+        section: studentInfo.section,
+      });
+      toast({ title: "PDF Downloaded", description: `${studentInfo.roll_number}_Attendance_Report.pdf` });
+    } catch {
+      toast({ title: "Error", description: "Failed to generate PDF.", variant: "destructive" });
+    }
+    setPdfLoading(null);
+  };
+
+  const handleDownloadClass = async () => {
+    const branch = deptId?.toUpperCase() || studentInfo?.branch || "CSE";
+    const sec = section?.split("-").pop() || studentInfo?.section || "A";
+    setPdfLoading("class");
+    try {
+      const allRecords = await fetchSectionHourlyAttendance(branch, sec);
+      if (allRecords.length === 0) {
+        toast({ title: "No Data", description: "No class attendance data found.", variant: "destructive" });
+        setPdfLoading(null);
+        return;
+      }
+      generateClassAttendancePDF(allRecords, branch, sec);
+      toast({ title: "PDF Downloaded", description: `${branch}_${sec}_Full_Report.pdf` });
+    } catch {
+      toast({ title: "Error", description: "Failed to generate class PDF.", variant: "destructive" });
+    }
+    setPdfLoading(null);
+  };
+
   // Computed stats
   const filteredRecords = useMemo(() => {
     if (subjectFilter === "all") return records;
