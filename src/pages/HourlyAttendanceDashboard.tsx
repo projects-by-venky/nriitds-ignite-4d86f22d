@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, ArrowLeft, Clock, AlertTriangle, Download,
-  Filter, X, Loader2, Database, Wifi
+  Filter, X, Loader2, Database, Wifi, FileDown, Users
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,7 +23,12 @@ import {
   subscribeToHourlyAttendance,
   fetchHourlyAttendance,
   seedDemoHourlyAttendance,
+  fetchSectionHourlyAttendance,
 } from "@/lib/firebase-helpers";
+import {
+  generateStudentAttendancePDF,
+  generateClassAttendancePDF,
+} from "@/lib/attendance-pdf";
 import {
   PieChart, Pie, Cell, BarChart, Bar, LineChart, Line,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
