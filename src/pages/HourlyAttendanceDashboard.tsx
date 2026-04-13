@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, ArrowLeft, Clock, AlertTriangle, Download,
-  Filter, X, Loader2, Database, Wifi
+  Filter, X, Loader2, Database, Wifi, FileDown, Users
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,7 +23,12 @@ import {
   subscribeToHourlyAttendance,
   fetchHourlyAttendance,
   seedDemoHourlyAttendance,
+  fetchSectionHourlyAttendance,
 } from "@/lib/firebase-helpers";
+import {
+  generateStudentAttendancePDF,
+  generateClassAttendancePDF,
+} from "@/lib/attendance-pdf";
 import {
   PieChart, Pie, Cell, BarChart, Bar, LineChart, Line,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
@@ -48,6 +53,7 @@ const HourlyAttendanceDashboard = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLive, setIsLive] = useState(false);
   const [subjectFilter, setSubjectFilter] = useState("all");
+  const [pdfLoading, setPdfLoading] = useState<string | null>(null);
   const [seeding, setSeeding] = useState(false);
   const unsubRef = useRef<(() => void) | null>(null);
 
@@ -112,6 +118,43 @@ const HourlyAttendanceDashboard = () => {
       toast({ title: "Error", description: "Failed to seed demo data.", variant: "destructive" });
     }
     setSeeding(false);
+  };
+
+  const handleDownloadStudent = async () => {
+    if (records.length === 0 || !studentInfo) return;
+    setPdfLoading("student");
+    try {
+      generateStudentAttendancePDF(records, {
+        title: "Hourly Attendance Report",
+        studentName: studentInfo.name,
+        rollNumber: studentInfo.roll_number,
+        branch: studentInfo.branch,
+        section: studentInfo.section,
+      });
+      toast({ title: "PDF Downloaded", description: `${studentInfo.roll_number}_Attendance_Report.pdf` });
+    } catch {
+      toast({ title: "Error", description: "Failed to generate PDF.", variant: "destructive" });
+    }
+    setPdfLoading(null);
+  };
+
+  const handleDownloadClass = async () => {
+    const branch = deptId?.toUpperCase() || studentInfo?.branch || "CSE";
+    const sec = section?.split("-").pop() || studentInfo?.section || "A";
+    setPdfLoading("class");
+    try {
+      const allRecords = await fetchSectionHourlyAttendance(branch, sec);
+      if (allRecords.length === 0) {
+        toast({ title: "No Data", description: "No class attendance data found.", variant: "destructive" });
+        setPdfLoading(null);
+        return;
+      }
+      generateClassAttendancePDF(allRecords, branch, sec);
+      toast({ title: "PDF Downloaded", description: `${branch}_${sec}_Full_Report.pdf` });
+    } catch {
+      toast({ title: "Error", description: "Failed to generate class PDF.", variant: "destructive" });
+    }
+    setPdfLoading(null);
   };
 
   // Computed stats
@@ -318,6 +361,37 @@ const HourlyAttendanceDashboard = () => {
                     <div className={`text-3xl font-bold ${isLowAttendance ? "text-destructive" : "text-green-400"}`}>
                       {attendancePercent}%
                     </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Download Buttons */}
+              <div className="bg-card border border-border rounded-xl p-4">
+                <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <FileDown className="w-5 h-5 text-primary" />
+                    <h3 className="font-semibold text-foreground text-sm">Download Reports</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      size="sm"
+                      onClick={handleDownloadStudent}
+                      disabled={pdfLoading !== null}
+                      className="gap-2 bg-gradient-cyber hover:opacity-90"
+                    >
+                      {pdfLoading === "student" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+                      My Report
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={handleDownloadClass}
+                      disabled={pdfLoading !== null}
+                      className="gap-2"
+                    >
+                      {pdfLoading === "class" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Users className="w-3.5 h-3.5" />}
+                      Class Report
+                    </Button>
                   </div>
                 </div>
               </div>
