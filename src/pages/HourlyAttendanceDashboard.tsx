@@ -53,6 +53,7 @@ const HourlyAttendanceDashboard = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLive, setIsLive] = useState(false);
   const [subjectFilter, setSubjectFilter] = useState("all");
+  const [pdfLoading, setPdfLoading] = useState<string | null>(null);
   const [seeding, setSeeding] = useState(false);
   const unsubRef = useRef<(() => void) | null>(null);
 
