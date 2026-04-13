@@ -213,14 +213,14 @@ export async function fetchHourlyAttendance(
   const ref = collection(db, "hourly_attendance");
   const q = query(
     ref,
-    where("roll_number", "==", rollNumber.toUpperCase()),
-    orderBy("date", "desc")
+    where("roll_number", "==", rollNumber.toUpperCase())
   );
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({
+  const records = snapshot.docs.map((d) => ({
     id: d.id,
     ...d.data(),
   })) as HourlyAttendanceRecord[];
+  return records.sort((a, b) => b.date.localeCompare(a.date));
 }
 
 /**
@@ -234,14 +234,14 @@ export async function fetchSectionHourlyAttendance(
   const q = query(
     ref,
     where("branch", "==", branch.toUpperCase()),
-    where("section", "==", section.toUpperCase()),
-    orderBy("date", "desc")
+    where("section", "==", section.toUpperCase())
   );
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({
+  const records = snapshot.docs.map((d) => ({
     id: d.id,
     ...d.data(),
   })) as HourlyAttendanceRecord[];
+  return records.sort((a, b) => b.date.localeCompare(a.date));
 }
 
 /**
@@ -255,8 +255,7 @@ export function subscribeToHourlyAttendance(
   const ref = collection(db, "hourly_attendance");
   const q = query(
     ref,
-    where("roll_number", "==", rollNumber.toUpperCase()),
-    orderBy("date", "desc")
+    where("roll_number", "==", rollNumber.toUpperCase())
   );
   return onSnapshot(
     q,
@@ -265,7 +264,7 @@ export function subscribeToHourlyAttendance(
         id: d.id,
         ...d.data(),
       })) as HourlyAttendanceRecord[];
-      onData(records);
+      onData(records.sort((a, b) => b.date.localeCompare(a.date)));
     },
     (err) => onError?.(err)
   );
