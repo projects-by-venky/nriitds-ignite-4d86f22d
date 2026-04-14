@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 import type { HourlyAttendanceRecord } from "./firebase-helpers";
 
 // Extend jsPDF type for autotable
