@@ -132,7 +132,8 @@ const HourlyAttendanceDashboard = () => {
         section: studentInfo.section,
       });
       toast({ title: "PDF Downloaded", description: `${studentInfo.roll_number}_Attendance_Report.pdf` });
-    } catch {
+    } catch (err) {
+      console.error("PDF generation error:", err);
       toast({ title: "Error", description: "Failed to generate PDF.", variant: "destructive" });
     }
     setPdfLoading(null);
