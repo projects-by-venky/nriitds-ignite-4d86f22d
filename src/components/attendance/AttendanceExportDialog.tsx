@@ -173,8 +173,6 @@ export default function AttendanceExportDialog({
     const subjectData = monthlyData?.[roll];
     if (!student || !subjectData) return;
 
-    const { default: jsPDF } = require("jspdf");
-    const autoTable = require("jspdf-autotable").default;
     const doc = new jsPDF("p", "mm", "a4");
 
     addMonthlyHeader(doc, `Monthly Attendance - ${student.name}`);
@@ -243,8 +241,6 @@ export default function AttendanceExportDialog({
   };
 
   const generateMonthlyBulkPDF = (students: StudentEntry[], filename: string) => {
-    const { default: jsPDF } = require("jspdf");
-    const autoTable = require("jspdf-autotable").default;
     const doc = new jsPDF("p", "mm", "a4");
 
     addMonthlyHeader(doc, `Monthly Attendance — ${branch.toUpperCase()} Section ${section.toUpperCase()}`);
