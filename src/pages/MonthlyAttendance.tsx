@@ -181,7 +181,7 @@ const MonthlyAttendance = () => {
                 </div>
                 <Button 
                   className="h-12 px-3 md:px-4 bg-gradient-cyber text-white hover:opacity-90"
-                  onClick={() => {}}
+                  onClick={() => setExportOpen(true)}
                 >
                   <Download className="w-4 h-4 md:mr-2" />
                   <span className="hidden md:inline">Export</span>
@@ -352,6 +352,16 @@ const MonthlyAttendance = () => {
           </motion.div>
         </div>
       </main>
+
+      <AttendanceExportDialog
+        open={exportOpen}
+        onOpenChange={setExportOpen}
+        allStudents={allStudentEntries}
+        branch={branch}
+        section={sectionLetter}
+        source="monthly"
+        monthlyData={monthlyExportData}
+      />
 
       <Footer />
       <MobileBottomNav />
