@@ -9,6 +9,7 @@ import MobileSearchBar from "@/components/mobile/MobileSearchBar";
 import MobileMonthlyCard from "@/components/mobile/MobileMonthlyCard";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import AttendanceExportDialog from "@/components/attendance/AttendanceExportDialog";
 
 // Subject data with faculty names
 const subjects = [
@@ -73,7 +74,7 @@ const MonthlyAttendance = () => {
   const dept = deptId ? departments[deptId as keyof typeof departments] : null;
   const isMobile = useIsMobile();
   const [searchQuery, setSearchQuery] = useState("");
-  
+  const [exportOpen, setExportOpen] = useState(false);
   const formattedSection = section?.replace(/-/g, ' ') || '';
   const data = generateMonthlyData(section || '2-2-DS-A');
 
@@ -83,6 +84,28 @@ const MonthlyAttendance = () => {
   const sem = sectionParts[1] || '2';
   const branch = sectionParts[2] || 'DS';
   const sectionLetter = sectionParts[3] || 'A';
+
+  // Build student entries and monthly data for export
+  const allStudentEntries = useMemo(() => 
+    data.students.map((s) => ({
+      roll_number: s.rollNumber,
+      name: s.rollNumber,
+      branch: branch,
+      section: sectionLetter,
+    })), [data.students, branch, sectionLetter]);
+
+  const monthlyExportData = useMemo(() => {
+    const map: Record<string, { code: string; name: string; conducted: number; attended: number }[]> = {};
+    data.students.forEach((s) => {
+      map[s.rollNumber] = s.subjectAttendance.map((a) => ({
+        code: a.code,
+        name: a.name,
+        conducted: a.conducted,
+        attended: a.attended,
+      }));
+    });
+    return map;
+  }, [data.students]);
 
   // Filter students based on search query - EXACT MATCH ONLY
   const filteredStudents = useMemo(() => {
@@ -158,7 +181,7 @@ const MonthlyAttendance = () => {
                 </div>
                 <Button 
                   className="h-12 px-3 md:px-4 bg-gradient-cyber text-white hover:opacity-90"
-                  onClick={() => {}}
+                  onClick={() => setExportOpen(true)}
                 >
                   <Download className="w-4 h-4 md:mr-2" />
                   <span className="hidden md:inline">Export</span>
@@ -329,6 +352,16 @@ const MonthlyAttendance = () => {
           </motion.div>
         </div>
       </main>
+
+      <AttendanceExportDialog
+        open={exportOpen}
+        onOpenChange={setExportOpen}
+        allStudents={allStudentEntries}
+        branch={branch}
+        section={sectionLetter}
+        source="monthly"
+        monthlyData={monthlyExportData}
+      />
 
       <Footer />
       <MobileBottomNav />

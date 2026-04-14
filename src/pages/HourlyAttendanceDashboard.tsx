@@ -29,6 +29,7 @@ import {
   generateStudentAttendancePDF,
   generateClassAttendancePDF,
 } from "@/lib/attendance-pdf";
+import AttendanceExportDialog from "@/components/attendance/AttendanceExportDialog";
 import {
   PieChart, Pie, Cell, BarChart, Bar, LineChart, Line,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
@@ -55,6 +56,7 @@ const HourlyAttendanceDashboard = () => {
   const [subjectFilter, setSubjectFilter] = useState("all");
   const [pdfLoading, setPdfLoading] = useState<string | null>(null);
   const [seeding, setSeeding] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
   const unsubRef = useRef<(() => void) | null>(null);
 
   // Cleanup on unmount
@@ -366,36 +368,38 @@ const HourlyAttendanceDashboard = () => {
                 </div>
               </div>
 
-              {/* Download Buttons */}
+              {/* Export Button */}
               <div className="bg-card border border-border rounded-xl p-4">
                 <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
                   <div className="flex items-center gap-2">
                     <FileDown className="w-5 h-5 text-primary" />
-                    <h3 className="font-semibold text-foreground text-sm">Download Reports</h3>
+                    <h3 className="font-semibold text-foreground text-sm">Export Attendance</h3>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    <Button
-                      size="sm"
-                      onClick={handleDownloadStudent}
-                      disabled={pdfLoading !== null}
-                      className="gap-2 bg-gradient-cyber hover:opacity-90"
-                    >
-                      {pdfLoading === "student" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
-                      My Report
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={handleDownloadClass}
-                      disabled={pdfLoading !== null}
-                      className="gap-2"
-                    >
-                      {pdfLoading === "class" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Users className="w-3.5 h-3.5" />}
-                      Class Report
-                    </Button>
-                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() => setExportOpen(true)}
+                    className="gap-2 bg-gradient-cyber hover:opacity-90"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    Export
+                  </Button>
                 </div>
               </div>
+
+              <AttendanceExportDialog
+                open={exportOpen}
+                onOpenChange={setExportOpen}
+                currentRecords={records}
+                currentStudent={studentInfo ? {
+                  roll_number: studentInfo.roll_number,
+                  name: studentInfo.name,
+                  branch: studentInfo.branch,
+                  section: studentInfo.section,
+                } : null}
+                branch={deptId?.toUpperCase() || studentInfo?.branch || "CSE"}
+                section={section?.split("-").pop() || studentInfo?.section || "A"}
+                source="hourly"
+              />
 
               {/* Stats Cards */}
               <div className="grid grid-cols-3 gap-3 md:gap-4">
