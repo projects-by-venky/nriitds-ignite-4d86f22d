@@ -74,7 +74,7 @@ const MonthlyAttendance = () => {
   const dept = deptId ? departments[deptId as keyof typeof departments] : null;
   const isMobile = useIsMobile();
   const [searchQuery, setSearchQuery] = useState("");
-  
+  const [exportOpen, setExportOpen] = useState(false);
   const formattedSection = section?.replace(/-/g, ' ') || '';
   const data = generateMonthlyData(section || '2-2-DS-A');
 
