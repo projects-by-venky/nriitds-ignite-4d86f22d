@@ -29,6 +29,7 @@ import {
   generateStudentAttendancePDF,
   generateClassAttendancePDF,
 } from "@/lib/attendance-pdf";
+import AttendanceExportDialog from "@/components/attendance/AttendanceExportDialog";
 import {
   PieChart, Pie, Cell, BarChart, Bar, LineChart, Line,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
