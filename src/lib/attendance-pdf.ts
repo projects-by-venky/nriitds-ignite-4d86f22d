@@ -1,14 +1,6 @@
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 import type { HourlyAttendanceRecord } from "./firebase-helpers";
-
-// Extend jsPDF type for autotable
-declare module "jspdf" {
-  interface jsPDF {
-    autoTable: (options: any) => jsPDF;
-    lastAutoTable: { finalY: number };
-  }
-}
 
 interface PDFOptions {
   title: string;
@@ -198,7 +190,7 @@ function addSubjectAnalysis(
 
   const pageWidth = doc.internal.pageSize.getWidth();
 
-  doc.autoTable({
+  autoTable(doc, {
     startY,
     head: [["Subject", "Present", "Absent", "Total", "Attendance %"]],
     body: subjects.map((s) => [
@@ -232,7 +224,7 @@ function addSubjectAnalysis(
     },
   });
 
-  return doc.lastAutoTable.finalY + 8;
+  return (doc as any).lastAutoTable.finalY + 8;
 }
 
 function addAttendanceTable(
@@ -246,7 +238,7 @@ function addAttendanceTable(
   doc.text("Detailed Attendance Records", 14, startY);
   startY += 4;
 
-  doc.autoTable({
+  autoTable(doc, {
     startY,
     head: [["#", "Date", "Subject", "Hour", "Status"]],
     body: records.map((r, i) => [
@@ -277,7 +269,7 @@ function addAttendanceTable(
     },
   });
 
-  return doc.lastAutoTable.finalY + 8;
+  return (doc as any).lastAutoTable.finalY + 8;
 }
 
 function addWatermark(doc: jsPDF) {
@@ -406,7 +398,7 @@ export function generateClassAttendancePDF(
   doc.text("Student Summary", 14, y);
   y += 4;
 
-  doc.autoTable({
+  autoTable(doc, {
     startY: y,
     head: [["#", "Roll Number", "Name", "Present", "Absent", "Total", "Attendance %"]],
     body: students.map((s, i) => [
@@ -496,7 +488,7 @@ export function generateMonthlyAttendancePDF(
   doc.text("Monthly Attendance", 14, y);
   y += 4;
 
-  doc.autoTable({
+  autoTable(doc, {
     startY: y,
     head: [["Month", "Attendance %", "Status"]],
     body: months.map((m) => {
@@ -529,7 +521,7 @@ export function generateMonthlyAttendancePDF(
     },
   });
 
-  y = doc.lastAutoTable.finalY + 10;
+  y = (doc as any).lastAutoTable.finalY + 10;
 
   // Results table if available
   const resultMonths = Object.keys(monthlyResults);
@@ -545,7 +537,7 @@ export function generateMonthlyAttendancePDF(
     doc.text("Monthly Results", 14, y);
     y += 4;
 
-    doc.autoTable({
+    autoTable(doc, {
       startY: y,
       head: [["Month", "Score %"]],
       body: resultMonths.map((m) => [m, `${monthlyResults[m] || 0}%`]),
