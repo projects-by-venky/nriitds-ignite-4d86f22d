@@ -9,6 +9,7 @@ import MobileSearchBar from "@/components/mobile/MobileSearchBar";
 import MobileMonthlyCard from "@/components/mobile/MobileMonthlyCard";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import AttendanceExportDialog from "@/components/attendance/AttendanceExportDialog";
 
 // Subject data with faculty names
 const subjects = [
