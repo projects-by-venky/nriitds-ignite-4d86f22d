@@ -85,6 +85,28 @@ const MonthlyAttendance = () => {
   const branch = sectionParts[2] || 'DS';
   const sectionLetter = sectionParts[3] || 'A';
 
+  // Build student entries and monthly data for export
+  const allStudentEntries = useMemo(() => 
+    data.students.map((s) => ({
+      roll_number: s.rollNumber,
+      name: s.rollNumber,
+      branch: branch,
+      section: sectionLetter,
+    })), [data.students, branch, sectionLetter]);
+
+  const monthlyExportData = useMemo(() => {
+    const map: Record<string, { code: string; name: string; conducted: number; attended: number }[]> = {};
+    data.students.forEach((s) => {
+      map[s.rollNumber] = s.subjectAttendance.map((a) => ({
+        code: a.code,
+        name: a.name,
+        conducted: a.conducted,
+        attended: a.attended,
+      }));
+    });
+    return map;
+  }, [data.students]);
+
   // Filter students based on search query - EXACT MATCH ONLY
   const filteredStudents = useMemo(() => {
     if (!searchQuery || searchQuery.trim() === "") {
