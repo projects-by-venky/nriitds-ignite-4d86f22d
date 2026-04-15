@@ -59,6 +59,21 @@ const HourlyAttendanceDashboard = () => {
   const [exportOpen, setExportOpen] = useState(false);
   const unsubRef = useRef<(() => void) | null>(null);
 
+  // Generate 66 students for group/all export
+  const allStudents = useMemo(() => {
+    const branchCode = deptId?.toUpperCase() || "CSE";
+    const sectionLetter = section?.split("-").pop() || "A";
+    return Array.from({ length: 66 }, (_, i) => {
+      const num = String(i + 1).padStart(2, "0");
+      return {
+        roll_number: `23KP1A44${num}`,
+        name: `Student ${num}`,
+        branch: branchCode,
+        section: sectionLetter,
+      };
+    });
+  }, [deptId, section]);
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -396,6 +411,7 @@ const HourlyAttendanceDashboard = () => {
                   branch: studentInfo.branch,
                   section: studentInfo.section,
                 } : null}
+                allStudents={allStudents}
                 branch={deptId?.toUpperCase() || studentInfo?.branch || "CSE"}
                 section={section?.split("-").pop() || studentInfo?.section || "A"}
                 source="hourly"
