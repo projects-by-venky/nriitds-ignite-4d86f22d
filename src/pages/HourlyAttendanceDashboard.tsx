@@ -59,18 +59,53 @@ const HourlyAttendanceDashboard = () => {
   const [exportOpen, setExportOpen] = useState(false);
   const unsubRef = useRef<(() => void) | null>(null);
 
-  // Generate 66 students for group/all export
-  const allStudents = useMemo(() => {
+  // Fetch real student names from Firebase for group/all export
+  const [allStudents, setAllStudents] = useState<{ roll_number: string; name: string; branch: string; section: string }[]>([]);
+
+  useEffect(() => {
     const branchCode = deptId?.toUpperCase() || "CSE";
     const sectionLetter = section?.split("-").pop() || "A";
-    return Array.from({ length: 66 }, (_, i) => {
-      const num = String(i + 1).padStart(2, "0");
-      return {
-        roll_number: `23KP1A44${num}`,
-        name: `Student ${num}`,
-        branch: branchCode,
-        section: sectionLetter,
-      };
+    const semesterPart = section?.split("-")[0] || "2";
+
+    fetchStudentsBySection(branchCode, semesterPart, sectionLetter).then((students) => {
+      if (students.length > 0) {
+        setAllStudents(
+          students.map((s) => ({
+            roll_number: s.roll_number,
+            name: s.name,
+            branch: s.branch,
+            section: s.section,
+          }))
+        );
+      } else {
+        // Fallback to generated list if no Firebase data
+        setAllStudents(
+          Array.from({ length: 66 }, (_, i) => {
+            const num = String(i + 1).padStart(2, "0");
+            return {
+              roll_number: `23KP1A44${num}`,
+              name: `Student ${num}`,
+              branch: branchCode,
+              section: sectionLetter,
+            };
+          })
+        );
+      }
+    }).catch(() => {
+      // Fallback on error
+      const branchCode = deptId?.toUpperCase() || "CSE";
+      const sectionLetter = section?.split("-").pop() || "A";
+      setAllStudents(
+        Array.from({ length: 66 }, (_, i) => {
+          const num = String(i + 1).padStart(2, "0");
+          return {
+            roll_number: `23KP1A44${num}`,
+            name: `Student ${num}`,
+            branch: branchCode,
+            section: sectionLetter,
+          };
+        })
+      );
     });
   }, [deptId, section]);
 
