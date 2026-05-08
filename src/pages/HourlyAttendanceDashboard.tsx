@@ -65,69 +65,72 @@ const HourlyAttendanceDashboard = () => {
   const [allStudents, setAllStudents] = useState<{ roll_number: string; name: string; branch: string; section: string }[]>([]);
   const [studentsLoading, setStudentsLoading] = useState(true);
 
-  useEffect(() => {
+  const loadStudents = (forceRefresh = false) => {
     const branchCode = deptId?.toUpperCase() || "CSE";
     const sectionLetter = section?.split("-").pop() || "A";
     const semesterPart = section?.split("-")[0] || "2";
 
-    // Hydrate immediately from cache if available — skip loading state entirely.
-    const cached = getCachedStudentsBySection(branchCode, semesterPart, sectionLetter);
-    if (cached && cached.length > 0) {
-      setAllStudents(
-        cached.map((s) => ({
-          roll_number: s.roll_number,
-          name: s.name,
-          branch: s.branch,
-          section: s.section,
-        }))
-      );
-      setStudentsLoading(false);
-      return;
-    }
+    const fallbackList = () =>
+      Array.from({ length: 66 }, (_, i) => {
+        const num = String(i + 1).padStart(2, "0");
+        return {
+          roll_number: `23KP1A44${num}`,
+          name: `Student ${num}`,
+          branch: branchCode,
+          section: sectionLetter,
+        };
+      });
 
-    setStudentsLoading(true);
-    fetchStudentsBySection(branchCode, semesterPart, sectionLetter).then((students) => {
-      if (students.length > 0) {
+    if (!forceRefresh) {
+      // Hydrate immediately from cache if available — skip loading state entirely.
+      const cached = getCachedStudentsBySection(branchCode, semesterPart, sectionLetter);
+      if (cached && cached.length > 0) {
         setAllStudents(
-          students.map((s) => ({
+          cached.map((s) => ({
             roll_number: s.roll_number,
             name: s.name,
             branch: s.branch,
             section: s.section,
           }))
         );
-      } else {
-        // Fallback to generated list if no Firebase data
-        setAllStudents(
-          Array.from({ length: 66 }, (_, i) => {
-            const num = String(i + 1).padStart(2, "0");
-            return {
-              roll_number: `23KP1A44${num}`,
-              name: `Student ${num}`,
-              branch: branchCode,
-              section: sectionLetter,
-            };
-          })
-        );
+        setStudentsLoading(false);
+        return;
       }
-    }).catch(() => {
-      // Fallback on error
-      const branchCode = deptId?.toUpperCase() || "CSE";
-      const sectionLetter = section?.split("-").pop() || "A";
-      setAllStudents(
-        Array.from({ length: 66 }, (_, i) => {
-          const num = String(i + 1).padStart(2, "0");
-          return {
-            roll_number: `23KP1A44${num}`,
-            name: `Student ${num}`,
-            branch: branchCode,
-            section: sectionLetter,
-          };
-        })
-      );
-    }).finally(() => {
-      setStudentsLoading(false);
-    });
+    }
+
+    setStudentsLoading(true);
+    fetchStudentsBySection(branchCode, semesterPart, sectionLetter, forceRefresh)
+      .then((students) => {
+        if (students.length > 0) {
+          setAllStudents(
+            students.map((s) => ({
+              roll_number: s.roll_number,
+              name: s.name,
+              branch: s.branch,
+              section: s.section,
+            }))
+          );
+          if (forceRefresh) {
+            toast({ title: "Roster Refreshed", description: `Loaded ${students.length} students.` });
+          }
+        } else {
+          setAllStudents(fallbackList());
+        }
+      })
+      .catch(() => {
+        setAllStudents(fallbackList());
+        if (forceRefresh) {
+          toast({ title: "Refresh Failed", description: "Could not reload roster.", variant: "destructive" });
+        }
+      })
+      .finally(() => {
+        setStudentsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    loadStudents(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deptId, section]);
 
   // Cleanup on unmount
