@@ -470,8 +470,6 @@ export type Database = {
           end_time: string | null
           event_type: Database["public"]["Enums"]["event_type"] | null
           faculty_coordinator: string | null
-          faculty_email: string | null
-          faculty_phone: string | null
           gallery_urls: string[] | null
           id: string | null
           is_published: boolean | null
@@ -486,8 +484,6 @@ export type Database = {
           start_time: string | null
           status: Database["public"]["Enums"]["event_status"] | null
           student_coordinator: string | null
-          student_email: string | null
-          student_phone: string | null
           title: string | null
           updated_at: string | null
           venue: string | null
@@ -501,9 +497,7 @@ export type Database = {
           end_date?: string | null
           end_time?: string | null
           event_type?: Database["public"]["Enums"]["event_type"] | null
-          faculty_coordinator?: never
-          faculty_email?: never
-          faculty_phone?: never
+          faculty_coordinator?: string | null
           gallery_urls?: string[] | null
           id?: string | null
           is_published?: boolean | null
@@ -517,9 +511,7 @@ export type Database = {
           start_date?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["event_status"] | null
-          student_coordinator?: never
-          student_email?: never
-          student_phone?: never
+          student_coordinator?: string | null
           title?: string | null
           updated_at?: string | null
           venue?: string | null
@@ -533,9 +525,7 @@ export type Database = {
           end_date?: string | null
           end_time?: string | null
           event_type?: Database["public"]["Enums"]["event_type"] | null
-          faculty_coordinator?: never
-          faculty_email?: never
-          faculty_phone?: never
+          faculty_coordinator?: string | null
           gallery_urls?: string[] | null
           id?: string | null
           is_published?: boolean | null
@@ -549,9 +539,7 @@ export type Database = {
           start_date?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["event_status"] | null
-          student_coordinator?: never
-          student_email?: never
-          student_phone?: never
+          student_coordinator?: string | null
           title?: string | null
           updated_at?: string | null
           venue?: string | null
@@ -564,7 +552,6 @@ export type Database = {
           approved_at: string | null
           branch: string | null
           category: Database["public"]["Enums"]["project_category"] | null
-          contact_email: string | null
           contributor_names: string[] | null
           contributor_type:
             | Database["public"]["Enums"]["contributor_type"]
@@ -581,7 +568,6 @@ export type Database = {
           outcomes_impact: string | null
           problem_statement: string | null
           proposed_solution: string | null
-          roll_numbers: string[] | null
           status: Database["public"]["Enums"]["approval_status"] | null
           summary: string | null
           title: string | null
@@ -594,7 +580,6 @@ export type Database = {
           approved_at?: string | null
           branch?: string | null
           category?: Database["public"]["Enums"]["project_category"] | null
-          contact_email?: never
           contributor_names?: string[] | null
           contributor_type?:
             | Database["public"]["Enums"]["contributor_type"]
@@ -611,7 +596,6 @@ export type Database = {
           outcomes_impact?: string | null
           problem_statement?: string | null
           proposed_solution?: string | null
-          roll_numbers?: string[] | null
           status?: Database["public"]["Enums"]["approval_status"] | null
           summary?: string | null
           title?: string | null
@@ -624,7 +608,6 @@ export type Database = {
           approved_at?: string | null
           branch?: string | null
           category?: Database["public"]["Enums"]["project_category"] | null
-          contact_email?: never
           contributor_names?: string[] | null
           contributor_type?:
             | Database["public"]["Enums"]["contributor_type"]
@@ -641,7 +624,6 @@ export type Database = {
           outcomes_impact?: string | null
           problem_statement?: string | null
           proposed_solution?: string | null
-          roll_numbers?: string[] | null
           status?: Database["public"]["Enums"]["approval_status"] | null
           summary?: string | null
           title?: string | null
