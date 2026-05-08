@@ -25,6 +25,7 @@ import {
   seedDemoHourlyAttendance,
   fetchSectionHourlyAttendance,
   fetchStudentsBySection,
+  getCachedStudentsBySection,
 } from "@/lib/firebase-helpers";
 import {
   generateStudentAttendancePDF,
