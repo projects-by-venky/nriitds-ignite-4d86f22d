@@ -42,6 +42,8 @@ interface AttendanceExportDialogProps {
   currentStudent?: StudentEntry | null;
   /** All students visible in the table (monthly attendance page) */
   allStudents?: StudentEntry[];
+  /** Whether the student list is still loading from Firebase */
+  studentsLoading?: boolean;
   /** Branch code */
   branch: string;
   /** Section letter */
@@ -53,7 +55,7 @@ interface AttendanceExportDialogProps {
 }
 
 export default function AttendanceExportDialog({
-  open, onOpenChange, currentRecords, currentStudent, allStudents = [],
+  open, onOpenChange, currentRecords, currentStudent, allStudents = [], studentsLoading = false,
   branch, section, source, monthlyData,
 }: AttendanceExportDialogProps) {
   const [step, setStep] = useState(1);
