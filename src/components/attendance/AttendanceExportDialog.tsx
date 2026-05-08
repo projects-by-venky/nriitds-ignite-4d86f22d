@@ -45,6 +45,8 @@ interface AttendanceExportDialogProps {
   allStudents?: StudentEntry[];
   /** Whether the student list is still loading from Firebase */
   studentsLoading?: boolean;
+  /** Optional callback to force re-fetch the roster (bypassing any cache) */
+  onRefreshStudents?: () => void;
   /** Branch code */
   branch: string;
   /** Section letter */
@@ -57,7 +59,7 @@ interface AttendanceExportDialogProps {
 
 export default function AttendanceExportDialog({
   open, onOpenChange, currentRecords, currentStudent, allStudents = [], studentsLoading = false,
-  branch, section, source, monthlyData,
+  onRefreshStudents, branch, section, source, monthlyData,
 }: AttendanceExportDialogProps) {
   const [step, setStep] = useState(1);
   const [mode, setMode] = useState<ExportMode>("individual");
