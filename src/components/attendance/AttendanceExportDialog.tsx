@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import {
-  Download, Loader2, User, Users, UsersRound, Check, Search, FileText, X,
+  Download, Loader2, User, Users, UsersRound, Check, Search, FileText, X, RefreshCw,
 } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
@@ -45,6 +45,8 @@ interface AttendanceExportDialogProps {
   allStudents?: StudentEntry[];
   /** Whether the student list is still loading from Firebase */
   studentsLoading?: boolean;
+  /** Optional callback to force re-fetch the roster (bypassing any cache) */
+  onRefreshStudents?: () => void;
   /** Branch code */
   branch: string;
   /** Section letter */
@@ -57,7 +59,7 @@ interface AttendanceExportDialogProps {
 
 export default function AttendanceExportDialog({
   open, onOpenChange, currentRecords, currentStudent, allStudents = [], studentsLoading = false,
-  branch, section, source, monthlyData,
+  onRefreshStudents, branch, section, source, monthlyData,
 }: AttendanceExportDialogProps) {
   const [step, setStep] = useState(1);
   const [mode, setMode] = useState<ExportMode>("individual");
@@ -430,9 +432,23 @@ export default function AttendanceExportDialog({
                       ? "Deselect All"
                       : "Select All"}
                   </button>
-                  <span className="text-xs text-muted-foreground">
-                    {selectedRolls.size} selected
-                  </span>
+                  <div className="flex items-center gap-3">
+                    {onRefreshStudents && (
+                      <button
+                        type="button"
+                        onClick={onRefreshStudents}
+                        disabled={studentsLoading}
+                        title="Refresh student list"
+                        className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors disabled:opacity-50"
+                      >
+                        <RefreshCw className={`w-3.5 h-3.5 ${studentsLoading ? "animate-spin" : ""}`} />
+                        Refresh
+                      </button>
+                    )}
+                    <span className="text-xs text-muted-foreground">
+                      {selectedRolls.size} selected
+                    </span>
+                  </div>
                 </div>
 
                 <div className="max-h-[300px] overflow-y-auto space-y-1 border border-border rounded-lg p-2">
@@ -490,6 +506,20 @@ export default function AttendanceExportDialog({
                     className="pl-9 h-10"
                   />
                 </div>
+                {onRefreshStudents && (
+                  <div className="flex justify-end px-1">
+                    <button
+                      type="button"
+                      onClick={onRefreshStudents}
+                      disabled={studentsLoading}
+                      title="Refresh student list"
+                      className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors disabled:opacity-50"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 ${studentsLoading ? "animate-spin" : ""}`} />
+                      Refresh
+                    </button>
+                  </div>
+                )}
                 <div className="max-h-[300px] overflow-y-auto space-y-1 border border-border rounded-lg p-2">
                   {studentsLoading ? (
                     <div className="space-y-1" aria-label="Loading students">
