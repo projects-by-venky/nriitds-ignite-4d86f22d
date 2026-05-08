@@ -25,13 +25,44 @@ export interface StudentData {
 }
 
 /**
+ * In-memory cache for section rosters, keyed by branch/semester/section.
+ * Persists across component remounts within the same app session so repeated
+ * exports don't re-hit Firestore.
+ */
+const studentRosterCache = new Map<string, StudentData[]>();
+
+function rosterCacheKey(branch: string, semester: string, section: string) {
+  return `${branch.toUpperCase()}::${semester}::${section.toUpperCase()}`;
+}
+
+export function getCachedStudentsBySection(
+  branchCode: string,
+  semester: string,
+  sectionLetter: string
+): StudentData[] | undefined {
+  return studentRosterCache.get(rosterCacheKey(branchCode, semester, sectionLetter));
+}
+
+export function clearStudentRosterCache() {
+  studentRosterCache.clear();
+}
+
+/**
  * Fetch all students for a given branch/semester/section from Firestore.
+ * Results are cached in-memory and reused on subsequent calls unless
+ * `forceRefresh` is true.
  */
 export async function fetchStudentsBySection(
   branchCode: string,
   semester: string,
-  sectionLetter: string
+  sectionLetter: string,
+  forceRefresh = false
 ): Promise<StudentData[]> {
+  const key = rosterCacheKey(branchCode, semester, sectionLetter);
+  if (!forceRefresh && studentRosterCache.has(key)) {
+    return studentRosterCache.get(key)!;
+  }
+
   const ref = collection(db, "student_analytics");
   const q = query(
     ref,
@@ -42,10 +73,13 @@ export async function fetchStudentsBySection(
   );
 
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((doc) => ({
+  const students = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as StudentData[];
+
+  studentRosterCache.set(key, students);
+  return students;
 }
 
 /**

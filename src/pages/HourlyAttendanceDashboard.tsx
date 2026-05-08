@@ -25,6 +25,7 @@ import {
   seedDemoHourlyAttendance,
   fetchSectionHourlyAttendance,
   fetchStudentsBySection,
+  getCachedStudentsBySection,
 } from "@/lib/firebase-helpers";
 import {
   generateStudentAttendancePDF,
@@ -68,6 +69,21 @@ const HourlyAttendanceDashboard = () => {
     const branchCode = deptId?.toUpperCase() || "CSE";
     const sectionLetter = section?.split("-").pop() || "A";
     const semesterPart = section?.split("-")[0] || "2";
+
+    // Hydrate immediately from cache if available — skip loading state entirely.
+    const cached = getCachedStudentsBySection(branchCode, semesterPart, sectionLetter);
+    if (cached && cached.length > 0) {
+      setAllStudents(
+        cached.map((s) => ({
+          roll_number: s.roll_number,
+          name: s.name,
+          branch: s.branch,
+          section: s.section,
+        }))
+      );
+      setStudentsLoading(false);
+      return;
+    }
 
     setStudentsLoading(true);
     fetchStudentsBySection(branchCode, semesterPart, sectionLetter).then((students) => {
