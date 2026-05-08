@@ -27,7 +27,7 @@ export const useEvents = (month?: Date) => {
 
       if (error) throw error;
 
-      return (data || []).map(event => ({
+      return ((data as any[]) || []).map((event: any) => ({
         ...event,
         event_type: event.event_type as EventType,
         status: event.status as EventStatus,
@@ -52,11 +52,12 @@ export const useEvent = (id: string) => {
       if (error) throw error;
       if (!data) return null;
 
+      const d = data as any;
       return {
-        ...data,
-        event_type: data.event_type as EventType,
-        status: data.status as EventStatus,
-        schedule: (Array.isArray(data.schedule) ? data.schedule : []) as unknown as ScheduleItem[],
+        ...d,
+        event_type: d.event_type as EventType,
+        status: d.status as EventStatus,
+        schedule: (Array.isArray(d.schedule) ? d.schedule : []) as unknown as ScheduleItem[],
       } as Event;
     },
     enabled: !!id,
