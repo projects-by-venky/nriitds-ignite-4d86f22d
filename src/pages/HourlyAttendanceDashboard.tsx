@@ -452,6 +452,7 @@ const HourlyAttendanceDashboard = () => {
                   section: studentInfo.section,
                 } : null}
                 allStudents={allStudents}
+                studentsLoading={studentsLoading}
                 branch={deptId?.toUpperCase() || studentInfo?.branch || "CSE"}
                 section={section?.split("-").pop() || studentInfo?.section || "A"}
                 source="hourly"
