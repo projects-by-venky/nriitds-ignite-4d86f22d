@@ -9,7 +9,7 @@ export const useResearchProjects = (contributorType?: ContributorType) => {
       const supabase = getBackendClient();
 
       let query = supabase
-        .from('research_projects')
+        .from('research_projects_public' as any)
         .select('*')
         .eq('status', 'approved')
         .order('created_at', { ascending: false });
@@ -23,10 +23,10 @@ export const useResearchProjects = (contributorType?: ContributorType) => {
       if (error) throw error;
       
       // Transform the data to match our types
-      return (data || []).map(item => ({
+      return (((data as any[]) || []).map((item: any) => ({
         ...item,
         external_links: (item.external_links as unknown as ExternalLink[]) || []
-      })) as ResearchProject[];
+      }))) as ResearchProject[];
     },
   });
 };
@@ -38,7 +38,7 @@ export const useResearchProject = (id: string) => {
       const supabase = getBackendClient();
 
       const { data, error } = await supabase
-        .from('research_projects')
+        .from('research_projects_public' as any)
         .select('*')
         .eq('id', id)
         .maybeSingle();
@@ -46,9 +46,10 @@ export const useResearchProject = (id: string) => {
       if (error) throw error;
       if (!data) return null;
       
+      const d = data as any;
       return {
-        ...data,
-        external_links: (data.external_links as unknown as ExternalLink[]) || []
+        ...d,
+        external_links: (d.external_links as unknown as ExternalLink[]) || []
       } as ResearchProject;
     },
     enabled: !!id,
