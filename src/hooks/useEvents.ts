@@ -9,7 +9,7 @@ export const useEvents = (month?: Date) => {
       const supabase = getBackendClient();
 
       let query = supabase
-        .from('events')
+        .from('events_public' as any)
         .select('*')
         .eq('is_published', true)
         .order('start_date', { ascending: true });
@@ -44,7 +44,7 @@ export const useEvent = (id: string) => {
       const supabase = getBackendClient();
 
       const { data, error } = await supabase
-        .from('events')
+        .from('events_public' as any)
         .select('*')
         .eq('id', id)
         .maybeSingle();

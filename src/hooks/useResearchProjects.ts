@@ -9,7 +9,7 @@ export const useResearchProjects = (contributorType?: ContributorType) => {
       const supabase = getBackendClient();
 
       let query = supabase
-        .from('research_projects')
+        .from('research_projects_public' as any)
         .select('*')
         .eq('status', 'approved')
         .order('created_at', { ascending: false });
@@ -38,7 +38,7 @@ export const useResearchProject = (id: string) => {
       const supabase = getBackendClient();
 
       const { data, error } = await supabase
-        .from('research_projects')
+        .from('research_projects_public' as any)
         .select('*')
         .eq('id', id)
         .maybeSingle();
