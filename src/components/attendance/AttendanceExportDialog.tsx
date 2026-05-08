@@ -437,9 +437,16 @@ export default function AttendanceExportDialog({
 
                 <div className="max-h-[300px] overflow-y-auto space-y-1 border border-border rounded-lg p-2">
                   {studentsLoading ? (
-                    <div className="flex flex-col items-center justify-center py-8 gap-2">
-                      <Loader2 className="w-6 h-6 animate-spin text-primary" />
-                      <p className="text-sm text-muted-foreground">Loading students...</p>
+                    <div className="space-y-1" aria-label="Loading students">
+                      {Array.from({ length: 8 }).map((_, i) => (
+                        <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg">
+                          <Skeleton className="h-4 w-4 rounded" />
+                          <div className="flex-1 space-y-1.5">
+                            <Skeleton className="h-3.5 w-24" />
+                            <Skeleton className="h-3 w-40" />
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   ) : filteredStudents.length === 0 ? (
                     <p className="text-sm text-muted-foreground text-center py-4">No students found</p>
