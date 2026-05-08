@@ -109,6 +109,8 @@ const HourlyAttendanceDashboard = () => {
           };
         })
       );
+    }).finally(() => {
+      setStudentsLoading(false);
     });
   }, [deptId, section]);
 
