@@ -62,12 +62,14 @@ const HourlyAttendanceDashboard = () => {
 
   // Fetch real student names from Firebase for group/all export
   const [allStudents, setAllStudents] = useState<{ roll_number: string; name: string; branch: string; section: string }[]>([]);
+  const [studentsLoading, setStudentsLoading] = useState(true);
 
   useEffect(() => {
     const branchCode = deptId?.toUpperCase() || "CSE";
     const sectionLetter = section?.split("-").pop() || "A";
     const semesterPart = section?.split("-")[0] || "2";
 
+    setStudentsLoading(true);
     fetchStudentsBySection(branchCode, semesterPart, sectionLetter).then((students) => {
       if (students.length > 0) {
         setAllStudents(
@@ -107,6 +109,8 @@ const HourlyAttendanceDashboard = () => {
           };
         })
       );
+    }).finally(() => {
+      setStudentsLoading(false);
     });
   }, [deptId, section]);
 
@@ -448,6 +452,7 @@ const HourlyAttendanceDashboard = () => {
                   section: studentInfo.section,
                 } : null}
                 allStudents={allStudents}
+                studentsLoading={studentsLoading}
                 branch={deptId?.toUpperCase() || studentInfo?.branch || "CSE"}
                 section={section?.split("-").pop() || studentInfo?.section || "A"}
                 source="hourly"
