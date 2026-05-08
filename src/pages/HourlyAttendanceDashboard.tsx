@@ -472,6 +472,7 @@ const HourlyAttendanceDashboard = () => {
                 } : null}
                 allStudents={allStudents}
                 studentsLoading={studentsLoading}
+                onRefreshStudents={() => loadStudents(true)}
                 branch={deptId?.toUpperCase() || studentInfo?.branch || "CSE"}
                 section={section?.split("-").pop() || studentInfo?.section || "A"}
                 source="hourly"
