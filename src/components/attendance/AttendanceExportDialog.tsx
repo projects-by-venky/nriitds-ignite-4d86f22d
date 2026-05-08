@@ -432,9 +432,23 @@ export default function AttendanceExportDialog({
                       ? "Deselect All"
                       : "Select All"}
                   </button>
-                  <span className="text-xs text-muted-foreground">
-                    {selectedRolls.size} selected
-                  </span>
+                  <div className="flex items-center gap-3">
+                    {onRefreshStudents && (
+                      <button
+                        type="button"
+                        onClick={onRefreshStudents}
+                        disabled={studentsLoading}
+                        title="Refresh student list"
+                        className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors disabled:opacity-50"
+                      >
+                        <RefreshCw className={`w-3.5 h-3.5 ${studentsLoading ? "animate-spin" : ""}`} />
+                        Refresh
+                      </button>
+                    )}
+                    <span className="text-xs text-muted-foreground">
+                      {selectedRolls.size} selected
+                    </span>
+                  </div>
                 </div>
 
                 <div className="max-h-[300px] overflow-y-auto space-y-1 border border-border rounded-lg p-2">
