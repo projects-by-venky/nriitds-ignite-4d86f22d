@@ -65,33 +65,45 @@ export default function AttendanceExportDialog({
   const [step, setStep] = useState(1);
   const [mode, setMode] = useState<ExportMode>("individual");
   const [searchQuery, setSearchQuery] = useState("");
+  const [rollFilter, setRollFilter] = useState("");
   const [selectedRolls, setSelectedRolls] = useState<Set<string>>(new Set());
   const [generating, setGenerating] = useState(false);
 
-  // Reset on open
+  // Reset on open. Selection is intentionally preserved across roster
+  // refreshes — we only clear it when the dialog itself opens fresh.
   useEffect(() => {
     if (open) {
       setStep(1);
       setMode("individual");
       setSearchQuery("");
+      setRollFilter("");
       setSelectedRolls(new Set());
     }
   }, [open]);
 
-  const filteredStudents = allStudents.filter((s) => {
-    if (!searchQuery) return true;
-    const q = searchQuery.toUpperCase();
-    return s.roll_number.toUpperCase().includes(q) || s.name.toUpperCase().includes(q);
-  });
+  const filteredStudents = useMemo(() => {
+    const q = searchQuery.trim().toUpperCase();
+    const roll = rollFilter.trim().toUpperCase();
+    return allStudents.filter((s) => {
+      const sRoll = s.roll_number.toUpperCase();
+      if (roll && !sRoll.includes(roll)) return false;
+      if (q && !sRoll.includes(q) && !s.name.toUpperCase().includes(q)) return false;
+      return true;
+    });
+  }, [allStudents, searchQuery, rollFilter]);
 
-  const toggleStudent = (roll: string) => {
+  const toggleStudent = useCallback((roll: string) => {
     setSelectedRolls((prev) => {
       const next = new Set(prev);
       if (next.has(roll)) next.delete(roll);
       else next.add(roll);
       return next;
     });
-  };
+  }, []);
+
+  const selectSingle = useCallback((roll: string) => {
+    setSelectedRolls(new Set([roll]));
+  }, []);
 
   const toggleAll = () => {
     if (selectedRolls.size === filteredStudents.length) {
