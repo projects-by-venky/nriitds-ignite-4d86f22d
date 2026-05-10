@@ -26,6 +26,7 @@ import {
   fetchSectionHourlyAttendance,
   fetchStudentsBySection,
   getCachedStudentsBySection,
+  subscribeToSectionRoster,
 } from "@/lib/firebase-helpers";
 import {
   generateStudentAttendancePDF,
