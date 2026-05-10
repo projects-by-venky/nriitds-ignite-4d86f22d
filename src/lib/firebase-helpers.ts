@@ -30,6 +30,8 @@ export interface StudentData {
  * exports don't re-hit Firestore.
  */
 const studentRosterCache = new Map<string, StudentData[]>();
+const rosterListeners = new Map<string, Unsubscribe>();
+const rosterSubscribers = new Map<string, Set<(students: StudentData[]) => void>>();
 
 function rosterCacheKey(branch: string, semester: string, section: string) {
   return `${branch.toUpperCase()}::${semester}::${section.toUpperCase()}`;
@@ -45,6 +47,81 @@ export function getCachedStudentsBySection(
 
 export function clearStudentRosterCache() {
   studentRosterCache.clear();
+  rosterListeners.forEach((unsub) => unsub());
+  rosterListeners.clear();
+}
+
+/**
+ * Attach a Firestore onSnapshot listener for the given section roster so the
+ * in-memory cache auto-invalidates whenever the underlying student_analytics
+ * documents change. Idempotent — safe to call multiple times for the same key.
+ */
+function ensureRosterListener(
+  branchCode: string,
+  semester: string,
+  sectionLetter: string
+) {
+  const key = rosterCacheKey(branchCode, semester, sectionLetter);
+  if (rosterListeners.has(key)) return;
+
+  const ref = collection(db, "student_analytics");
+  const q = query(
+    ref,
+    where("branch", "==", branchCode),
+    where("semester", "==", semester),
+    where("section", "==", sectionLetter),
+    orderBy("roll_number", "asc")
+  );
+
+  const unsub = onSnapshot(
+    q,
+    (snapshot) => {
+      const students = snapshot.docs.map((d) => ({
+        id: d.id,
+        ...d.data(),
+      })) as StudentData[];
+      studentRosterCache.set(key, students);
+      rosterSubscribers.get(key)?.forEach((cb) => cb(students));
+    },
+    (err) => {
+      console.error("Roster listener error:", err);
+    }
+  );
+  rosterListeners.set(key, unsub);
+}
+
+/**
+ * Subscribe to roster changes for a section. Returns an unsubscribe fn.
+ * Triggers cache hydration + live updates whenever Firestore data changes.
+ */
+export function subscribeToSectionRoster(
+  branchCode: string,
+  semester: string,
+  sectionLetter: string,
+  cb: (students: StudentData[]) => void
+): Unsubscribe {
+  const key = rosterCacheKey(branchCode, semester, sectionLetter);
+  let set = rosterSubscribers.get(key);
+  if (!set) {
+    set = new Set();
+    rosterSubscribers.set(key, set);
+  }
+  set.add(cb);
+  ensureRosterListener(branchCode, semester, sectionLetter);
+
+  // Emit current cache immediately if available
+  const cached = studentRosterCache.get(key);
+  if (cached) cb(cached);
+
+  return () => {
+    const subs = rosterSubscribers.get(key);
+    subs?.delete(cb);
+    if (subs && subs.size === 0) {
+      rosterSubscribers.delete(key);
+      rosterListeners.get(key)?.();
+      rosterListeners.delete(key);
+    }
+  };
 }
 
 /**
