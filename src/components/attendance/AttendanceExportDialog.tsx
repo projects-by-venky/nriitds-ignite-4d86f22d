@@ -484,20 +484,44 @@ export default function AttendanceExportDialog({
                 exit={{ opacity: 0, x: 20 }}
                 className="space-y-3"
               >
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search by roll number or name..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 h-10"
-                  />
+                <RefreshingBanner />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search name or roll…"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-9 h-10"
+                    />
+                  </div>
+                  <div className="relative">
+                    <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Filter by roll #"
+                      value={rollFilter}
+                      onChange={(e) => setRollFilter(e.target.value)}
+                      className="pl-9 pr-8 h-10 font-mono"
+                    />
+                    {rollFilter && (
+                      <button
+                        type="button"
+                        onClick={() => setRollFilter("")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        aria-label="Clear roll filter"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex items-center justify-between px-1">
                   <button
                     onClick={toggleAll}
-                    className="text-sm text-primary hover:underline"
+                    disabled={studentsLoading || filteredStudents.length === 0}
+                    className="text-sm text-primary hover:underline disabled:opacity-50 disabled:no-underline"
                   >
                     {selectedRolls.size === filteredStudents.length && filteredStudents.length > 0
                       ? "Deselect All"
@@ -517,44 +541,28 @@ export default function AttendanceExportDialog({
                       </button>
                     )}
                     <span className="text-xs text-muted-foreground">
-                      {selectedRolls.size} selected
+                      {selectedRolls.size} selected · {filteredStudents.length} shown
                     </span>
                   </div>
                 </div>
 
-                <div className="max-h-[300px] overflow-y-auto space-y-1 border border-border rounded-lg p-2">
+                <div className="border border-border rounded-lg overflow-hidden">
                   {studentsLoading ? (
-                    <div className="space-y-1" aria-label="Loading students">
-                      {Array.from({ length: 8 }).map((_, i) => (
-                        <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg">
-                          <Skeleton className="h-4 w-4 rounded" />
-                          <div className="flex-1 space-y-1.5">
-                            <Skeleton className="h-3.5 w-24" />
-                            <Skeleton className="h-3 w-40" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                    <LoadingRows />
                   ) : filteredStudents.length === 0 ? (
-                    <p className="text-sm text-muted-foreground text-center py-4">No students found</p>
+                    <p className="text-sm text-muted-foreground text-center py-8">No students found</p>
                   ) : (
-                    filteredStudents.map((s) => (
-                      <label
-                        key={s.roll_number}
-                        className={`flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-colors ${
-                          selectedRolls.has(s.roll_number) ? "bg-primary/5" : "hover:bg-muted/50"
-                        }`}
-                      >
-                        <Checkbox
-                          checked={selectedRolls.has(s.roll_number)}
-                          onCheckedChange={() => toggleStudent(s.roll_number)}
-                        />
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm font-medium text-foreground truncate">{s.roll_number}</div>
-                          <div className="text-xs text-muted-foreground truncate">{s.name}</div>
-                        </div>
-                      </label>
-                    ))
+                    <List
+                      rowComponent={StudentRow}
+                      rowCount={filteredStudents.length}
+                      rowHeight={52}
+                      rowProps={{
+                        students: filteredStudents,
+                        selectedRolls,
+                        onToggle: toggleStudent,
+                      }}
+                      style={{ height: 300, width: "100%" }}
+                    />
                   )}
                 </div>
               </motion.div>
@@ -568,15 +576,39 @@ export default function AttendanceExportDialog({
                 exit={{ opacity: 0, x: 20 }}
                 className="space-y-3"
               >
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search by roll number or name..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 h-10"
-                  />
+                <RefreshingBanner />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search name or roll…"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-9 h-10"
+                    />
+                  </div>
+                  <div className="relative">
+                    <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Filter by roll #"
+                      value={rollFilter}
+                      onChange={(e) => setRollFilter(e.target.value)}
+                      className="pl-9 pr-8 h-10 font-mono"
+                    />
+                    {rollFilter && (
+                      <button
+                        type="button"
+                        onClick={() => setRollFilter("")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        aria-label="Clear roll filter"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
+
                 {onRefreshStudents && (
                   <div className="flex justify-end px-1">
                     <button
@@ -591,38 +623,25 @@ export default function AttendanceExportDialog({
                     </button>
                   </div>
                 )}
-                <div className="max-h-[300px] overflow-y-auto space-y-1 border border-border rounded-lg p-2">
+
+                <div className="border border-border rounded-lg overflow-hidden">
                   {studentsLoading ? (
-                    <div className="space-y-1" aria-label="Loading students">
-                      {Array.from({ length: 8 }).map((_, i) => (
-                        <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg">
-                          <Skeleton className="h-4 w-4 rounded" />
-                          <div className="flex-1 space-y-1.5">
-                            <Skeleton className="h-3.5 w-24" />
-                            <Skeleton className="h-3 w-40" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : filteredStudents.map((s) => (
-                    <label
-                      key={s.roll_number}
-                      className={`flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-colors ${
-                        selectedRolls.has(s.roll_number) ? "bg-primary/5" : "hover:bg-muted/50"
-                      }`}
-                    >
-                      <Checkbox
-                        checked={selectedRolls.has(s.roll_number)}
-                        onCheckedChange={() => {
-                          setSelectedRolls(new Set([s.roll_number]));
-                        }}
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-foreground truncate">{s.roll_number}</div>
-                        <div className="text-xs text-muted-foreground truncate">{s.name}</div>
-                      </div>
-                    </label>
-                  ))}
+                    <LoadingRows />
+                  ) : filteredStudents.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-8">No students found</p>
+                  ) : (
+                    <List
+                      rowComponent={StudentRow}
+                      rowCount={filteredStudents.length}
+                      rowHeight={52}
+                      rowProps={{
+                        students: filteredStudents,
+                        selectedRolls,
+                        onToggle: selectSingle,
+                      }}
+                      style={{ height: 300, width: "100%" }}
+                    />
+                  )}
                 </div>
               </motion.div>
             )}
