@@ -368,6 +368,64 @@ export default function AttendanceExportDialog({
     { value: "all" as ExportMode, icon: Users, label: "All", desc: "Full class attendance" },
   ];
 
+  // Virtualized row renderer for the student picker
+  type StudentRowProps = {
+    students: StudentEntry[];
+    selectedRolls: Set<string>;
+    onToggle: (roll: string) => void;
+  };
+  const StudentRow = ({
+    index,
+    style,
+    students,
+    selectedRolls,
+    onToggle,
+  }: RowComponentProps<StudentRowProps>) => {
+    const s = students[index];
+    if (!s) return null;
+    const checked = selectedRolls.has(s.roll_number);
+    return (
+      <div style={style} className="px-1">
+        <label
+          className={`flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-colors h-full ${
+            checked ? "bg-primary/5" : "hover:bg-muted/50"
+          }`}
+        >
+          <Checkbox checked={checked} onCheckedChange={() => onToggle(s.roll_number)} />
+          <div className="flex-1 min-w-0">
+            <div className="text-sm font-medium text-foreground truncate">{s.roll_number}</div>
+            <div className="text-xs text-muted-foreground truncate">{s.name}</div>
+          </div>
+        </label>
+      </div>
+    );
+  };
+
+  const LoadingRows = () => (
+    <div className="space-y-1 p-2" aria-label="Loading students">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg">
+          <Skeleton className="h-4 w-4 rounded" />
+          <div className="flex-1 space-y-1.5">
+            <Skeleton className="h-3.5 w-24" />
+            <Skeleton className="h-3 w-40" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  const RefreshingBanner = () =>
+    studentsLoading ? (
+      <div
+        role="status"
+        className="flex items-center gap-2 text-xs text-primary bg-primary/10 border border-primary/20 px-3 py-2 rounded-lg"
+      >
+        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+        Refreshing roster… selections preserved. Step navigation disabled until complete.
+      </div>
+    ) : null;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg max-h-[85vh] overflow-hidden flex flex-col">
