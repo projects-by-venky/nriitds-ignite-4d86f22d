@@ -651,24 +651,34 @@ export default function AttendanceExportDialog({
         {/* Actions */}
         <div className="flex gap-2 pt-3 border-t border-border">
           {step === 2 && (
-            <Button variant="outline" onClick={() => setStep(1)} className="flex-1">
+            <Button
+              variant="outline"
+              onClick={() => setStep(1)}
+              disabled={studentsLoading}
+              className="flex-1"
+            >
               Back
             </Button>
           )}
           {step === 1 && (
             <>
               {(mode === "group" || (mode === "individual" && source === "monthly")) ? (
-                <Button onClick={() => setStep(2)} className="flex-1 bg-gradient-cyber hover:opacity-90">
-                  Next
+                <Button
+                  onClick={() => setStep(2)}
+                  disabled={studentsLoading}
+                  className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
+                >
+                  {studentsLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                  {studentsLoading ? "Loading roster…" : "Next"}
                 </Button>
               ) : (
                 <Button
                   onClick={handleGenerate}
-                  disabled={generating}
+                  disabled={generating || studentsLoading}
                   className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
                 >
-                  {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                  {generating ? "Generating..." : "Download PDF"}
+                  {generating || studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                  {studentsLoading ? "Loading roster…" : generating ? "Generating..." : "Download PDF"}
                 </Button>
               )}
             </>
@@ -676,11 +686,20 @@ export default function AttendanceExportDialog({
           {step === 2 && (
             <Button
               onClick={handleGenerate}
-              disabled={generating || (mode === "group" && selectedRolls.size === 0) || (mode === "individual" && selectedRolls.size === 0)}
+              disabled={
+                generating ||
+                studentsLoading ||
+                (mode === "group" && selectedRolls.size === 0) ||
+                (mode === "individual" && selectedRolls.size === 0)
+              }
               className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
             >
-              {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-              {generating ? "Generating..." : `Download PDF (${mode === "individual" ? 1 : selectedRolls.size})`}
+              {generating || studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+              {studentsLoading
+                ? "Loading roster…"
+                : generating
+                  ? "Generating..."
+                  : `Download PDF (${mode === "individual" ? 1 : selectedRolls.size})`}
             </Button>
           )}
         </div>
