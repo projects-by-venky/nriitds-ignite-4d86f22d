@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import {
-  Download, Loader2, User, Users, UsersRound, Check, Search, FileText, X, RefreshCw,
+  Download, Loader2, User, Users, UsersRound, Check, Search, FileText, X, RefreshCw, Hash,
 } from "lucide-react";
+import { List, type RowComponentProps } from "react-window";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
