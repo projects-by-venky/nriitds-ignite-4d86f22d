@@ -26,6 +26,7 @@ import {
   fetchSectionHourlyAttendance,
   fetchStudentsBySection,
   getCachedStudentsBySection,
+  subscribeToSectionRoster,
 } from "@/lib/firebase-helpers";
 import {
   generateStudentAttendancePDF,
@@ -130,6 +131,30 @@ const HourlyAttendanceDashboard = () => {
 
   useEffect(() => {
     loadStudents(false);
+
+    // Subscribe to Firestore changes so the cache + UI auto-refresh when
+    // the underlying student_analytics data is updated elsewhere.
+    const branchCode = deptId?.toUpperCase() || "CSE";
+    const sectionLetter = section?.split("-").pop() || "A";
+    const semesterPart = section?.split("-")[0] || "2";
+    const unsub = subscribeToSectionRoster(
+      branchCode,
+      semesterPart,
+      sectionLetter,
+      (students) => {
+        if (students.length === 0) return;
+        setAllStudents(
+          students.map((s) => ({
+            roll_number: s.roll_number,
+            name: s.name,
+            branch: s.branch,
+            section: s.section,
+          }))
+        );
+        setStudentsLoading(false);
+      }
+    );
+    return () => unsub();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deptId, section]);
 
