@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import {
-  Download, Loader2, User, Users, UsersRound, Check, Search, FileText, X, RefreshCw,
+  Download, Loader2, User, Users, UsersRound, Check, Search, FileText, X, RefreshCw, Hash,
 } from "lucide-react";
+import { List, type RowComponentProps } from "react-window";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
@@ -64,33 +65,45 @@ export default function AttendanceExportDialog({
   const [step, setStep] = useState(1);
   const [mode, setMode] = useState<ExportMode>("individual");
   const [searchQuery, setSearchQuery] = useState("");
+  const [rollFilter, setRollFilter] = useState("");
   const [selectedRolls, setSelectedRolls] = useState<Set<string>>(new Set());
   const [generating, setGenerating] = useState(false);
 
-  // Reset on open
+  // Reset on open. Selection is intentionally preserved across roster
+  // refreshes — we only clear it when the dialog itself opens fresh.
   useEffect(() => {
     if (open) {
       setStep(1);
       setMode("individual");
       setSearchQuery("");
+      setRollFilter("");
       setSelectedRolls(new Set());
     }
   }, [open]);
 
-  const filteredStudents = allStudents.filter((s) => {
-    if (!searchQuery) return true;
-    const q = searchQuery.toUpperCase();
-    return s.roll_number.toUpperCase().includes(q) || s.name.toUpperCase().includes(q);
-  });
+  const filteredStudents = useMemo(() => {
+    const q = searchQuery.trim().toUpperCase();
+    const roll = rollFilter.trim().toUpperCase();
+    return allStudents.filter((s) => {
+      const sRoll = s.roll_number.toUpperCase();
+      if (roll && !sRoll.includes(roll)) return false;
+      if (q && !sRoll.includes(q) && !s.name.toUpperCase().includes(q)) return false;
+      return true;
+    });
+  }, [allStudents, searchQuery, rollFilter]);
 
-  const toggleStudent = (roll: string) => {
+  const toggleStudent = useCallback((roll: string) => {
     setSelectedRolls((prev) => {
       const next = new Set(prev);
       if (next.has(roll)) next.delete(roll);
       else next.add(roll);
       return next;
     });
-  };
+  }, []);
+
+  const selectSingle = useCallback((roll: string) => {
+    setSelectedRolls(new Set([roll]));
+  }, []);
 
   const toggleAll = () => {
     if (selectedRolls.size === filteredStudents.length) {
@@ -355,6 +368,64 @@ export default function AttendanceExportDialog({
     { value: "all" as ExportMode, icon: Users, label: "All", desc: "Full class attendance" },
   ];
 
+  // Virtualized row renderer for the student picker
+  type StudentRowProps = {
+    students: StudentEntry[];
+    selectedRolls: Set<string>;
+    onToggle: (roll: string) => void;
+  };
+  const StudentRow = ({
+    index,
+    style,
+    students,
+    selectedRolls,
+    onToggle,
+  }: RowComponentProps<StudentRowProps>) => {
+    const s = students[index];
+    if (!s) return null;
+    const checked = selectedRolls.has(s.roll_number);
+    return (
+      <div style={style} className="px-1">
+        <label
+          className={`flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-colors h-full ${
+            checked ? "bg-primary/5" : "hover:bg-muted/50"
+          }`}
+        >
+          <Checkbox checked={checked} onCheckedChange={() => onToggle(s.roll_number)} />
+          <div className="flex-1 min-w-0">
+            <div className="text-sm font-medium text-foreground truncate">{s.roll_number}</div>
+            <div className="text-xs text-muted-foreground truncate">{s.name}</div>
+          </div>
+        </label>
+      </div>
+    );
+  };
+
+  const LoadingRows = () => (
+    <div className="space-y-1 p-2" aria-label="Loading students">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg">
+          <Skeleton className="h-4 w-4 rounded" />
+          <div className="flex-1 space-y-1.5">
+            <Skeleton className="h-3.5 w-24" />
+            <Skeleton className="h-3 w-40" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  const RefreshingBanner = () =>
+    studentsLoading ? (
+      <div
+        role="status"
+        className="flex items-center gap-2 text-xs text-primary bg-primary/10 border border-primary/20 px-3 py-2 rounded-lg"
+      >
+        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+        Refreshing roster… selections preserved. Step navigation disabled until complete.
+      </div>
+    ) : null;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg max-h-[85vh] overflow-hidden flex flex-col">
@@ -413,20 +484,44 @@ export default function AttendanceExportDialog({
                 exit={{ opacity: 0, x: 20 }}
                 className="space-y-3"
               >
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search by roll number or name..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 h-10"
-                  />
+                <RefreshingBanner />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search name or roll…"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-9 h-10"
+                    />
+                  </div>
+                  <div className="relative">
+                    <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Filter by roll #"
+                      value={rollFilter}
+                      onChange={(e) => setRollFilter(e.target.value)}
+                      className="pl-9 pr-8 h-10 font-mono"
+                    />
+                    {rollFilter && (
+                      <button
+                        type="button"
+                        onClick={() => setRollFilter("")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        aria-label="Clear roll filter"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex items-center justify-between px-1">
                   <button
                     onClick={toggleAll}
-                    className="text-sm text-primary hover:underline"
+                    disabled={studentsLoading || filteredStudents.length === 0}
+                    className="text-sm text-primary hover:underline disabled:opacity-50 disabled:no-underline"
                   >
                     {selectedRolls.size === filteredStudents.length && filteredStudents.length > 0
                       ? "Deselect All"
@@ -446,44 +541,28 @@ export default function AttendanceExportDialog({
                       </button>
                     )}
                     <span className="text-xs text-muted-foreground">
-                      {selectedRolls.size} selected
+                      {selectedRolls.size} selected · {filteredStudents.length} shown
                     </span>
                   </div>
                 </div>
 
-                <div className="max-h-[300px] overflow-y-auto space-y-1 border border-border rounded-lg p-2">
+                <div className="border border-border rounded-lg overflow-hidden">
                   {studentsLoading ? (
-                    <div className="space-y-1" aria-label="Loading students">
-                      {Array.from({ length: 8 }).map((_, i) => (
-                        <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg">
-                          <Skeleton className="h-4 w-4 rounded" />
-                          <div className="flex-1 space-y-1.5">
-                            <Skeleton className="h-3.5 w-24" />
-                            <Skeleton className="h-3 w-40" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                    <LoadingRows />
                   ) : filteredStudents.length === 0 ? (
-                    <p className="text-sm text-muted-foreground text-center py-4">No students found</p>
+                    <p className="text-sm text-muted-foreground text-center py-8">No students found</p>
                   ) : (
-                    filteredStudents.map((s) => (
-                      <label
-                        key={s.roll_number}
-                        className={`flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-colors ${
-                          selectedRolls.has(s.roll_number) ? "bg-primary/5" : "hover:bg-muted/50"
-                        }`}
-                      >
-                        <Checkbox
-                          checked={selectedRolls.has(s.roll_number)}
-                          onCheckedChange={() => toggleStudent(s.roll_number)}
-                        />
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm font-medium text-foreground truncate">{s.roll_number}</div>
-                          <div className="text-xs text-muted-foreground truncate">{s.name}</div>
-                        </div>
-                      </label>
-                    ))
+                    <List
+                      rowComponent={StudentRow}
+                      rowCount={filteredStudents.length}
+                      rowHeight={52}
+                      rowProps={{
+                        students: filteredStudents,
+                        selectedRolls,
+                        onToggle: toggleStudent,
+                      }}
+                      style={{ height: 300, width: "100%" }}
+                    />
                   )}
                 </div>
               </motion.div>
@@ -497,15 +576,39 @@ export default function AttendanceExportDialog({
                 exit={{ opacity: 0, x: 20 }}
                 className="space-y-3"
               >
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search by roll number or name..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 h-10"
-                  />
+                <RefreshingBanner />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search name or roll…"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-9 h-10"
+                    />
+                  </div>
+                  <div className="relative">
+                    <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Filter by roll #"
+                      value={rollFilter}
+                      onChange={(e) => setRollFilter(e.target.value)}
+                      className="pl-9 pr-8 h-10 font-mono"
+                    />
+                    {rollFilter && (
+                      <button
+                        type="button"
+                        onClick={() => setRollFilter("")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        aria-label="Clear roll filter"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
+
                 {onRefreshStudents && (
                   <div className="flex justify-end px-1">
                     <button
@@ -520,38 +623,25 @@ export default function AttendanceExportDialog({
                     </button>
                   </div>
                 )}
-                <div className="max-h-[300px] overflow-y-auto space-y-1 border border-border rounded-lg p-2">
+
+                <div className="border border-border rounded-lg overflow-hidden">
                   {studentsLoading ? (
-                    <div className="space-y-1" aria-label="Loading students">
-                      {Array.from({ length: 8 }).map((_, i) => (
-                        <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg">
-                          <Skeleton className="h-4 w-4 rounded" />
-                          <div className="flex-1 space-y-1.5">
-                            <Skeleton className="h-3.5 w-24" />
-                            <Skeleton className="h-3 w-40" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : filteredStudents.map((s) => (
-                    <label
-                      key={s.roll_number}
-                      className={`flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-colors ${
-                        selectedRolls.has(s.roll_number) ? "bg-primary/5" : "hover:bg-muted/50"
-                      }`}
-                    >
-                      <Checkbox
-                        checked={selectedRolls.has(s.roll_number)}
-                        onCheckedChange={() => {
-                          setSelectedRolls(new Set([s.roll_number]));
-                        }}
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-foreground truncate">{s.roll_number}</div>
-                        <div className="text-xs text-muted-foreground truncate">{s.name}</div>
-                      </div>
-                    </label>
-                  ))}
+                    <LoadingRows />
+                  ) : filteredStudents.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-8">No students found</p>
+                  ) : (
+                    <List
+                      rowComponent={StudentRow}
+                      rowCount={filteredStudents.length}
+                      rowHeight={52}
+                      rowProps={{
+                        students: filteredStudents,
+                        selectedRolls,
+                        onToggle: selectSingle,
+                      }}
+                      style={{ height: 300, width: "100%" }}
+                    />
+                  )}
                 </div>
               </motion.div>
             )}
@@ -561,24 +651,34 @@ export default function AttendanceExportDialog({
         {/* Actions */}
         <div className="flex gap-2 pt-3 border-t border-border">
           {step === 2 && (
-            <Button variant="outline" onClick={() => setStep(1)} className="flex-1">
+            <Button
+              variant="outline"
+              onClick={() => setStep(1)}
+              disabled={studentsLoading}
+              className="flex-1"
+            >
               Back
             </Button>
           )}
           {step === 1 && (
             <>
               {(mode === "group" || (mode === "individual" && source === "monthly")) ? (
-                <Button onClick={() => setStep(2)} className="flex-1 bg-gradient-cyber hover:opacity-90">
-                  Next
+                <Button
+                  onClick={() => setStep(2)}
+                  disabled={studentsLoading}
+                  className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
+                >
+                  {studentsLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                  {studentsLoading ? "Loading roster…" : "Next"}
                 </Button>
               ) : (
                 <Button
                   onClick={handleGenerate}
-                  disabled={generating}
+                  disabled={generating || studentsLoading}
                   className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
                 >
-                  {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                  {generating ? "Generating..." : "Download PDF"}
+                  {generating || studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                  {studentsLoading ? "Loading roster…" : generating ? "Generating..." : "Download PDF"}
                 </Button>
               )}
             </>
@@ -586,11 +686,20 @@ export default function AttendanceExportDialog({
           {step === 2 && (
             <Button
               onClick={handleGenerate}
-              disabled={generating || (mode === "group" && selectedRolls.size === 0) || (mode === "individual" && selectedRolls.size === 0)}
+              disabled={
+                generating ||
+                studentsLoading ||
+                (mode === "group" && selectedRolls.size === 0) ||
+                (mode === "individual" && selectedRolls.size === 0)
+              }
               className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
             >
-              {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-              {generating ? "Generating..." : `Download PDF (${mode === "individual" ? 1 : selectedRolls.size})`}
+              {generating || studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+              {studentsLoading
+                ? "Loading roster…"
+                : generating
+                  ? "Generating..."
+                  : `Download PDF (${mode === "individual" ? 1 : selectedRolls.size})`}
             </Button>
           )}
         </div>
