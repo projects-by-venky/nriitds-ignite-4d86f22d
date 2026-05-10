@@ -156,6 +156,8 @@ export async function fetchStudentsBySection(
   })) as StudentData[];
 
   studentRosterCache.set(key, students);
+  // Attach a live listener so any future writes auto-invalidate the cache.
+  ensureRosterListener(branchCode, semester, sectionLetter);
   return students;
 }
 
