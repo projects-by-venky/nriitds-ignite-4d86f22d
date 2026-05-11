@@ -68,6 +68,9 @@ export default function AttendanceExportDialog({
   const [rollFilter, setRollFilter] = useState("");
   const [selectedRolls, setSelectedRolls] = useState<Set<string>>(new Set());
   const [generating, setGenerating] = useState(false);
+  // Debounced filter values to avoid re-filtering large rosters on every keystroke
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [debouncedRollFilter, setDebouncedRollFilter] = useState("");
 
   // Reset on open. Selection is intentionally preserved across roster
   // refreshes — we only clear it when the dialog itself opens fresh.
@@ -77,20 +80,34 @@ export default function AttendanceExportDialog({
       setMode("individual");
       setSearchQuery("");
       setRollFilter("");
+      setDebouncedSearch("");
+      setDebouncedRollFilter("");
       setSelectedRolls(new Set());
     }
   }, [open]);
 
+  // Debounce name search (200ms)
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(searchQuery), 200);
+    return () => clearTimeout(t);
+  }, [searchQuery]);
+
+  // Debounce roll filter (200ms)
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedRollFilter(rollFilter), 200);
+    return () => clearTimeout(t);
+  }, [rollFilter]);
+
   const filteredStudents = useMemo(() => {
-    const q = searchQuery.trim().toUpperCase();
-    const roll = rollFilter.trim().toUpperCase();
+    const q = debouncedSearch.trim().toUpperCase();
+    const roll = debouncedRollFilter.trim().toUpperCase();
     return allStudents.filter((s) => {
       const sRoll = s.roll_number.toUpperCase();
       if (roll && !sRoll.includes(roll)) return false;
       if (q && !sRoll.includes(q) && !s.name.toUpperCase().includes(q)) return false;
       return true;
     });
-  }, [allStudents, searchQuery, rollFilter]);
+  }, [allStudents, debouncedSearch, debouncedRollFilter]);
 
   const toggleStudent = useCallback((roll: string) => {
     setSelectedRolls((prev) => {
