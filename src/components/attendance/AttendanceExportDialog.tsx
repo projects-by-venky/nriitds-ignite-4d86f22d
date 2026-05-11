@@ -122,13 +122,30 @@ export default function AttendanceExportDialog({
     setSelectedRolls(new Set([roll]));
   }, []);
 
-  const toggleAll = () => {
-    if (selectedRolls.size === filteredStudents.length) {
-      setSelectedRolls(new Set());
-    } else {
-      setSelectedRolls(new Set(filteredStudents.map((s) => s.roll_number)));
-    }
-  };
+  // Whether every currently filtered student is already selected
+  const allShownSelected =
+    filteredStudents.length > 0 &&
+    filteredStudents.every((s) => selectedRolls.has(s.roll_number));
+
+  // Select / deselect only the currently filtered (shown) students,
+  // preserving any selections that are outside the current filter.
+  const toggleShown = useCallback(() => {
+    setSelectedRolls((prev) => {
+      const next = new Set(prev);
+      const shownRolls = filteredStudents.map((s) => s.roll_number);
+      const allSelected = shownRolls.every((r) => next.has(r));
+      if (allSelected) {
+        shownRolls.forEach((r) => next.delete(r));
+      } else {
+        shownRolls.forEach((r) => next.add(r));
+      }
+      return next;
+    });
+  }, [filteredStudents]);
+
+  const clearSelections = useCallback(() => {
+    setSelectedRolls(new Set());
+  }, []);
 
   const handleGenerate = async () => {
     setGenerating(true);
