@@ -627,6 +627,23 @@ export default function AttendanceExportDialog({
                       </AlertDialogContent>
                     </AlertDialog>
                   </div>
+                  <div className="flex items-center gap-3">
+                    {onRefreshStudents && (
+                      <button
+                        type="button"
+                        onClick={onRefreshStudents}
+                        disabled={studentsLoading}
+                        title="Refresh student list"
+                        className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors disabled:opacity-50"
+                      >
+                        <RefreshCw className={`w-3.5 h-3.5 ${studentsLoading ? "animate-spin" : ""}`} />
+                        Refresh
+                      </button>
+                    )}
+                    <span className="text-xs text-muted-foreground">
+                      {selectedRolls.size} selected · {filteredStudents.length} shown
+                    </span>
+                  </div>
                 </div>
 
                 {/* Export-only-shown toggle */}
@@ -650,24 +667,6 @@ export default function AttendanceExportDialog({
                     </div>
                   </div>
                 </label>
-                  <div className="flex items-center gap-3">
-                    {onRefreshStudents && (
-                      <button
-                        type="button"
-                        onClick={onRefreshStudents}
-                        disabled={studentsLoading}
-                        title="Refresh student list"
-                        className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors disabled:opacity-50"
-                      >
-                        <RefreshCw className={`w-3.5 h-3.5 ${studentsLoading ? "animate-spin" : ""}`} />
-                        Refresh
-                      </button>
-                    )}
-                    <span className="text-xs text-muted-foreground">
-                      {selectedRolls.size} selected · {filteredStudents.length} shown
-                    </span>
-                  </div>
-                </div>
 
                 <div className="border border-border rounded-lg overflow-hidden">
                   {studentsLoading ? (
