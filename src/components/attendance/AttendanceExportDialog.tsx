@@ -107,7 +107,7 @@ export default function AttendanceExportDialog({
       if (q && !sRoll.includes(q) && !s.name.toUpperCase().includes(q)) return false;
       return true;
     });
-  }, [allStudents, searchQuery, rollFilter]);
+  }, [allStudents, debouncedSearch, debouncedRollFilter]);
 
   const toggleStudent = useCallback((roll: string) => {
     setSelectedRolls((prev) => {
