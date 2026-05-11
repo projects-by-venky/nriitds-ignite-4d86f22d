@@ -219,15 +219,22 @@ export default function AttendanceExportDialog({
         }
       } else {
         // Group
-        if (selectedRolls.size === 0) {
-          toast({ title: "No Selection", description: "Please select at least one student.", variant: "destructive" });
+        const exportRolls = effectiveSelectedRolls;
+        if (exportRolls.size === 0) {
+          toast({
+            title: "No Selection",
+            description: exportOnlyShown && selectedRolls.size > 0
+              ? "None of your selected students match the current filters."
+              : "Please select at least one student.",
+            variant: "destructive",
+          });
           setGenerating(false);
           return;
         }
 
         if (source === "hourly") {
           const allRecords = await fetchSectionHourlyAttendance(branch, section);
-          const groupRecords = allRecords.filter((r) => selectedRolls.has(r.roll_number));
+          const groupRecords = allRecords.filter((r) => exportRolls.has(r.roll_number));
           if (groupRecords.length === 0) {
             toast({ title: "No Data", description: "No records found for selected students.", variant: "destructive" });
             setGenerating(false);
@@ -236,7 +243,7 @@ export default function AttendanceExportDialog({
           generateClassAttendancePDF(groupRecords, branch, section);
           toast({ title: "PDF Downloaded", description: `Group_Attendance_Report.pdf` });
         } else {
-          generateMonthlyGroupPDF();
+          generateMonthlyGroupPDF(exportRolls);
         }
       }
 
