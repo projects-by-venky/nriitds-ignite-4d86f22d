@@ -551,16 +551,23 @@ export default function AttendanceExportDialog({
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between px-1">
-                  <button
-                    onClick={toggleAll}
-                    disabled={studentsLoading || filteredStudents.length === 0}
-                    className="text-sm text-primary hover:underline disabled:opacity-50 disabled:no-underline"
-                  >
-                    {selectedRolls.size === filteredStudents.length && filteredStudents.length > 0
-                      ? "Deselect All"
-                      : "Select All"}
-                  </button>
+                <div className="flex items-center justify-between px-1 gap-2 flex-wrap">
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={toggleShown}
+                      disabled={studentsLoading || filteredStudents.length === 0}
+                      className="text-sm text-primary hover:underline disabled:opacity-50 disabled:no-underline"
+                    >
+                      {allShownSelected ? "Deselect shown" : "Select shown"}
+                    </button>
+                    <button
+                      onClick={clearSelections}
+                      disabled={studentsLoading || selectedRolls.size === 0}
+                      className="text-sm text-muted-foreground hover:text-destructive disabled:opacity-40 disabled:hover:text-muted-foreground transition-colors"
+                    >
+                      Clear selections
+                    </button>
+                  </div>
                   <div className="flex items-center gap-3">
                     {onRefreshStudents && (
                       <button
