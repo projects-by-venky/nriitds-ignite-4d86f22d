@@ -76,9 +76,14 @@ export default function AttendanceExportDialog({
   // Debounced filter values to avoid re-filtering large rosters on every keystroke
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [debouncedRollFilter, setDebouncedRollFilter] = useState("");
+  // When true, the export is restricted to students currently matching
+  // the search + roll filters (intersection with selectedRolls in group mode)
+  const [exportOnlyShown, setExportOnlyShown] = useState(false);
+  const [confirmClearOpen, setConfirmClearOpen] = useState(false);
 
-  // Reset on open. Selection is intentionally preserved across roster
-  // refreshes — we only clear it when the dialog itself opens fresh.
+  // Reset on open. selectedRolls intentionally persists across roster
+  // refreshes and filter changes — it is ONLY cleared when the dialog
+  // itself is freshly opened, so filtering never drops user's checklist.
   useEffect(() => {
     if (open) {
       setStep(1);
@@ -88,6 +93,7 @@ export default function AttendanceExportDialog({
       setDebouncedSearch("");
       setDebouncedRollFilter("");
       setSelectedRolls(new Set());
+      setExportOnlyShown(false);
     }
   }, [open]);
 
