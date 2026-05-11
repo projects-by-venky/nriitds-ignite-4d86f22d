@@ -122,13 +122,30 @@ export default function AttendanceExportDialog({
     setSelectedRolls(new Set([roll]));
   }, []);
 
-  const toggleAll = () => {
-    if (selectedRolls.size === filteredStudents.length) {
-      setSelectedRolls(new Set());
-    } else {
-      setSelectedRolls(new Set(filteredStudents.map((s) => s.roll_number)));
-    }
-  };
+  // Whether every currently filtered student is already selected
+  const allShownSelected =
+    filteredStudents.length > 0 &&
+    filteredStudents.every((s) => selectedRolls.has(s.roll_number));
+
+  // Select / deselect only the currently filtered (shown) students,
+  // preserving any selections that are outside the current filter.
+  const toggleShown = useCallback(() => {
+    setSelectedRolls((prev) => {
+      const next = new Set(prev);
+      const shownRolls = filteredStudents.map((s) => s.roll_number);
+      const allSelected = shownRolls.every((r) => next.has(r));
+      if (allSelected) {
+        shownRolls.forEach((r) => next.delete(r));
+      } else {
+        shownRolls.forEach((r) => next.add(r));
+      }
+      return next;
+    });
+  }, [filteredStudents]);
+
+  const clearSelections = useCallback(() => {
+    setSelectedRolls(new Set());
+  }, []);
 
   const handleGenerate = async () => {
     setGenerating(true);
@@ -534,16 +551,23 @@ export default function AttendanceExportDialog({
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between px-1">
-                  <button
-                    onClick={toggleAll}
-                    disabled={studentsLoading || filteredStudents.length === 0}
-                    className="text-sm text-primary hover:underline disabled:opacity-50 disabled:no-underline"
-                  >
-                    {selectedRolls.size === filteredStudents.length && filteredStudents.length > 0
-                      ? "Deselect All"
-                      : "Select All"}
-                  </button>
+                <div className="flex items-center justify-between px-1 gap-2 flex-wrap">
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={toggleShown}
+                      disabled={studentsLoading || filteredStudents.length === 0}
+                      className="text-sm text-primary hover:underline disabled:opacity-50 disabled:no-underline"
+                    >
+                      {allShownSelected ? "Deselect shown" : "Select shown"}
+                    </button>
+                    <button
+                      onClick={clearSelections}
+                      disabled={studentsLoading || selectedRolls.size === 0}
+                      className="text-sm text-muted-foreground hover:text-destructive disabled:opacity-40 disabled:hover:text-muted-foreground transition-colors"
+                    >
+                      Clear selections
+                    </button>
+                  </div>
                   <div className="flex items-center gap-3">
                     {onRefreshStudents && (
                       <button
