@@ -9,6 +9,11 @@ import { List, type RowComponentProps } from "react-window";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -71,9 +76,14 @@ export default function AttendanceExportDialog({
   // Debounced filter values to avoid re-filtering large rosters on every keystroke
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [debouncedRollFilter, setDebouncedRollFilter] = useState("");
+  // When true, the export is restricted to students currently matching
+  // the search + roll filters (intersection with selectedRolls in group mode)
+  const [exportOnlyShown, setExportOnlyShown] = useState(false);
+  const [confirmClearOpen, setConfirmClearOpen] = useState(false);
 
-  // Reset on open. Selection is intentionally preserved across roster
-  // refreshes — we only clear it when the dialog itself opens fresh.
+  // Reset on open. selectedRolls intentionally persists across roster
+  // refreshes and filter changes — it is ONLY cleared when the dialog
+  // itself is freshly opened, so filtering never drops user's checklist.
   useEffect(() => {
     if (open) {
       setStep(1);
@@ -83,6 +93,7 @@ export default function AttendanceExportDialog({
       setDebouncedSearch("");
       setDebouncedRollFilter("");
       setSelectedRolls(new Set());
+      setExportOnlyShown(false);
     }
   }, [open]);
 
@@ -147,6 +158,24 @@ export default function AttendanceExportDialog({
     setSelectedRolls(new Set());
   }, []);
 
+  // Roll set restricted to currently filtered (shown) students
+  const shownRollSet = useMemo(
+    () => new Set(filteredStudents.map((s) => s.roll_number)),
+    [filteredStudents]
+  );
+
+  // Effective selection used at export time. When "Export only shown" is on,
+  // we intersect with the currently filtered rolls so the user never exports
+  // anyone outside their active filters.
+  const effectiveSelectedRolls = useMemo(() => {
+    if (!exportOnlyShown) return selectedRolls;
+    const next = new Set<string>();
+    selectedRolls.forEach((r) => {
+      if (shownRollSet.has(r)) next.add(r);
+    });
+    return next;
+  }, [selectedRolls, shownRollSet, exportOnlyShown]);
+
   const handleGenerate = async () => {
     setGenerating(true);
     try {
@@ -190,15 +219,22 @@ export default function AttendanceExportDialog({
         }
       } else {
         // Group
-        if (selectedRolls.size === 0) {
-          toast({ title: "No Selection", description: "Please select at least one student.", variant: "destructive" });
+        const exportRolls = effectiveSelectedRolls;
+        if (exportRolls.size === 0) {
+          toast({
+            title: "No Selection",
+            description: exportOnlyShown && selectedRolls.size > 0
+              ? "None of your selected students match the current filters."
+              : "Please select at least one student.",
+            variant: "destructive",
+          });
           setGenerating(false);
           return;
         }
 
         if (source === "hourly") {
           const allRecords = await fetchSectionHourlyAttendance(branch, section);
-          const groupRecords = allRecords.filter((r) => selectedRolls.has(r.roll_number));
+          const groupRecords = allRecords.filter((r) => exportRolls.has(r.roll_number));
           if (groupRecords.length === 0) {
             toast({ title: "No Data", description: "No records found for selected students.", variant: "destructive" });
             setGenerating(false);
@@ -207,7 +243,7 @@ export default function AttendanceExportDialog({
           generateClassAttendancePDF(groupRecords, branch, section);
           toast({ title: "PDF Downloaded", description: `Group_Attendance_Report.pdf` });
         } else {
-          generateMonthlyGroupPDF();
+          generateMonthlyGroupPDF(exportRolls);
         }
       }
 
@@ -285,8 +321,8 @@ export default function AttendanceExportDialog({
     toast({ title: "PDF Downloaded", description: "Full_Attendance_Report.pdf" });
   };
 
-  const generateMonthlyGroupPDF = () => {
-    const selected = allStudents.filter((s) => selectedRolls.has(s.roll_number));
+  const generateMonthlyGroupPDF = (rolls: Set<string> = selectedRolls) => {
+    const selected = allStudents.filter((s) => rolls.has(s.roll_number));
     if (selected.length === 0) return;
     generateMonthlyBulkPDF(selected, `Group_Attendance_Report.pdf`);
     toast({ title: "PDF Downloaded", description: "Group_Attendance_Report.pdf" });
@@ -560,13 +596,36 @@ export default function AttendanceExportDialog({
                     >
                       {allShownSelected ? "Deselect shown" : "Select shown"}
                     </button>
-                    <button
-                      onClick={clearSelections}
-                      disabled={studentsLoading || selectedRolls.size === 0}
-                      className="text-sm text-muted-foreground hover:text-destructive disabled:opacity-40 disabled:hover:text-muted-foreground transition-colors"
-                    >
-                      Clear selections
-                    </button>
+                    <AlertDialog open={confirmClearOpen} onOpenChange={setConfirmClearOpen}>
+                      <AlertDialogTrigger asChild>
+                        <button
+                          disabled={studentsLoading || selectedRolls.size === 0}
+                          className="text-sm text-muted-foreground hover:text-destructive disabled:opacity-40 disabled:hover:text-muted-foreground transition-colors"
+                        >
+                          Clear selections
+                        </button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Clear all selections?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will remove all {selectedRolls.size} student{selectedRolls.size === 1 ? "" : "s"} from your checklist. This action cannot be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => {
+                              clearSelections();
+                              setConfirmClearOpen(false);
+                            }}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            Clear all
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                   <div className="flex items-center gap-3">
                     {onRefreshStudents && (
@@ -586,6 +645,28 @@ export default function AttendanceExportDialog({
                     </span>
                   </div>
                 </div>
+
+                {/* Export-only-shown toggle */}
+                <label className="flex items-start gap-2 px-1 cursor-pointer select-none">
+                  <Checkbox
+                    id="export-only-shown"
+                    checked={exportOnlyShown}
+                    onCheckedChange={(v) => setExportOnlyShown(v === true)}
+                    disabled={studentsLoading}
+                    className="mt-0.5"
+                  />
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-foreground">Export only shown</div>
+                    <div className="text-xs text-muted-foreground">
+                      Limit the download to selected students currently matching your search and roll filters
+                      {exportOnlyShown && selectedRolls.size > 0 && (
+                        <span className="ml-1 text-primary font-medium">
+                          ({effectiveSelectedRolls.size} of {selectedRolls.size} will export)
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </label>
 
                 <div className="border border-border rounded-lg overflow-hidden">
                   {studentsLoading ? (
