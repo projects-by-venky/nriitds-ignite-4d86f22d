@@ -158,6 +158,24 @@ export default function AttendanceExportDialog({
     setSelectedRolls(new Set());
   }, []);
 
+  // Roll set restricted to currently filtered (shown) students
+  const shownRollSet = useMemo(
+    () => new Set(filteredStudents.map((s) => s.roll_number)),
+    [filteredStudents]
+  );
+
+  // Effective selection used at export time. When "Export only shown" is on,
+  // we intersect with the currently filtered rolls so the user never exports
+  // anyone outside their active filters.
+  const effectiveSelectedRolls = useMemo(() => {
+    if (!exportOnlyShown) return selectedRolls;
+    const next = new Set<string>();
+    selectedRolls.forEach((r) => {
+      if (shownRollSet.has(r)) next.add(r);
+    });
+    return next;
+  }, [selectedRolls, shownRollSet, exportOnlyShown]);
+
   const handleGenerate = async () => {
     setGenerating(true);
     try {
