@@ -596,14 +596,60 @@ export default function AttendanceExportDialog({
                     >
                       {allShownSelected ? "Deselect shown" : "Select shown"}
                     </button>
-                    <button
-                      onClick={clearSelections}
-                      disabled={studentsLoading || selectedRolls.size === 0}
-                      className="text-sm text-muted-foreground hover:text-destructive disabled:opacity-40 disabled:hover:text-muted-foreground transition-colors"
-                    >
-                      Clear selections
-                    </button>
+                    <AlertDialog open={confirmClearOpen} onOpenChange={setConfirmClearOpen}>
+                      <AlertDialogTrigger asChild>
+                        <button
+                          disabled={studentsLoading || selectedRolls.size === 0}
+                          className="text-sm text-muted-foreground hover:text-destructive disabled:opacity-40 disabled:hover:text-muted-foreground transition-colors"
+                        >
+                          Clear selections
+                        </button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Clear all selections?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will remove all {selectedRolls.size} student{selectedRolls.size === 1 ? "" : "s"} from your checklist. This action cannot be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => {
+                              clearSelections();
+                              setConfirmClearOpen(false);
+                            }}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            Clear all
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
+                </div>
+
+                {/* Export-only-shown toggle */}
+                <label className="flex items-start gap-2 px-1 cursor-pointer select-none">
+                  <Checkbox
+                    id="export-only-shown"
+                    checked={exportOnlyShown}
+                    onCheckedChange={(v) => setExportOnlyShown(v === true)}
+                    disabled={studentsLoading}
+                    className="mt-0.5"
+                  />
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-foreground">Export only shown</div>
+                    <div className="text-xs text-muted-foreground">
+                      Limit the download to selected students currently matching your search and roll filters
+                      {exportOnlyShown && selectedRolls.size > 0 && (
+                        <span className="ml-1 text-primary font-medium">
+                          ({effectiveSelectedRolls.size} of {selectedRolls.size} will export)
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </label>
                   <div className="flex items-center gap-3">
                     {onRefreshStudents && (
                       <button
