@@ -321,8 +321,8 @@ export default function AttendanceExportDialog({
     toast({ title: "PDF Downloaded", description: "Full_Attendance_Report.pdf" });
   };
 
-  const generateMonthlyGroupPDF = () => {
-    const selected = allStudents.filter((s) => selectedRolls.has(s.roll_number));
+  const generateMonthlyGroupPDF = (rolls: Set<string> = selectedRolls) => {
+    const selected = allStudents.filter((s) => rolls.has(s.roll_number));
     if (selected.length === 0) return;
     generateMonthlyBulkPDF(selected, `Group_Attendance_Report.pdf`);
     toast({ title: "PDF Downloaded", description: "Group_Attendance_Report.pdf" });
