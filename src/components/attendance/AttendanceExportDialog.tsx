@@ -67,8 +67,10 @@ export default function AttendanceExportDialog({
   open, onOpenChange, currentRecords, currentStudent, allStudents = [], studentsLoading = false,
   onRefreshStudents, branch, section, source, monthlyData,
 }: AttendanceExportDialogProps) {
+  const EXPORT_ONLY_SHOWN_KEY = "attendanceExport.exportOnlyShown";
   const [step, setStep] = useState(1);
   const [mode, setMode] = useState<ExportMode>("individual");
+  const [format, setFormat] = useState<"pdf" | "csv">("pdf");
   const [searchQuery, setSearchQuery] = useState("");
   const [rollFilter, setRollFilter] = useState("");
   const [selectedRolls, setSelectedRolls] = useState<Set<string>>(new Set());
@@ -76,10 +78,15 @@ export default function AttendanceExportDialog({
   // Debounced filter values to avoid re-filtering large rosters on every keystroke
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [debouncedRollFilter, setDebouncedRollFilter] = useState("");
-  // When true, the export is restricted to students currently matching
-  // the search + roll filters (intersection with selectedRolls in group mode)
-  const [exportOnlyShown, setExportOnlyShown] = useState(false);
+  // Persist "Export only shown" toggle across dialog sessions via localStorage
+  const [exportOnlyShown, setExportOnlyShownState] = useState(false);
+  const setExportOnlyShown = useCallback((v: boolean) => {
+    setExportOnlyShownState(v);
+    try { localStorage.setItem(EXPORT_ONLY_SHOWN_KEY, v ? "1" : "0"); } catch {}
+  }, []);
   const [confirmClearOpen, setConfirmClearOpen] = useState(false);
+  // Snapshot of selections for Undo after a Clear action
+  const [lastClearedSelections, setLastClearedSelections] = useState<Set<string> | null>(null);
 
   // Reset on open. selectedRolls intentionally persists across roster
   // refreshes and filter changes — it is ONLY cleared when the dialog
@@ -88,14 +95,29 @@ export default function AttendanceExportDialog({
     if (open) {
       setStep(1);
       setMode("individual");
+      setFormat("pdf");
       setSearchQuery("");
       setRollFilter("");
       setDebouncedSearch("");
       setDebouncedRollFilter("");
       setSelectedRolls(new Set());
-      setExportOnlyShown(false);
+      setLastClearedSelections(null);
+      // Restore persisted "export only shown" preference
+      try {
+        const saved = localStorage.getItem(EXPORT_ONLY_SHOWN_KEY);
+        setExportOnlyShownState(saved === "1");
+      } catch {
+        setExportOnlyShownState(false);
+      }
     }
   }, [open]);
+
+  // Auto-dismiss Undo affordance after 8s
+  useEffect(() => {
+    if (!lastClearedSelections) return;
+    const t = setTimeout(() => setLastClearedSelections(null), 8000);
+    return () => clearTimeout(t);
+  }, [lastClearedSelections]);
 
   // Debounce name search (200ms)
   useEffect(() => {
