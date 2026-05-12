@@ -913,8 +913,40 @@ export default function AttendanceExportDialog({
           </AnimatePresence>
         </div>
 
+        {/* Footer hint: filter exclusion warning when "Export only shown" is on */}
+        {step === 2 && mode === "group" && exportOnlyShown && excludedByFilterCount > 0 && (
+          <div className="text-xs text-amber-700 dark:text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2 mt-2">
+            {excludedByFilterCount} of your {selectedRolls.size} selected student{selectedRolls.size === 1 ? "" : "s"} {excludedByFilterCount === 1 ? "is" : "are"} hidden by the current search/roll filter and will be excluded from this export.
+          </div>
+        )}
+
         {/* Actions */}
-        <div className="flex gap-2 pt-3 border-t border-border">
+        <div className="flex flex-col gap-2 pt-3 border-t border-border">
+          {/* Format selector */}
+          <div className="flex items-center gap-1 p-1 rounded-lg bg-muted/50 self-stretch sm:self-end">
+            <button
+              type="button"
+              onClick={() => setFormat("pdf")}
+              className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                format === "pdf" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              }`}
+              aria-pressed={format === "pdf"}
+            >
+              <FileText className="w-3.5 h-3.5" /> PDF
+            </button>
+            <button
+              type="button"
+              onClick={() => setFormat("csv")}
+              className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                format === "csv" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              }`}
+              aria-pressed={format === "csv"}
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5" /> CSV
+            </button>
+          </div>
+
+          <div className="flex gap-2">
           {step === 2 && (
             <Button
               variant="outline"
@@ -943,7 +975,7 @@ export default function AttendanceExportDialog({
                   className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
                 >
                   {generating || studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                  {studentsLoading ? "Loading roster…" : generating ? "Generating..." : "Download PDF"}
+                  {studentsLoading ? "Loading roster…" : generating ? "Generating..." : `Download ${format.toUpperCase()}`}
                 </Button>
               )}
             </>
@@ -955,8 +987,10 @@ export default function AttendanceExportDialog({
                 generating ||
                 studentsLoading ||
                 (mode === "group" && selectedRolls.size === 0) ||
-                (mode === "individual" && selectedRolls.size === 0)
+                (mode === "individual" && selectedRolls.size === 0) ||
+                exportOnlyShownBlocksDownload
               }
+              title={exportOnlyShownBlocksDownload ? "No selected students match the current filters." : undefined}
               className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
             >
               {generating || studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
@@ -964,9 +998,10 @@ export default function AttendanceExportDialog({
                 ? "Loading roster…"
                 : generating
                   ? "Generating..."
-                  : `Download PDF (${mode === "individual" ? 1 : selectedRolls.size})`}
+                  : `Download ${format.toUpperCase()} (${mode === "individual" ? 1 : (exportOnlyShown ? effectiveSelectedRolls.size : selectedRolls.size)})`}
             </Button>
           )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
