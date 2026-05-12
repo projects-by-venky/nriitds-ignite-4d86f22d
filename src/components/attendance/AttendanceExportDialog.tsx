@@ -208,6 +208,62 @@ export default function AttendanceExportDialog({
     return next;
   }, [selectedRolls, shownRollSet, exportOnlyShown]);
 
+  // How many of the user's selections are hidden by current filters
+  const excludedByFilterCount = useMemo(() => {
+    if (!exportOnlyShown) return 0;
+    let n = 0;
+    selectedRolls.forEach((r) => { if (!shownRollSet.has(r)) n++; });
+    return n;
+  }, [selectedRolls, shownRollSet, exportOnlyShown]);
+
+  // Disable the Download action when "Export only shown" would export 0
+  const exportOnlyShownBlocksDownload =
+    mode === "group" && exportOnlyShown && selectedRolls.size > 0 && effectiveSelectedRolls.size === 0;
+
+  // ---------- CSV helpers ----------
+  const downloadCSV = (rows: (string | number)[][], filename: string) => {
+    const escape = (v: string | number) => {
+      const s = String(v ?? "");
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const csv = rows.map((r) => r.map(escape).join(",")).join("\n");
+    const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const buildMonthlyCSV = (students: StudentEntry[], filename: string) => {
+    const header = ["#", "Roll Number", "Name", "Branch", "Section", "Subject", "Conducted", "Attended", "Percentage"];
+    const rows: (string | number)[][] = [header];
+    students.forEach((s, i) => {
+      const data = monthlyData?.[s.roll_number] || [];
+      if (data.length === 0) {
+        rows.push([i + 1, s.roll_number, s.name, s.branch, s.section, "", 0, 0, "0%"]);
+        return;
+      }
+      data.forEach((sub) => {
+        const pct = sub.conducted > 0 ? Math.round((sub.attended / sub.conducted) * 100) : 0;
+        rows.push([i + 1, s.roll_number, s.name, s.branch, s.section, sub.code, sub.conducted, sub.attended, `${pct}%`]);
+      });
+      const totalC = data.reduce((sum, a) => sum + a.conducted, 0);
+      const totalA = data.reduce((sum, a) => sum + a.attended, 0);
+      const pct = totalC > 0 ? Math.round((totalA / totalC) * 100) : 0;
+      rows.push([i + 1, s.roll_number, s.name, s.branch, s.section, "TOTAL", totalC, totalA, `${pct}%`]);
+    });
+    downloadCSV(rows, filename);
+  };
+
+  const buildHourlyCSV = (records: HourlyAttendanceRecord[], filename: string) => {
+    const header = ["Roll Number", "Name", "Branch", "Section", "Date", "Hour", "Subject", "Status"];
+    const rows: (string | number)[][] = [header];
+    records.forEach((r) => {
+      rows.push([r.roll_number, r.name, r.branch, r.section, r.date, r.hour, r.subject, r.status]);
+    });
+    downloadCSV(rows, filename);
+  };
+
   const handleGenerate = async () => {
     setGenerating(true);
     try {
