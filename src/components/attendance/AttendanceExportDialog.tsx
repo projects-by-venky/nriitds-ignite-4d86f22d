@@ -802,13 +802,15 @@ export default function AttendanceExportDialog({
                   </div>
                 </div>
 
-                {lastClearedSelections && lastClearedSelections.size > 0 && (
+                {clearUndoStack.length > 0 && (
                   <div
                     role="status"
                     className="flex items-center justify-between gap-2 text-xs bg-muted/60 border border-border px-3 py-2 rounded-lg"
                   >
                     <span className="text-muted-foreground">
-                      Cleared {lastClearedSelections.size} selection{lastClearedSelections.size === 1 ? "" : "s"}.
+                      Cleared {clearUndoStack[clearUndoStack.length - 1].size} selection
+                      {clearUndoStack[clearUndoStack.length - 1].size === 1 ? "" : "s"}
+                      {clearUndoStack.length > 1 ? ` · ${clearUndoStack.length} undo steps available` : ""}.
                     </span>
                     <button
                       type="button"
