@@ -202,17 +202,26 @@ export default function AttendanceExportDialog({
 
   const clearSelections = useCallback(() => {
     setSelectedRolls((prev) => {
-      if (prev.size > 0) setLastClearedSelections(new Set(prev));
+      if (prev.size > 0) {
+        setClearUndoStack((stack) => [...stack, new Set(prev)]);
+      }
       return new Set();
     });
   }, []);
 
   const undoClearSelections = useCallback(() => {
-    if (lastClearedSelections) {
-      setSelectedRolls(new Set(lastClearedSelections));
-      setLastClearedSelections(null);
-    }
-  }, [lastClearedSelections]);
+    setClearUndoStack((stack) => {
+      if (stack.length === 0) return stack;
+      const last = stack[stack.length - 1];
+      // Merge restored selections with current ones so an in-flight selection isn't lost
+      setSelectedRolls((curr) => {
+        const next = new Set(curr);
+        last.forEach((r) => next.add(r));
+        return next;
+      });
+      return stack.slice(0, -1);
+    });
+  }, []);
 
   // Roll set restricted to currently filtered (shown) students
   const shownRollSet = useMemo(
