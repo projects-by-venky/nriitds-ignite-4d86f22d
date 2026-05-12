@@ -686,7 +686,63 @@ export default function AttendanceExportDialog({
 
         <div className="flex-1 overflow-y-auto py-2 space-y-4">
           <AnimatePresence mode="wait">
-            {step === 1 && (
+            {showPreview && (
+              <motion.div
+                key="preview"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                className="space-y-3"
+              >
+                <div className="rounded-lg border border-border bg-muted/30 p-4">
+                  <div className="flex items-baseline justify-between gap-2 flex-wrap">
+                    <div>
+                      <div className="text-xs uppercase tracking-wide text-muted-foreground">Export preview</div>
+                      <div className="text-2xl font-bold text-foreground mt-0.5">
+                        {previewStudents.length} {previewStudents.length === 1 ? "student" : "students"}
+                      </div>
+                    </div>
+                    <div className="text-right text-xs text-muted-foreground">
+                      <div>Format: <span className="font-semibold text-foreground">{format.toUpperCase()}</span></div>
+                      <div>Mode: <span className="font-semibold text-foreground capitalize">{mode}</span></div>
+                      <div>{branch.toUpperCase()} · Section {section.toUpperCase()}</div>
+                    </div>
+                  </div>
+                  {mode === "group" && exportOnlyShown && excludedByFilterCount > 0 && (
+                    <div className="mt-2 text-xs text-amber-700 dark:text-amber-400">
+                      {excludedByFilterCount} selected {excludedByFilterCount === 1 ? "student is" : "students are"} excluded by current filters.
+                    </div>
+                  )}
+                </div>
+
+                {previewStudents.length > 0 ? (
+                  <div className="border border-border rounded-lg overflow-hidden">
+                    <div className="px-3 py-2 bg-muted/40 text-xs font-medium text-muted-foreground border-b border-border">
+                      Sample {Math.min(sampleRows.length, previewStudents.length)} of {previewStudents.length}
+                    </div>
+                    <ul className="divide-y divide-border">
+                      {sampleRows.map((s) => (
+                        <li key={s.roll_number} className="flex items-center justify-between px-3 py-2 text-sm">
+                          <span className="font-mono font-medium text-foreground">{s.roll_number}</span>
+                          <span className="text-muted-foreground truncate ml-3">{s.name}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    {previewStudents.length > sampleRows.length && (
+                      <div className="px-3 py-2 text-xs text-muted-foreground text-center border-t border-border bg-muted/20">
+                        +{previewStudents.length - sampleRows.length} more not shown
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="rounded-lg border border-destructive/40 bg-destructive/5 px-3 py-4 text-sm text-destructive text-center">
+                    No students to export. Go back and adjust your selection or filters.
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {!showPreview && step === 1 && (
               <motion.div
                 key="step1"
                 initial={{ opacity: 0, x: -20 }}
