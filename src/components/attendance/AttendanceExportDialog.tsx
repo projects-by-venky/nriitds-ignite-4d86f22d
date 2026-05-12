@@ -971,7 +971,7 @@ export default function AttendanceExportDialog({
             </button>
             <button
               type="button"
-              onClick={() => setFormat("csv")}
+              onClick={() => setFormat(mode, "csv")}
               className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                 format === "csv" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
               }`}
