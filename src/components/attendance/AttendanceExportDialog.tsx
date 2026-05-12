@@ -777,7 +777,7 @@ export default function AttendanceExportDialog({
               </motion.div>
             )}
 
-            {step === 2 && mode === "group" && (
+            {!showPreview && step === 2 && mode === "group" && (
               <motion.div
                 key="step2"
                 initial={{ opacity: 0, x: -20 }}
