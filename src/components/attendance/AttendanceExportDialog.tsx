@@ -961,7 +961,7 @@ export default function AttendanceExportDialog({
           <div className="flex items-center gap-1 p-1 rounded-lg bg-muted/50 self-stretch sm:self-end">
             <button
               type="button"
-              onClick={() => setFormat("pdf")}
+              onClick={() => setFormat(mode, "pdf")}
               className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                 format === "pdf" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
               }`}
