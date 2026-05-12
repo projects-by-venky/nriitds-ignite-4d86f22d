@@ -732,7 +732,7 @@ export default function AttendanceExportDialog({
                         <AlertDialogHeader>
                           <AlertDialogTitle>Clear all selections?</AlertDialogTitle>
                           <AlertDialogDescription>
-                            This will remove all {selectedRolls.size} student{selectedRolls.size === 1 ? "" : "s"} from your checklist. This action cannot be undone.
+                            This will remove all {selectedRolls.size} student{selectedRolls.size === 1 ? "" : "s"} from your checklist. You'll have a few seconds to undo this.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
