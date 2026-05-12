@@ -594,6 +594,25 @@ export default function AttendanceExportDialog({
     { value: "all" as ExportMode, icon: Users, label: "All", desc: "Full class attendance" },
   ];
 
+  // Compute the list of students that will appear in the export, for the preview step.
+  // For hourly individual mode there is no roster; we surface currentStudent instead.
+  const previewStudents = useMemo<StudentEntry[]>(() => {
+    if (mode === "all") return allStudents;
+    if (mode === "group") {
+      const rolls = effectiveSelectedRolls;
+      return allStudents.filter((s) => rolls.has(s.roll_number));
+    }
+    // individual
+    if (source === "monthly") {
+      const roll = selectedRolls.size > 0 ? [...selectedRolls][0] : currentStudent?.roll_number;
+      const s = roll ? allStudents.find((x) => x.roll_number === roll) : null;
+      return s ? [s] : [];
+    }
+    return currentStudent ? [currentStudent] : [];
+  }, [mode, allStudents, effectiveSelectedRolls, selectedRolls, source, currentStudent]);
+
+  const sampleRows = useMemo(() => previewStudents.slice(0, 8), [previewStudents]);
+
   // Virtualized row renderer for the student picker
   type StudentRowProps = {
     students: StudentEntry[];
