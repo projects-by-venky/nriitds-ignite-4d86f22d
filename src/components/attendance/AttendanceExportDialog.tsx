@@ -68,13 +68,29 @@ export default function AttendanceExportDialog({
   onRefreshStudents, branch, section, source, monthlyData,
 }: AttendanceExportDialogProps) {
   const EXPORT_ONLY_SHOWN_KEY = "attendanceExport.exportOnlyShown";
+  const FORMAT_KEY_PREFIX = "attendanceExport.format.";
+  const readSavedFormat = (m: ExportMode): "pdf" | "csv" => {
+    try {
+      const v = localStorage.getItem(FORMAT_KEY_PREFIX + m);
+      return v === "csv" ? "csv" : "pdf";
+    } catch {
+      return "pdf";
+    }
+  };
+
   const [step, setStep] = useState(1);
   const [mode, setMode] = useState<ExportMode>("individual");
-  const [format, setFormat] = useState<"pdf" | "csv">("pdf");
+  // Format is persisted PER mode so individual/group/all each remember their own preference
+  const [format, setFormatState] = useState<"pdf" | "csv">("pdf");
+  const setFormat = useCallback((m: ExportMode, fmt: "pdf" | "csv") => {
+    setFormatState(fmt);
+    try { localStorage.setItem(FORMAT_KEY_PREFIX + m, fmt); } catch {}
+  }, []);
   const [searchQuery, setSearchQuery] = useState("");
   const [rollFilter, setRollFilter] = useState("");
   const [selectedRolls, setSelectedRolls] = useState<Set<string>>(new Set());
   const [generating, setGenerating] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   // Debounced filter values to avoid re-filtering large rosters on every keystroke
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [debouncedRollFilter, setDebouncedRollFilter] = useState("");
@@ -85,8 +101,8 @@ export default function AttendanceExportDialog({
     try { localStorage.setItem(EXPORT_ONLY_SHOWN_KEY, v ? "1" : "0"); } catch {}
   }, []);
   const [confirmClearOpen, setConfirmClearOpen] = useState(false);
-  // Snapshot of selections for Undo after a Clear action
-  const [lastClearedSelections, setLastClearedSelections] = useState<Set<string> | null>(null);
+  // Stack of prior selection snapshots so successive Clears can each be undone (most recent first)
+  const [clearUndoStack, setClearUndoStack] = useState<Set<string>[]>([]);
 
   // Reset on open. selectedRolls intentionally persists across roster
   // refreshes and filter changes — it is ONLY cleared when the dialog
@@ -95,13 +111,14 @@ export default function AttendanceExportDialog({
     if (open) {
       setStep(1);
       setMode("individual");
-      setFormat("pdf");
+      setFormatState(readSavedFormat("individual"));
+      setShowPreview(false);
       setSearchQuery("");
       setRollFilter("");
       setDebouncedSearch("");
       setDebouncedRollFilter("");
       setSelectedRolls(new Set());
-      setLastClearedSelections(null);
+      setClearUndoStack([]);
       // Restore persisted "export only shown" preference
       try {
         const saved = localStorage.getItem(EXPORT_ONLY_SHOWN_KEY);
@@ -112,12 +129,19 @@ export default function AttendanceExportDialog({
     }
   }, [open]);
 
-  // Auto-dismiss Undo affordance after 8s
+  // When the user changes mode, load that mode's saved format preference
   useEffect(() => {
-    if (!lastClearedSelections) return;
-    const t = setTimeout(() => setLastClearedSelections(null), 8000);
+    if (open) setFormatState(readSavedFormat(mode));
+  }, [mode, open]);
+
+  // Auto-dismiss the most-recent undo entry after 8s (does not nuke older entries)
+  useEffect(() => {
+    if (clearUndoStack.length === 0) return;
+    const t = setTimeout(() => {
+      setClearUndoStack((prev) => prev.slice(0, -1));
+    }, 8000);
     return () => clearTimeout(t);
-  }, [lastClearedSelections]);
+  }, [clearUndoStack]);
 
   // Debounce name search (200ms)
   useEffect(() => {
@@ -178,17 +202,26 @@ export default function AttendanceExportDialog({
 
   const clearSelections = useCallback(() => {
     setSelectedRolls((prev) => {
-      if (prev.size > 0) setLastClearedSelections(new Set(prev));
+      if (prev.size > 0) {
+        setClearUndoStack((stack) => [...stack, new Set(prev)]);
+      }
       return new Set();
     });
   }, []);
 
   const undoClearSelections = useCallback(() => {
-    if (lastClearedSelections) {
-      setSelectedRolls(new Set(lastClearedSelections));
-      setLastClearedSelections(null);
-    }
-  }, [lastClearedSelections]);
+    setClearUndoStack((stack) => {
+      if (stack.length === 0) return stack;
+      const last = stack[stack.length - 1];
+      // Merge restored selections with current ones so an in-flight selection isn't lost
+      setSelectedRolls((curr) => {
+        const next = new Set(curr);
+        last.forEach((r) => next.add(r));
+        return next;
+      });
+      return stack.slice(0, -1);
+    });
+  }, []);
 
   // Roll set restricted to currently filtered (shown) students
   const shownRollSet = useMemo(
@@ -561,6 +594,25 @@ export default function AttendanceExportDialog({
     { value: "all" as ExportMode, icon: Users, label: "All", desc: "Full class attendance" },
   ];
 
+  // Compute the list of students that will appear in the export, for the preview step.
+  // For hourly individual mode there is no roster; we surface currentStudent instead.
+  const previewStudents = useMemo<StudentEntry[]>(() => {
+    if (mode === "all") return allStudents;
+    if (mode === "group") {
+      const rolls = effectiveSelectedRolls;
+      return allStudents.filter((s) => rolls.has(s.roll_number));
+    }
+    // individual
+    if (source === "monthly") {
+      const roll = selectedRolls.size > 0 ? [...selectedRolls][0] : currentStudent?.roll_number;
+      const s = roll ? allStudents.find((x) => x.roll_number === roll) : null;
+      return s ? [s] : [];
+    }
+    return currentStudent ? [currentStudent] : [];
+  }, [mode, allStudents, effectiveSelectedRolls, selectedRolls, source, currentStudent]);
+
+  const sampleRows = useMemo(() => previewStudents.slice(0, 8), [previewStudents]);
+
   // Virtualized row renderer for the student picker
   type StudentRowProps = {
     students: StudentEntry[];
@@ -634,7 +686,63 @@ export default function AttendanceExportDialog({
 
         <div className="flex-1 overflow-y-auto py-2 space-y-4">
           <AnimatePresence mode="wait">
-            {step === 1 && (
+            {showPreview && (
+              <motion.div
+                key="preview"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                className="space-y-3"
+              >
+                <div className="rounded-lg border border-border bg-muted/30 p-4">
+                  <div className="flex items-baseline justify-between gap-2 flex-wrap">
+                    <div>
+                      <div className="text-xs uppercase tracking-wide text-muted-foreground">Export preview</div>
+                      <div className="text-2xl font-bold text-foreground mt-0.5">
+                        {previewStudents.length} {previewStudents.length === 1 ? "student" : "students"}
+                      </div>
+                    </div>
+                    <div className="text-right text-xs text-muted-foreground">
+                      <div>Format: <span className="font-semibold text-foreground">{format.toUpperCase()}</span></div>
+                      <div>Mode: <span className="font-semibold text-foreground capitalize">{mode}</span></div>
+                      <div>{branch.toUpperCase()} · Section {section.toUpperCase()}</div>
+                    </div>
+                  </div>
+                  {mode === "group" && exportOnlyShown && excludedByFilterCount > 0 && (
+                    <div className="mt-2 text-xs text-amber-700 dark:text-amber-400">
+                      {excludedByFilterCount} selected {excludedByFilterCount === 1 ? "student is" : "students are"} excluded by current filters.
+                    </div>
+                  )}
+                </div>
+
+                {previewStudents.length > 0 ? (
+                  <div className="border border-border rounded-lg overflow-hidden">
+                    <div className="px-3 py-2 bg-muted/40 text-xs font-medium text-muted-foreground border-b border-border">
+                      Sample {Math.min(sampleRows.length, previewStudents.length)} of {previewStudents.length}
+                    </div>
+                    <ul className="divide-y divide-border">
+                      {sampleRows.map((s) => (
+                        <li key={s.roll_number} className="flex items-center justify-between px-3 py-2 text-sm">
+                          <span className="font-mono font-medium text-foreground">{s.roll_number}</span>
+                          <span className="text-muted-foreground truncate ml-3">{s.name}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    {previewStudents.length > sampleRows.length && (
+                      <div className="px-3 py-2 text-xs text-muted-foreground text-center border-t border-border bg-muted/20">
+                        +{previewStudents.length - sampleRows.length} more not shown
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="rounded-lg border border-destructive/40 bg-destructive/5 px-3 py-4 text-sm text-destructive text-center">
+                    No students to export. Go back and adjust your selection or filters.
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {!showPreview && step === 1 && (
               <motion.div
                 key="step1"
                 initial={{ opacity: 0, x: -20 }}
@@ -669,7 +777,7 @@ export default function AttendanceExportDialog({
               </motion.div>
             )}
 
-            {step === 2 && mode === "group" && (
+            {!showPreview && step === 2 && mode === "group" && (
               <motion.div
                 key="step2"
                 initial={{ opacity: 0, x: -20 }}
@@ -769,13 +877,15 @@ export default function AttendanceExportDialog({
                   </div>
                 </div>
 
-                {lastClearedSelections && lastClearedSelections.size > 0 && (
+                {clearUndoStack.length > 0 && (
                   <div
                     role="status"
                     className="flex items-center justify-between gap-2 text-xs bg-muted/60 border border-border px-3 py-2 rounded-lg"
                   >
                     <span className="text-muted-foreground">
-                      Cleared {lastClearedSelections.size} selection{lastClearedSelections.size === 1 ? "" : "s"}.
+                      Cleared {clearUndoStack[clearUndoStack.length - 1].size} selection
+                      {clearUndoStack[clearUndoStack.length - 1].size === 1 ? "" : "s"}
+                      {clearUndoStack.length > 1 ? ` · ${clearUndoStack.length} undo steps available` : ""}.
                     </span>
                     <button
                       type="button"
@@ -833,7 +943,7 @@ export default function AttendanceExportDialog({
               </motion.div>
             )}
 
-            {step === 2 && mode === "individual" && (
+            {!showPreview && step === 2 && mode === "individual" && (
               <motion.div
                 key="step2-individual"
                 initial={{ opacity: 0, x: -20 }}
@@ -914,7 +1024,7 @@ export default function AttendanceExportDialog({
         </div>
 
         {/* Footer hint: filter exclusion warning when "Export only shown" is on */}
-        {step === 2 && mode === "group" && exportOnlyShown && excludedByFilterCount > 0 && (
+        {!showPreview && step === 2 && mode === "group" && exportOnlyShown && excludedByFilterCount > 0 && (
           <div className="text-xs text-amber-700 dark:text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2 mt-2">
             {excludedByFilterCount} of your {selectedRolls.size} selected student{selectedRolls.size === 1 ? "" : "s"} {excludedByFilterCount === 1 ? "is" : "are"} hidden by the current search/roll filter and will be excluded from this export.
           </div>
@@ -926,7 +1036,7 @@ export default function AttendanceExportDialog({
           <div className="flex items-center gap-1 p-1 rounded-lg bg-muted/50 self-stretch sm:self-end">
             <button
               type="button"
-              onClick={() => setFormat("pdf")}
+              onClick={() => setFormat(mode, "pdf")}
               className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                 format === "pdf" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
               }`}
@@ -936,7 +1046,7 @@ export default function AttendanceExportDialog({
             </button>
             <button
               type="button"
-              onClick={() => setFormat("csv")}
+              onClick={() => setFormat(mode, "csv")}
               className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                 format === "csv" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
               }`}
@@ -947,59 +1057,80 @@ export default function AttendanceExportDialog({
           </div>
 
           <div className="flex gap-2">
-          {step === 2 && (
-            <Button
-              variant="outline"
-              onClick={() => setStep(1)}
-              disabled={studentsLoading}
-              className="flex-1"
-            >
-              Back
-            </Button>
-          )}
-          {step === 1 && (
+          {showPreview ? (
             <>
-              {(mode === "group" || (mode === "individual" && source === "monthly")) ? (
+              <Button
+                variant="outline"
+                onClick={() => setShowPreview(false)}
+                disabled={generating}
+                className="flex-1"
+              >
+                Back
+              </Button>
+              <Button
+                onClick={handleGenerate}
+                disabled={generating || previewStudents.length === 0}
+                className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
+              >
+                {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                {generating ? "Generating..." : `Confirm · Download ${format.toUpperCase()}`}
+              </Button>
+            </>
+          ) : (
+            <>
+              {step === 2 && (
                 <Button
-                  onClick={() => setStep(2)}
+                  variant="outline"
+                  onClick={() => setStep(1)}
                   disabled={studentsLoading}
-                  className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
+                  className="flex-1"
                 >
-                  {studentsLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-                  {studentsLoading ? "Loading roster…" : "Next"}
+                  Back
                 </Button>
-              ) : (
+              )}
+              {step === 1 && (
+                <>
+                  {(mode === "group" || (mode === "individual" && source === "monthly")) ? (
+                    <Button
+                      onClick={() => setStep(2)}
+                      disabled={studentsLoading}
+                      className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
+                    >
+                      {studentsLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                      {studentsLoading ? "Loading roster…" : "Next"}
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => setShowPreview(true)}
+                      disabled={generating || studentsLoading || previewStudents.length === 0}
+                      className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
+                    >
+                      {studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                      {studentsLoading ? "Loading roster…" : `Preview & Download ${format.toUpperCase()}`}
+                    </Button>
+                  )}
+                </>
+              )}
+              {step === 2 && (
                 <Button
-                  onClick={handleGenerate}
-                  disabled={generating || studentsLoading}
+                  onClick={() => setShowPreview(true)}
+                  disabled={
+                    generating ||
+                    studentsLoading ||
+                    (mode === "group" && selectedRolls.size === 0) ||
+                    (mode === "individual" && selectedRolls.size === 0) ||
+                    exportOnlyShownBlocksDownload
+                  }
+                  title={exportOnlyShownBlocksDownload ? "No selected students match the current filters." : undefined}
                   className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
                 >
-                  {generating || studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                  {studentsLoading ? "Loading roster…" : generating ? "Generating..." : `Download ${format.toUpperCase()}`}
+                  {studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                  {studentsLoading
+                    ? "Loading roster…"
+                    : `Preview · ${format.toUpperCase()} (${mode === "individual" ? 1 : (exportOnlyShown ? effectiveSelectedRolls.size : selectedRolls.size)})`}
                 </Button>
               )}
             </>
-          )}
-          {step === 2 && (
-            <Button
-              onClick={handleGenerate}
-              disabled={
-                generating ||
-                studentsLoading ||
-                (mode === "group" && selectedRolls.size === 0) ||
-                (mode === "individual" && selectedRolls.size === 0) ||
-                exportOnlyShownBlocksDownload
-              }
-              title={exportOnlyShownBlocksDownload ? "No selected students match the current filters." : undefined}
-              className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
-            >
-              {generating || studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-              {studentsLoading
-                ? "Loading roster…"
-                : generating
-                  ? "Generating..."
-                  : `Download ${format.toUpperCase()} (${mode === "individual" ? 1 : (exportOnlyShown ? effectiveSelectedRolls.size : selectedRolls.size)})`}
-            </Button>
           )}
           </div>
         </div>
