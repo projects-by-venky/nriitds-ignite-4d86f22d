@@ -266,6 +266,7 @@ export default function AttendanceExportDialog({
 
   const handleGenerate = async () => {
     setGenerating(true);
+    const isCSV = format === "csv";
     try {
       if (mode === "all") {
         // Full class report
@@ -276,23 +277,38 @@ export default function AttendanceExportDialog({
             setGenerating(false);
             return;
           }
-          generateClassAttendancePDF(allRecords, branch, section);
-          toast({ title: "PDF Downloaded", description: `Full_Attendance_Report.pdf` });
+          if (isCSV) {
+            buildHourlyCSV(allRecords, `Full_Attendance_Report.csv`);
+            toast({ title: "CSV Downloaded", description: `Full_Attendance_Report.csv` });
+          } else {
+            generateClassAttendancePDF(allRecords, branch, section);
+            toast({ title: "PDF Downloaded", description: `Full_Attendance_Report.pdf` });
+          }
         } else {
-          generateMonthlyClassPDF();
+          if (isCSV) {
+            buildMonthlyCSV(allStudents, `Full_Attendance_Report.csv`);
+            toast({ title: "CSV Downloaded", description: `Full_Attendance_Report.csv` });
+          } else {
+            generateMonthlyClassPDF();
+          }
         }
       } else if (mode === "individual") {
         // Single student
         if (source === "hourly") {
           if (currentRecords && currentRecords.length > 0 && currentStudent) {
-            generateStudentAttendancePDF(currentRecords, {
-              title: "Hourly Attendance Report",
-              studentName: currentStudent.name,
-              rollNumber: currentStudent.roll_number,
-              branch: currentStudent.branch,
-              section: currentStudent.section,
-            });
-            toast({ title: "PDF Downloaded", description: `${currentStudent.roll_number}_Attendance_Report.pdf` });
+            if (isCSV) {
+              buildHourlyCSV(currentRecords, `${currentStudent.roll_number}_Attendance_Report.csv`);
+              toast({ title: "CSV Downloaded", description: `${currentStudent.roll_number}_Attendance_Report.csv` });
+            } else {
+              generateStudentAttendancePDF(currentRecords, {
+                title: "Hourly Attendance Report",
+                studentName: currentStudent.name,
+                rollNumber: currentStudent.roll_number,
+                branch: currentStudent.branch,
+                section: currentStudent.section,
+              });
+              toast({ title: "PDF Downloaded", description: `${currentStudent.roll_number}_Attendance_Report.pdf` });
+            }
           } else {
             toast({ title: "No Data", description: "Search for a student first.", variant: "destructive" });
           }
@@ -300,13 +316,21 @@ export default function AttendanceExportDialog({
           // Monthly individual - use first selected or current
           const roll = selectedRolls.size > 0 ? [...selectedRolls][0] : currentStudent?.roll_number;
           if (roll && monthlyData?.[roll]) {
-            generateMonthlyStudentPDF(roll);
+            if (isCSV) {
+              const student = allStudents.find((s) => s.roll_number === roll);
+              if (student) {
+                buildMonthlyCSV([student], `${roll}_Attendance_Report.csv`);
+                toast({ title: "CSV Downloaded", description: `${roll}_Attendance_Report.csv` });
+              }
+            } else {
+              generateMonthlyStudentPDF(roll);
+            }
           } else {
             toast({ title: "No Data", description: "Select a student first.", variant: "destructive" });
           }
         }
       } else {
-        // Group
+        // Group — respects "Export only shown"
         const exportRolls = effectiveSelectedRolls;
         if (exportRolls.size === 0) {
           toast({
@@ -328,17 +352,28 @@ export default function AttendanceExportDialog({
             setGenerating(false);
             return;
           }
-          generateClassAttendancePDF(groupRecords, branch, section);
-          toast({ title: "PDF Downloaded", description: `Group_Attendance_Report.pdf` });
+          if (isCSV) {
+            buildHourlyCSV(groupRecords, `Group_Attendance_Report.csv`);
+            toast({ title: "CSV Downloaded", description: `Group_Attendance_Report.csv` });
+          } else {
+            generateClassAttendancePDF(groupRecords, branch, section);
+            toast({ title: "PDF Downloaded", description: `Group_Attendance_Report.pdf` });
+          }
         } else {
-          generateMonthlyGroupPDF(exportRolls);
+          if (isCSV) {
+            const selected = allStudents.filter((s) => exportRolls.has(s.roll_number));
+            buildMonthlyCSV(selected, `Group_Attendance_Report.csv`);
+            toast({ title: "CSV Downloaded", description: `Group_Attendance_Report.csv` });
+          } else {
+            generateMonthlyGroupPDF(exportRolls);
+          }
         }
       }
 
       onOpenChange(false);
     } catch (err) {
       console.error("Export error:", err);
-      toast({ title: "Error", description: "Failed to generate PDF.", variant: "destructive" });
+      toast({ title: "Error", description: "Failed to generate export.", variant: "destructive" });
     }
     setGenerating(false);
   };
