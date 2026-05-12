@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import {
-  Download, Loader2, User, Users, UsersRound, Check, Search, FileText, X, RefreshCw, Hash,
+  Download, Loader2, User, Users, UsersRound, Check, Search, FileText, X, RefreshCw, Hash, Undo2, FileSpreadsheet,
 } from "lucide-react";
 import { List, type RowComponentProps } from "react-window";
 import {
@@ -67,8 +67,10 @@ export default function AttendanceExportDialog({
   open, onOpenChange, currentRecords, currentStudent, allStudents = [], studentsLoading = false,
   onRefreshStudents, branch, section, source, monthlyData,
 }: AttendanceExportDialogProps) {
+  const EXPORT_ONLY_SHOWN_KEY = "attendanceExport.exportOnlyShown";
   const [step, setStep] = useState(1);
   const [mode, setMode] = useState<ExportMode>("individual");
+  const [format, setFormat] = useState<"pdf" | "csv">("pdf");
   const [searchQuery, setSearchQuery] = useState("");
   const [rollFilter, setRollFilter] = useState("");
   const [selectedRolls, setSelectedRolls] = useState<Set<string>>(new Set());
@@ -76,10 +78,15 @@ export default function AttendanceExportDialog({
   // Debounced filter values to avoid re-filtering large rosters on every keystroke
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [debouncedRollFilter, setDebouncedRollFilter] = useState("");
-  // When true, the export is restricted to students currently matching
-  // the search + roll filters (intersection with selectedRolls in group mode)
-  const [exportOnlyShown, setExportOnlyShown] = useState(false);
+  // Persist "Export only shown" toggle across dialog sessions via localStorage
+  const [exportOnlyShown, setExportOnlyShownState] = useState(false);
+  const setExportOnlyShown = useCallback((v: boolean) => {
+    setExportOnlyShownState(v);
+    try { localStorage.setItem(EXPORT_ONLY_SHOWN_KEY, v ? "1" : "0"); } catch {}
+  }, []);
   const [confirmClearOpen, setConfirmClearOpen] = useState(false);
+  // Snapshot of selections for Undo after a Clear action
+  const [lastClearedSelections, setLastClearedSelections] = useState<Set<string> | null>(null);
 
   // Reset on open. selectedRolls intentionally persists across roster
   // refreshes and filter changes — it is ONLY cleared when the dialog
@@ -88,14 +95,29 @@ export default function AttendanceExportDialog({
     if (open) {
       setStep(1);
       setMode("individual");
+      setFormat("pdf");
       setSearchQuery("");
       setRollFilter("");
       setDebouncedSearch("");
       setDebouncedRollFilter("");
       setSelectedRolls(new Set());
-      setExportOnlyShown(false);
+      setLastClearedSelections(null);
+      // Restore persisted "export only shown" preference
+      try {
+        const saved = localStorage.getItem(EXPORT_ONLY_SHOWN_KEY);
+        setExportOnlyShownState(saved === "1");
+      } catch {
+        setExportOnlyShownState(false);
+      }
     }
   }, [open]);
+
+  // Auto-dismiss Undo affordance after 8s
+  useEffect(() => {
+    if (!lastClearedSelections) return;
+    const t = setTimeout(() => setLastClearedSelections(null), 8000);
+    return () => clearTimeout(t);
+  }, [lastClearedSelections]);
 
   // Debounce name search (200ms)
   useEffect(() => {
@@ -155,8 +177,18 @@ export default function AttendanceExportDialog({
   }, [filteredStudents]);
 
   const clearSelections = useCallback(() => {
-    setSelectedRolls(new Set());
+    setSelectedRolls((prev) => {
+      if (prev.size > 0) setLastClearedSelections(new Set(prev));
+      return new Set();
+    });
   }, []);
+
+  const undoClearSelections = useCallback(() => {
+    if (lastClearedSelections) {
+      setSelectedRolls(new Set(lastClearedSelections));
+      setLastClearedSelections(null);
+    }
+  }, [lastClearedSelections]);
 
   // Roll set restricted to currently filtered (shown) students
   const shownRollSet = useMemo(
@@ -176,8 +208,65 @@ export default function AttendanceExportDialog({
     return next;
   }, [selectedRolls, shownRollSet, exportOnlyShown]);
 
+  // How many of the user's selections are hidden by current filters
+  const excludedByFilterCount = useMemo(() => {
+    if (!exportOnlyShown) return 0;
+    let n = 0;
+    selectedRolls.forEach((r) => { if (!shownRollSet.has(r)) n++; });
+    return n;
+  }, [selectedRolls, shownRollSet, exportOnlyShown]);
+
+  // Disable the Download action when "Export only shown" would export 0
+  const exportOnlyShownBlocksDownload =
+    mode === "group" && exportOnlyShown && selectedRolls.size > 0 && effectiveSelectedRolls.size === 0;
+
+  // ---------- CSV helpers ----------
+  const downloadCSV = (rows: (string | number)[][], filename: string) => {
+    const escape = (v: string | number) => {
+      const s = String(v ?? "");
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const csv = rows.map((r) => r.map(escape).join(",")).join("\n");
+    const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const buildMonthlyCSV = (students: StudentEntry[], filename: string) => {
+    const header = ["#", "Roll Number", "Name", "Branch", "Section", "Subject", "Conducted", "Attended", "Percentage"];
+    const rows: (string | number)[][] = [header];
+    students.forEach((s, i) => {
+      const data = monthlyData?.[s.roll_number] || [];
+      if (data.length === 0) {
+        rows.push([i + 1, s.roll_number, s.name, s.branch, s.section, "", 0, 0, "0%"]);
+        return;
+      }
+      data.forEach((sub) => {
+        const pct = sub.conducted > 0 ? Math.round((sub.attended / sub.conducted) * 100) : 0;
+        rows.push([i + 1, s.roll_number, s.name, s.branch, s.section, sub.code, sub.conducted, sub.attended, `${pct}%`]);
+      });
+      const totalC = data.reduce((sum, a) => sum + a.conducted, 0);
+      const totalA = data.reduce((sum, a) => sum + a.attended, 0);
+      const pct = totalC > 0 ? Math.round((totalA / totalC) * 100) : 0;
+      rows.push([i + 1, s.roll_number, s.name, s.branch, s.section, "TOTAL", totalC, totalA, `${pct}%`]);
+    });
+    downloadCSV(rows, filename);
+  };
+
+  const buildHourlyCSV = (records: HourlyAttendanceRecord[], filename: string) => {
+    const header = ["Roll Number", "Name", "Branch", "Section", "Date", "Hour", "Subject", "Status"];
+    const rows: (string | number)[][] = [header];
+    records.forEach((r) => {
+      rows.push([r.roll_number, r.name, r.branch, r.section, r.date, r.hour, r.subject, r.status]);
+    });
+    downloadCSV(rows, filename);
+  };
+
   const handleGenerate = async () => {
     setGenerating(true);
+    const isCSV = format === "csv";
     try {
       if (mode === "all") {
         // Full class report
@@ -188,23 +277,38 @@ export default function AttendanceExportDialog({
             setGenerating(false);
             return;
           }
-          generateClassAttendancePDF(allRecords, branch, section);
-          toast({ title: "PDF Downloaded", description: `Full_Attendance_Report.pdf` });
+          if (isCSV) {
+            buildHourlyCSV(allRecords, `Full_Attendance_Report.csv`);
+            toast({ title: "CSV Downloaded", description: `Full_Attendance_Report.csv` });
+          } else {
+            generateClassAttendancePDF(allRecords, branch, section);
+            toast({ title: "PDF Downloaded", description: `Full_Attendance_Report.pdf` });
+          }
         } else {
-          generateMonthlyClassPDF();
+          if (isCSV) {
+            buildMonthlyCSV(allStudents, `Full_Attendance_Report.csv`);
+            toast({ title: "CSV Downloaded", description: `Full_Attendance_Report.csv` });
+          } else {
+            generateMonthlyClassPDF();
+          }
         }
       } else if (mode === "individual") {
         // Single student
         if (source === "hourly") {
           if (currentRecords && currentRecords.length > 0 && currentStudent) {
-            generateStudentAttendancePDF(currentRecords, {
-              title: "Hourly Attendance Report",
-              studentName: currentStudent.name,
-              rollNumber: currentStudent.roll_number,
-              branch: currentStudent.branch,
-              section: currentStudent.section,
-            });
-            toast({ title: "PDF Downloaded", description: `${currentStudent.roll_number}_Attendance_Report.pdf` });
+            if (isCSV) {
+              buildHourlyCSV(currentRecords, `${currentStudent.roll_number}_Attendance_Report.csv`);
+              toast({ title: "CSV Downloaded", description: `${currentStudent.roll_number}_Attendance_Report.csv` });
+            } else {
+              generateStudentAttendancePDF(currentRecords, {
+                title: "Hourly Attendance Report",
+                studentName: currentStudent.name,
+                rollNumber: currentStudent.roll_number,
+                branch: currentStudent.branch,
+                section: currentStudent.section,
+              });
+              toast({ title: "PDF Downloaded", description: `${currentStudent.roll_number}_Attendance_Report.pdf` });
+            }
           } else {
             toast({ title: "No Data", description: "Search for a student first.", variant: "destructive" });
           }
@@ -212,13 +316,21 @@ export default function AttendanceExportDialog({
           // Monthly individual - use first selected or current
           const roll = selectedRolls.size > 0 ? [...selectedRolls][0] : currentStudent?.roll_number;
           if (roll && monthlyData?.[roll]) {
-            generateMonthlyStudentPDF(roll);
+            if (isCSV) {
+              const student = allStudents.find((s) => s.roll_number === roll);
+              if (student) {
+                buildMonthlyCSV([student], `${roll}_Attendance_Report.csv`);
+                toast({ title: "CSV Downloaded", description: `${roll}_Attendance_Report.csv` });
+              }
+            } else {
+              generateMonthlyStudentPDF(roll);
+            }
           } else {
             toast({ title: "No Data", description: "Select a student first.", variant: "destructive" });
           }
         }
       } else {
-        // Group
+        // Group — respects "Export only shown"
         const exportRolls = effectiveSelectedRolls;
         if (exportRolls.size === 0) {
           toast({
@@ -240,17 +352,28 @@ export default function AttendanceExportDialog({
             setGenerating(false);
             return;
           }
-          generateClassAttendancePDF(groupRecords, branch, section);
-          toast({ title: "PDF Downloaded", description: `Group_Attendance_Report.pdf` });
+          if (isCSV) {
+            buildHourlyCSV(groupRecords, `Group_Attendance_Report.csv`);
+            toast({ title: "CSV Downloaded", description: `Group_Attendance_Report.csv` });
+          } else {
+            generateClassAttendancePDF(groupRecords, branch, section);
+            toast({ title: "PDF Downloaded", description: `Group_Attendance_Report.pdf` });
+          }
         } else {
-          generateMonthlyGroupPDF(exportRolls);
+          if (isCSV) {
+            const selected = allStudents.filter((s) => exportRolls.has(s.roll_number));
+            buildMonthlyCSV(selected, `Group_Attendance_Report.csv`);
+            toast({ title: "CSV Downloaded", description: `Group_Attendance_Report.csv` });
+          } else {
+            generateMonthlyGroupPDF(exportRolls);
+          }
         }
       }
 
       onOpenChange(false);
     } catch (err) {
       console.error("Export error:", err);
-      toast({ title: "Error", description: "Failed to generate PDF.", variant: "destructive" });
+      toast({ title: "Error", description: "Failed to generate export.", variant: "destructive" });
     }
     setGenerating(false);
   };
@@ -609,7 +732,7 @@ export default function AttendanceExportDialog({
                         <AlertDialogHeader>
                           <AlertDialogTitle>Clear all selections?</AlertDialogTitle>
                           <AlertDialogDescription>
-                            This will remove all {selectedRolls.size} student{selectedRolls.size === 1 ? "" : "s"} from your checklist. This action cannot be undone.
+                            This will remove all {selectedRolls.size} student{selectedRolls.size === 1 ? "" : "s"} from your checklist. You'll have a few seconds to undo this.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
@@ -646,6 +769,25 @@ export default function AttendanceExportDialog({
                   </div>
                 </div>
 
+                {lastClearedSelections && lastClearedSelections.size > 0 && (
+                  <div
+                    role="status"
+                    className="flex items-center justify-between gap-2 text-xs bg-muted/60 border border-border px-3 py-2 rounded-lg"
+                  >
+                    <span className="text-muted-foreground">
+                      Cleared {lastClearedSelections.size} selection{lastClearedSelections.size === 1 ? "" : "s"}.
+                    </span>
+                    <button
+                      type="button"
+                      onClick={undoClearSelections}
+                      className="inline-flex items-center gap-1 font-medium text-primary hover:underline"
+                    >
+                      <Undo2 className="w-3.5 h-3.5" />
+                      Undo
+                    </button>
+                  </div>
+                )}
+
                 {/* Export-only-shown toggle */}
                 <label className="flex items-start gap-2 px-1 cursor-pointer select-none">
                   <Checkbox
@@ -660,8 +802,9 @@ export default function AttendanceExportDialog({
                     <div className="text-xs text-muted-foreground">
                       Limit the download to selected students currently matching your search and roll filters
                       {exportOnlyShown && selectedRolls.size > 0 && (
-                        <span className="ml-1 text-primary font-medium">
-                          ({effectiveSelectedRolls.size} of {selectedRolls.size} will export)
+                        <span className={`ml-1 font-medium ${excludedByFilterCount > 0 ? "text-amber-600 dark:text-amber-400" : "text-primary"}`}>
+                          ({effectiveSelectedRolls.size} of {selectedRolls.size} will export
+                          {excludedByFilterCount > 0 ? ` · ${excludedByFilterCount} excluded by filters` : ""})
                         </span>
                       )}
                     </div>
@@ -770,8 +913,40 @@ export default function AttendanceExportDialog({
           </AnimatePresence>
         </div>
 
+        {/* Footer hint: filter exclusion warning when "Export only shown" is on */}
+        {step === 2 && mode === "group" && exportOnlyShown && excludedByFilterCount > 0 && (
+          <div className="text-xs text-amber-700 dark:text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2 mt-2">
+            {excludedByFilterCount} of your {selectedRolls.size} selected student{selectedRolls.size === 1 ? "" : "s"} {excludedByFilterCount === 1 ? "is" : "are"} hidden by the current search/roll filter and will be excluded from this export.
+          </div>
+        )}
+
         {/* Actions */}
-        <div className="flex gap-2 pt-3 border-t border-border">
+        <div className="flex flex-col gap-2 pt-3 border-t border-border">
+          {/* Format selector */}
+          <div className="flex items-center gap-1 p-1 rounded-lg bg-muted/50 self-stretch sm:self-end">
+            <button
+              type="button"
+              onClick={() => setFormat("pdf")}
+              className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                format === "pdf" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              }`}
+              aria-pressed={format === "pdf"}
+            >
+              <FileText className="w-3.5 h-3.5" /> PDF
+            </button>
+            <button
+              type="button"
+              onClick={() => setFormat("csv")}
+              className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                format === "csv" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              }`}
+              aria-pressed={format === "csv"}
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5" /> CSV
+            </button>
+          </div>
+
+          <div className="flex gap-2">
           {step === 2 && (
             <Button
               variant="outline"
@@ -800,7 +975,7 @@ export default function AttendanceExportDialog({
                   className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
                 >
                   {generating || studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                  {studentsLoading ? "Loading roster…" : generating ? "Generating..." : "Download PDF"}
+                  {studentsLoading ? "Loading roster…" : generating ? "Generating..." : `Download ${format.toUpperCase()}`}
                 </Button>
               )}
             </>
@@ -812,8 +987,10 @@ export default function AttendanceExportDialog({
                 generating ||
                 studentsLoading ||
                 (mode === "group" && selectedRolls.size === 0) ||
-                (mode === "individual" && selectedRolls.size === 0)
+                (mode === "individual" && selectedRolls.size === 0) ||
+                exportOnlyShownBlocksDownload
               }
+              title={exportOnlyShownBlocksDownload ? "No selected students match the current filters." : undefined}
               className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
             >
               {generating || studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
@@ -821,9 +998,10 @@ export default function AttendanceExportDialog({
                 ? "Loading roster…"
                 : generating
                   ? "Generating..."
-                  : `Download PDF (${mode === "individual" ? 1 : selectedRolls.size})`}
+                  : `Download ${format.toUpperCase()} (${mode === "individual" ? 1 : (exportOnlyShown ? effectiveSelectedRolls.size : selectedRolls.size)})`}
             </Button>
           )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
