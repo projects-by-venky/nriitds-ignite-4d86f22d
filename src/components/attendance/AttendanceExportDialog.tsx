@@ -1024,7 +1024,7 @@ export default function AttendanceExportDialog({
         </div>
 
         {/* Footer hint: filter exclusion warning when "Export only shown" is on */}
-        {step === 2 && mode === "group" && exportOnlyShown && excludedByFilterCount > 0 && (
+        {!showPreview && step === 2 && mode === "group" && exportOnlyShown && excludedByFilterCount > 0 && (
           <div className="text-xs text-amber-700 dark:text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2 mt-2">
             {excludedByFilterCount} of your {selectedRolls.size} selected student{selectedRolls.size === 1 ? "" : "s"} {excludedByFilterCount === 1 ? "is" : "are"} hidden by the current search/roll filter and will be excluded from this export.
           </div>
