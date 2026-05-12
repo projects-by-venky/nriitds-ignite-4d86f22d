@@ -769,6 +769,25 @@ export default function AttendanceExportDialog({
                   </div>
                 </div>
 
+                {lastClearedSelections && lastClearedSelections.size > 0 && (
+                  <div
+                    role="status"
+                    className="flex items-center justify-between gap-2 text-xs bg-muted/60 border border-border px-3 py-2 rounded-lg"
+                  >
+                    <span className="text-muted-foreground">
+                      Cleared {lastClearedSelections.size} selection{lastClearedSelections.size === 1 ? "" : "s"}.
+                    </span>
+                    <button
+                      type="button"
+                      onClick={undoClearSelections}
+                      className="inline-flex items-center gap-1 font-medium text-primary hover:underline"
+                    >
+                      <Undo2 className="w-3.5 h-3.5" />
+                      Undo
+                    </button>
+                  </div>
+                )}
+
                 {/* Export-only-shown toggle */}
                 <label className="flex items-start gap-2 px-1 cursor-pointer select-none">
                   <Checkbox
