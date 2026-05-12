@@ -1001,59 +1001,80 @@ export default function AttendanceExportDialog({
           </div>
 
           <div className="flex gap-2">
-          {step === 2 && (
-            <Button
-              variant="outline"
-              onClick={() => setStep(1)}
-              disabled={studentsLoading}
-              className="flex-1"
-            >
-              Back
-            </Button>
-          )}
-          {step === 1 && (
+          {showPreview ? (
             <>
-              {(mode === "group" || (mode === "individual" && source === "monthly")) ? (
+              <Button
+                variant="outline"
+                onClick={() => setShowPreview(false)}
+                disabled={generating}
+                className="flex-1"
+              >
+                Back
+              </Button>
+              <Button
+                onClick={handleGenerate}
+                disabled={generating || previewStudents.length === 0}
+                className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
+              >
+                {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                {generating ? "Generating..." : `Confirm · Download ${format.toUpperCase()}`}
+              </Button>
+            </>
+          ) : (
+            <>
+              {step === 2 && (
                 <Button
-                  onClick={() => setStep(2)}
+                  variant="outline"
+                  onClick={() => setStep(1)}
                   disabled={studentsLoading}
-                  className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
+                  className="flex-1"
                 >
-                  {studentsLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-                  {studentsLoading ? "Loading roster…" : "Next"}
+                  Back
                 </Button>
-              ) : (
+              )}
+              {step === 1 && (
+                <>
+                  {(mode === "group" || (mode === "individual" && source === "monthly")) ? (
+                    <Button
+                      onClick={() => setStep(2)}
+                      disabled={studentsLoading}
+                      className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
+                    >
+                      {studentsLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                      {studentsLoading ? "Loading roster…" : "Next"}
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => setShowPreview(true)}
+                      disabled={generating || studentsLoading || previewStudents.length === 0}
+                      className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
+                    >
+                      {studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                      {studentsLoading ? "Loading roster…" : `Preview & Download ${format.toUpperCase()}`}
+                    </Button>
+                  )}
+                </>
+              )}
+              {step === 2 && (
                 <Button
-                  onClick={handleGenerate}
-                  disabled={generating || studentsLoading}
+                  onClick={() => setShowPreview(true)}
+                  disabled={
+                    generating ||
+                    studentsLoading ||
+                    (mode === "group" && selectedRolls.size === 0) ||
+                    (mode === "individual" && selectedRolls.size === 0) ||
+                    exportOnlyShownBlocksDownload
+                  }
+                  title={exportOnlyShownBlocksDownload ? "No selected students match the current filters." : undefined}
                   className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
                 >
-                  {generating || studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                  {studentsLoading ? "Loading roster…" : generating ? "Generating..." : `Download ${format.toUpperCase()}`}
+                  {studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                  {studentsLoading
+                    ? "Loading roster…"
+                    : `Preview · ${format.toUpperCase()} (${mode === "individual" ? 1 : (exportOnlyShown ? effectiveSelectedRolls.size : selectedRolls.size)})`}
                 </Button>
               )}
             </>
-          )}
-          {step === 2 && (
-            <Button
-              onClick={handleGenerate}
-              disabled={
-                generating ||
-                studentsLoading ||
-                (mode === "group" && selectedRolls.size === 0) ||
-                (mode === "individual" && selectedRolls.size === 0) ||
-                exportOnlyShownBlocksDownload
-              }
-              title={exportOnlyShownBlocksDownload ? "No selected students match the current filters." : undefined}
-              className="flex-1 bg-gradient-cyber hover:opacity-90 gap-2"
-            >
-              {generating || studentsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-              {studentsLoading
-                ? "Loading roster…"
-                : generating
-                  ? "Generating..."
-                  : `Download ${format.toUpperCase()} (${mode === "individual" ? 1 : (exportOnlyShown ? effectiveSelectedRolls.size : selectedRolls.size)})`}
-            </Button>
           )}
           </div>
         </div>
