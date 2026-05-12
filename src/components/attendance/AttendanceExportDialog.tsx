@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import {
-  Download, Loader2, User, Users, UsersRound, Check, Search, FileText, X, RefreshCw, Hash,
+  Download, Loader2, User, Users, UsersRound, Check, Search, FileText, X, RefreshCw, Hash, Undo2, FileSpreadsheet,
 } from "lucide-react";
 import { List, type RowComponentProps } from "react-window";
 import {
