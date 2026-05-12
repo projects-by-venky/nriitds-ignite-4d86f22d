@@ -177,8 +177,18 @@ export default function AttendanceExportDialog({
   }, [filteredStudents]);
 
   const clearSelections = useCallback(() => {
-    setSelectedRolls(new Set());
+    setSelectedRolls((prev) => {
+      if (prev.size > 0) setLastClearedSelections(new Set(prev));
+      return new Set();
+    });
   }, []);
+
+  const undoClearSelections = useCallback(() => {
+    if (lastClearedSelections) {
+      setSelectedRolls(new Set(lastClearedSelections));
+      setLastClearedSelections(null);
+    }
+  }, [lastClearedSelections]);
 
   // Roll set restricted to currently filtered (shown) students
   const shownRollSet = useMemo(
