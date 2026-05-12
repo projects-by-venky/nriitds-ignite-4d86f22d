@@ -802,8 +802,9 @@ export default function AttendanceExportDialog({
                     <div className="text-xs text-muted-foreground">
                       Limit the download to selected students currently matching your search and roll filters
                       {exportOnlyShown && selectedRolls.size > 0 && (
-                        <span className="ml-1 text-primary font-medium">
-                          ({effectiveSelectedRolls.size} of {selectedRolls.size} will export)
+                        <span className={`ml-1 font-medium ${excludedByFilterCount > 0 ? "text-amber-600 dark:text-amber-400" : "text-primary"}`}>
+                          ({effectiveSelectedRolls.size} of {selectedRolls.size} will export
+                          {excludedByFilterCount > 0 ? ` · ${excludedByFilterCount} excluded by filters` : ""})
                         </span>
                       )}
                     </div>
