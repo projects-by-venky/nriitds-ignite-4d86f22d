@@ -2,10 +2,16 @@ import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BranchesSection from "@/components/sections/BranchesSection";
+import SEO from "@/components/seo/SEO";
 
 const Branches = () => {
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Departments & Branches — NRIIT"
+        description="Explore NRIIT's departments — Computer Science, Information Technology, and Data Science — with portals for students and faculty."
+        path="/branches"
+      />
       <Header />
       <main>
         {/* Hero Section */}
