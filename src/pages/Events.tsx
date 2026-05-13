@@ -91,7 +91,7 @@ const Events = () => {
                 >
                   <stat.icon className="w-8 h-8 md:w-10 md:h-10 text-secondary mx-auto mb-2 md:mb-3" />
                   <div className="text-2xl md:text-4xl font-bold mb-1 md:mb-2 text-primary">{stat.value}</div>
-                  <div className="text-xs md:text-sm text-white/70">{stat.label}</div>
+                  <div className="text-xs md:text-sm text-white/90">{stat.label}</div>
                 </motion.div>
               ))}
             </motion.div>

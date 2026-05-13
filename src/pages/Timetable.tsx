@@ -167,7 +167,7 @@ const Timetable = () => {
           >
             <Link 
               to={`/department/${deptId}/student-portal`}
-              className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-4 transition-colors"
+              className="inline-flex items-center gap-2 text-white/90 hover:text-white mb-4 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
               Back to Student Portal
@@ -179,7 +179,7 @@ const Timetable = () => {
                     style={{ backgroundImage: "linear-gradient(135deg, #0EA5E9, #1E3A8A)" }}>
                   Class Time Table
                 </h1>
-                <p className="text-lg text-white/70">{formattedSection} - {dept.name}</p>
+                <p className="text-lg text-white/90">{formattedSection} - {dept.name}</p>
               </div>
               <Button 
                 className="bg-gradient-cyber text-white hover:opacity-90"
@@ -356,19 +356,19 @@ const Timetable = () => {
           >
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded bg-green-200 border border-green-400"></div>
-              <span className="text-white/70">Lab Sessions</span>
+              <span className="text-white/90">Lab Sessions</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded bg-blue-200 border border-blue-400"></div>
-              <span className="text-white/70">Library</span>
+              <span className="text-white/90">Library</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded bg-yellow-100 border border-yellow-400"></div>
-              <span className="text-white/70">Special Classes</span>
+              <span className="text-white/90">Special Classes</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded bg-gray-200 border border-gray-400"></div>
-              <span className="text-white/70">Break/Lunch</span>
+              <span className="text-white/90">Break/Lunch</span>
             </div>
           </motion.div>
         </div>

@@ -72,7 +72,7 @@ const CampusLifeSection = () => {
                   <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-primary transition-colors">
                     {activity.title}
                   </h3>
-                  <p className="text-white/70 leading-relaxed">
+                  <p className="text-white/90 leading-relaxed">
                     {activity.description}
                   </p>
                 </motion.div>

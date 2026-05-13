@@ -376,7 +376,7 @@ const SectionAnalytics = () => {
                 animate={{ y: [0, -8, 0] }}
                 transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
               >
-                <Users className="w-20 h-20 text-muted-foreground/40 mx-auto mb-6" />
+                <Users className="w-20 h-20 text-muted-foreground/70 mx-auto mb-6" />
               </motion.div>
               <h3 className="text-xl font-semibold text-foreground mb-2">No Student Data Yet</h3>
               <p className="text-sm text-muted-foreground max-w-md mx-auto">
@@ -397,7 +397,7 @@ const SectionAnalytics = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       className="text-center py-16"
                     >
-                      <UserSearch className="w-14 h-14 text-muted-foreground/40 mx-auto mb-4" />
+                      <UserSearch className="w-14 h-14 text-muted-foreground/70 mx-auto mb-4" />
                       <h3 className="text-lg font-semibold text-foreground mb-1">No Match Found</h3>
                       <p className="text-sm text-muted-foreground">
                         No student matching "{searchQuery}" in this section. Try full roll number or last digits.
