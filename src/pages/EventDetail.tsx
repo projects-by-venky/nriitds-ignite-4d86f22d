@@ -97,8 +97,27 @@ const EventDetail = () => {
     );
   }
 
+  const eventJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: event.title,
+    description: event.description,
+    startDate: event.start_date,
+    endDate: event.end_date || event.start_date,
+    eventStatus: "https://schema.org/EventScheduled",
+    organizer: { "@type": "Organization", name: event.organized_by },
+    location: { "@type": "Place", name: event.department || "NRI Institute of Technology" },
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={`${event.title} — NRIIT Events`}
+        description={(event.description || "").slice(0, 155) || `Join ${event.title} at NRIIT.`}
+        path={`/events/${event.id}`}
+        type="article"
+        jsonLd={eventJsonLd}
+      />
       <Header />
       <main className="pt-16">
         {/* Back Button */}
