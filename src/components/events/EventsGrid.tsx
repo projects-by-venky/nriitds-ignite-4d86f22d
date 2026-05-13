@@ -28,7 +28,7 @@ const EventsGrid = ({ events, isLoading }: EventsGridProps) => {
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col items-center justify-center py-20 text-center"
       >
-        <Calendar className="w-16 h-16 text-muted-foreground/30 mb-4" />
+        <Calendar className="w-16 h-16 text-muted-foreground/60 mb-4" />
         <h3 className="text-xl font-semibold text-foreground mb-2">
           No Events Found
         </h3>

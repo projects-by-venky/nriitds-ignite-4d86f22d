@@ -47,7 +47,7 @@ const ResearchHero = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-white/70 max-w-2xl mx-auto leading-relaxed mb-10">
+          <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed mb-10">
             Showcasing ideas, solutions, and innovations by our academic community.
           </p>
 
@@ -67,7 +67,7 @@ const ResearchHero = () => {
                 <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {stat.value}
                 </div>
-                <div className="text-sm text-white/60 mt-1">{stat.label}</div>
+                <div className="text-sm text-white/85 mt-1">{stat.label}</div>
               </div>
             ))}
           </motion.div>

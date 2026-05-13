@@ -170,7 +170,7 @@ const EventCalendar = ({ events, selectedMonth, onMonthChange }: EventCalendarPr
                   exit={{ opacity: 0 }}
                   className="flex flex-col items-center justify-center py-12 text-center"
                 >
-                  <CalendarIcon className="w-12 h-12 text-muted-foreground/30 mb-3" />
+                  <CalendarIcon className="w-12 h-12 text-muted-foreground/60 mb-3" />
                   <p className="text-muted-foreground">No events on this date</p>
                 </motion.div>
               )
@@ -182,7 +182,7 @@ const EventCalendar = ({ events, selectedMonth, onMonthChange }: EventCalendarPr
                 exit={{ opacity: 0 }}
                 className="flex flex-col items-center justify-center py-12 text-center"
               >
-                <CalendarIcon className="w-12 h-12 text-muted-foreground/30 mb-3" />
+                <CalendarIcon className="w-12 h-12 text-muted-foreground/60 mb-3" />
                 <p className="text-muted-foreground">
                   Click on a date to see events
                 </p>

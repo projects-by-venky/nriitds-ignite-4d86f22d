@@ -107,7 +107,7 @@ const HeroSection = () => {
                 >
                   {stat.value}
                 </div>
-                <div className="text-white/70 text-sm font-semibold tracking-wide uppercase">{stat.label}</div>
+                <div className="text-white/90 text-sm font-semibold tracking-wide uppercase">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>

@@ -69,7 +69,7 @@ const Contact = () => {
                   className="p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.3)] transition-all duration-300"
                 >
                   <info.icon className="w-8 h-8 text-secondary mb-3" />
-                  <div className="text-sm text-white/60 mb-1">{info.label}</div>
+                  <div className="text-sm text-white/85 mb-1">{info.label}</div>
                   <div className="text-sm font-semibold">{info.value}</div>
                 </motion.div>
               ))}

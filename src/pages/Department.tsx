@@ -102,7 +102,7 @@ const Department = () => {
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
               {dept.name}
             </h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto">
               {dept.description}
             </p>
           </motion.div>
@@ -131,7 +131,7 @@ const Department = () => {
                       <GraduationCap className="w-10 h-10 text-white" />
                     </div>
                     <h3 className="text-3xl font-bold mb-4 text-white">Student Portal</h3>
-                    <p className="text-white/60 mb-6">
+                    <p className="text-white/85 mb-6">
                       Access your dashboard, notes, results, and more
                     </p>
                     <div className="text-sm text-[#0EA5E9] font-semibold">
@@ -164,7 +164,7 @@ const Department = () => {
                       <Users className="w-10 h-10 text-white" />
                     </div>
                     <h3 className="text-3xl font-bold mb-4 text-white">Faculty Portal</h3>
-                    <p className="text-white/60 mb-6">
+                    <p className="text-white/85 mb-6">
                       Manage students, upload notes, and post announcements
                     </p>
                     <div className="text-sm text-[#0EA5E9] font-semibold">
