@@ -10,6 +10,7 @@ import EventAccessMenu from "@/components/events/EventAccessMenu";
 import EventManageDialog from "@/components/events/EventManageDialog";
 import { motion } from "framer-motion";
 import { Calendar, Users, Trophy, Sparkles } from "lucide-react";
+import SEO from "@/components/seo/SEO";
 
 type ViewType = 'card' | 'calendar';
 
