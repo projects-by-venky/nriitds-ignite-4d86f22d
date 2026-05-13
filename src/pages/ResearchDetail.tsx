@@ -24,6 +24,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useResearchProject } from '@/hooks/useResearchProjects';
+import SEO from '@/components/seo/SEO';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const categoryColors = {
