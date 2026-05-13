@@ -87,8 +87,23 @@ const ResearchDetail = () => {
     other: ExternalLink,
   };
 
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    headline: project.title,
+    description: project.summary,
+    author: (project.contributor_names || []).map((name: string) => ({ "@type": "Person", name })),
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={`${project.title} — NRIIT Research`}
+        description={(project.summary || "").slice(0, 155) || `Research project at NRIIT: ${project.title}.`}
+        path={`/research/${project.id}`}
+        type="article"
+        jsonLd={articleJsonLd}
+      />
       <Header />
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4 max-w-5xl">
