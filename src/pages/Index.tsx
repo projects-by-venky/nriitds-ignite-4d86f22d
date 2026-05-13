@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SEO from "@/components/seo/SEO";
 
 // Lazy load sections to prevent blocking
 const HeroSection = lazy(() => import("@/components/sections/HeroSection"));
@@ -20,6 +21,11 @@ const Index = () => {
   
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="NRI Institute of Technology — One Connected Campus"
+        description="NRIIT — a unified digital campus for students, faculty, and departments across Engineering, Research, and campus life."
+        path="/"
+      />
       <Header />
       <main>
         <Suspense fallback={<SectionLoading />}>

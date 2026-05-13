@@ -6,6 +6,7 @@ import ResearchHero from '@/components/research/ResearchHero';
 import CategoryTabs from '@/components/research/CategoryTabs';
 import ResearchGrid from '@/components/research/ResearchGrid';
 import UploadButton from '@/components/research/UploadButton';
+import SEO from '@/components/seo/SEO';
 import { ContributorType } from '@/types/research';
 
 const Research = () => {
@@ -13,6 +14,11 @@ const Research = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Research & Innovation — NRIIT"
+        description="Browse faculty and student research projects, publications, and innovations from NRI Institute of Technology."
+        path="/research"
+      />
       <Header />
       <main>
         <ResearchHero />

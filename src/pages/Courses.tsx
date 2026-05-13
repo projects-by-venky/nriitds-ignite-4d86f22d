@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CoursesSection from "@/components/sections/CoursesSection";
+import SEO from "@/components/seo/SEO";
 import { motion } from "framer-motion";
 import { BookOpen, Code, Beaker, Building2 } from "lucide-react";
 
@@ -14,6 +15,11 @@ const Courses = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Courses & Programs — NRIIT"
+        description="Discover undergraduate and postgraduate engineering programs at NRIIT — built for industry readiness with modern labs and expert faculty."
+        path="/courses"
+      />
       <Header />
       <main className="pt-16">
         {/* Page Hero Header */}
