@@ -30,6 +30,11 @@ const Events = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Events — NRIIT Campus Activities & Workshops"
+        description="Stay updated on upcoming workshops, competitions, and campus events at NRI Institute of Technology."
+        path="/events"
+      />
       <Header />
       <main className="pt-16">
         {/* Page Hero Header */}
