@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SEO from "@/components/seo/SEO";
 
 // Lazy load sections to prevent blocking
 const HeroSection = lazy(() => import("@/components/sections/HeroSection"));
