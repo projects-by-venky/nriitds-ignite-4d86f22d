@@ -29,6 +29,7 @@ import {
   EVENT_TYPE_COLORS, 
   EVENT_STATUS_COLORS 
 } from "@/types/events";
+import SEO from "@/components/seo/SEO";
 
 const EventDetail = () => {
   const { id } = useParams<{ id: string }>();
