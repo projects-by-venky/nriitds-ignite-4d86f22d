@@ -1,11 +1,17 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import AboutSection from "@/components/sections/AboutSection";
+import SEO from "@/components/seo/SEO";
 import { motion } from "framer-motion";
 
 const About = () => {
   return (
     <div className="min-h-screen">
+      <SEO
+        title="About NRIIT — Vision, Mission & History"
+        description="Learn about NRI Institute of Technology — our vision, mission, leadership, and commitment to engineering and research excellence in Guntur."
+        path="/about"
+      />
       <Header />
       <main className="pt-16">
         {/* Page Hero Header */}
